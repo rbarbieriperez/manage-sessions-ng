@@ -1,0 +1,13 @@
+
+
+.rb-input-custom-main-container {
+  width: 100%;
+
+  & mat-form-field {
+    width: 100%;
+  }
+
+  & mat-icon[hidden] {
+    display: none;
+  }
+}

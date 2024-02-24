@@ -1,0 +1,16 @@
+<div class="rb-input-custom-main-container">
+  <mat-form-field>
+    <mat-label >{{label}}</mat-label>
+    <input
+      [placeholder]="label"
+      [disabled]="disabled"
+      [required]="required"
+      type="text"
+      [id]="id"
+      [value]="_currentInputValue"
+      (change)="_onTextChange($event)"
+      matInput
+    >
+    <mat-icon (click)="_onClearInput()" matSuffix>close</mat-icon>
+  </mat-form-field>
+</div>
