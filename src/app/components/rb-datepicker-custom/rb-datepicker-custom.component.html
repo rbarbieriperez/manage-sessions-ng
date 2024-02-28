@@ -1,0 +1,8 @@
+<div class="rb-datepicker-custom-main-container">
+  <mat-form-field>
+    <mat-label>{{label}}</mat-label>
+    <input (dateChange)="_onDateSelected($event)" matInput [matDatepicker]="picker">
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+</div>

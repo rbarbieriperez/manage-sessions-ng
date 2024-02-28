@@ -1,0 +1,20 @@
+.add-session-page-main-container {
+  width: 100%;
+  height: 100%;
+}
+
+.add-session-page-form-container {
+  margin-top: 3rem;
+  padding: 0 1rem 0 1rem;
+  row-gap: 1rem;
+  display: flex;
+  flex-direction: column;
+
+  & button {
+    position: absolute;
+    bottom: 1rem;
+    transform: translateX(50%);
+    right: 50%;
+    width: 90%;
+  }
+}

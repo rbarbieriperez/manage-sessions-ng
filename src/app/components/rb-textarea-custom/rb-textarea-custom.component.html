@@ -1,0 +1,22 @@
+<div class="rb-textarea-custom-main-container">
+  <mat-form-field>
+    <mat-label>{{label}}</mat-label>
+    <textarea
+      (change)="_onChange($event)"
+      style="resize: none"
+      [rows]="rows"
+      [cols]="cols"
+      value=""
+      matInput
+      [minLength]="minLength"
+      [maxLength]="maxLength"
+      #textarea
+    >
+    </textarea>
+    <mat-hint *ngIf="showCharactersCounter" align="end">{{textarea.value.length}}/{{maxLength}}</mat-hint>
+    <mat-hint *ngIf="showHint" (click)="_onHintClicked()" align="start">
+      {{hintLabel}}
+      <mat-icon>{{hintIcon}}</mat-icon>
+    </mat-hint>
+  </mat-form-field>
+</div>

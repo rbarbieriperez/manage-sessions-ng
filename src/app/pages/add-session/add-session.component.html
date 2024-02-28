@@ -1,4 +1,24 @@
-<main>
+<main class="add-session-page-main-container">
   <rb-header-custom headerTitle="Agregar Sesión"></rb-header-custom>
-  <rb-input-custom></rb-input-custom>
+
+  <section class="add-session-page-form-container">
+    <rb-select-custom label="Clínicas"></rb-select-custom>
+    <rb-select-custom label="Pacientes"></rb-select-custom>
+    <rb-datepicker-custom label="Fecha"></rb-datepicker-custom>
+    <rb-textarea-custom
+      [showCharactersCounter]="true"
+      [showHint]="true"
+      [cols]="10"
+      [rows]="10"
+      [maxLength]="500"
+      [minLength]="0"
+      label="Observaciones de la sesion"
+      hintLabel="Ver pacientes con sesiones registradas el dia de hoy"
+      hintIcon="open_in_new"
+    >
+    </rb-textarea-custom>
+
+    <button mat-raised-button  color="primary">Guardar</button>
+  </section>
+
 </main>

@@ -1,0 +1,221 @@
+{
+  "patients": [
+    {
+      "surnames": "Adf",
+      "sessionTime": 30,
+      "schooling": {
+        "institutionContactDetails": {
+          "phoneNumbers": [],
+          "emailAddresses": []
+        },
+        "schedule": {
+          "since": "",
+          "to": ""
+        },
+        "institutionName": "",
+        "turn": ""
+      },
+      "sessionValue": 350,
+      "observations": "asdfasdf",
+      "names": "Asdf",
+      "bornDate": "2001-2-12",
+      "clinicId": 1,
+      "patientId": 1,
+      "family": []
+    },
+    {
+      "patientId": 2,
+      "clinicId": 2,
+      "family": [],
+      "sessionValue": 1000,
+      "names": "Rodrigo",
+      "schooling": {
+        "institutionContactDetails": {
+          "phoneNumbers": [],
+          "emailAddresses": []
+        },
+        "institutionName": "",
+        "schedule": {
+          "to": "",
+          "since": ""
+        },
+        "turn": ""
+      },
+      "observations": "",
+      "bornDate": "2001-12-29",
+      "sessionTime": 30,
+      "surnames": "Barbieri Perez"
+    }
+  ],
+  "surname": "",
+  "name": "Lolo",
+  "sessions": [
+    {
+      "patientId": 1,
+      "sessionId": 6,
+      "sessionDate": "2023-9-1",
+      "sessionValue": 350,
+      "clinicId": 1,
+      "sessionObs": "I am a session obs2"
+    },
+    {
+      "sessionObs": "I am a session obs",
+      "sessionDate": "2023-9-1",
+      "clinicId": 1,
+      "patientId": 1,
+      "sessionValue": 350,
+      "sessionId": 7
+    },
+    {
+      "sessionId": 8,
+      "sessionDate": "2023-9-1",
+      "clinicId": 1,
+      "patientId": 1,
+      "sessionValue": 350,
+      "sessionObs": "I am a session obs"
+    },
+    {
+      "sessionValue": 350,
+      "sessionObs": "I am a session obs",
+      "clinicId": 1,
+      "patientId": 1,
+      "sessionDate": "2023-9-1",
+      "sessionId": 9
+    },
+    {
+      "sessionObs": "I am a session obs",
+      "sessionDate": "2023-9-1",
+      "sessionId": 10,
+      "sessionValue": 350,
+      "patientId": 1,
+      "clinicId": 1
+    },
+    {
+      "sessionObs": "I am a session obs1",
+      "sessionValue": 350,
+      "sessionDate": "2023-9-1",
+      "patientId": 1,
+      "sessionId": 11,
+      "clinicId": 1
+    },
+    {
+      "sessionDate": "2023-11-12",
+      "clinicId": 2,
+      "sessionId": 12,
+      "patientId": 2,
+      "sessionObs": "1",
+      "sessionValue": 1000
+    },
+    {
+      "sessionId": 13,
+      "patientId": 1,
+      "sessionValue": 350,
+      "clinicId": 1,
+      "sessionObs": "",
+      "sessionDate": "2023-11-13"
+    }
+  ],
+  "admConfig": {
+    "isActive": true
+  },
+  "clinics": [
+    {
+      "address": {
+        "number": "1234",
+        "additionalInfo": "",
+        "fullAddress": "asdf"
+      },
+      "contactDetails": [],
+      "clinicId": 1,
+      "clinicName": "asadf"
+    },
+    {
+      "clinicName": "test2",
+      "address": {
+        "fullAddress": "test",
+        "additionalInfo": "test",
+        "number": "1234"
+      },
+      "contactDetails": [
+        {
+          "contactType": "Celular",
+          "contactDetail": "0999999999",
+          "contactMethodInfo": "test"
+        },
+        {
+          "contactMethodInfo": "test",
+          "contactType": "Celular",
+          "contactDetail": "0999999999"
+        },
+        {
+          "contactMethodInfo": "test",
+          "contactType": "Celular",
+          "contactDetail": "0999999999"
+        }
+      ],
+      "clinicId": 2
+    },
+    {
+      "contactDetails": [
+        {
+          "contactType": "Celular",
+          "contactDetail": "0999999999",
+          "contactMethodInfo": "test"
+        },
+        {
+          "contactMethodInfo": "test",
+          "contactDetail": "0999999999",
+          "contactType": "Celular"
+        },
+        {
+          "contactType": "Celular",
+          "contactMethodInfo": "test",
+          "contactDetail": "099999"
+        }
+      ],
+      "clinicId": 3,
+      "address": {
+        "additionalInfo": "test",
+        "number": "1234",
+        "fullAddress": "test"
+      },
+      "clinicName": "test3"
+    },
+    {
+      "address": {
+        "fullAddress": "test",
+        "additionalInfo": "test",
+        "number": "1234"
+      },
+      "clinicId": 4,
+      "clinicName": "test4",
+      "contactDetails": [
+        {
+          "contactDetail": "0999999999",
+          "contactType": "Celular",
+          "contactMethodInfo": "test"
+        },
+        {
+          "contactMethodInfo": "test",
+          "contactDetail": "0999999999",
+          "contactType": "Celular"
+        },
+        {
+          "contactDetail": "",
+          "contactMethodInfo": "test",
+          "contactType": "Celular"
+        }
+      ]
+    },
+    {
+      "contactDetails": [],
+      "clinicId": 5,
+      "clinicName": "asdf",
+      "address": {
+        "fullAddress": "asdf",
+        "number": "1234",
+        "additionalInfo": ""
+      }
+    }
+  ]
+}

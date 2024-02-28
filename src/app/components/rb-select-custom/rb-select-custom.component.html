@@ -1,0 +1,28 @@
+
+<div *ngIf="!isNativeSelect" class="web-select-main-container f-width">
+  <mat-form-field>
+    <mat-label>{{label}}</mat-label>
+    <mat-select [disabled]="disabled" (selectionChange)="_onElementSelected($event)">
+      <mat-option
+        *ngFor="let element of elements"
+        [value]="element.value"
+      >
+        {{element.viewValue}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+
+<div *ngIf="isNativeSelect" class="native-select-main-container f-width">
+  <mat-form-field>
+    <mat-label>{{label}}</mat-label>
+    <select [disabled]="disabled" (change)="_onNativeSelectElementSelected($event)" matNativeControl>
+      <option
+        *ngFor="let element of elements"
+        [value]="element.value"
+      >
+        {{element.viewValue}}
+      </option>
+    </select>
+  </mat-form-field>
+</div>
