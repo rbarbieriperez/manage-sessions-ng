@@ -41,6 +41,5 @@ export class RbDatepickerCustomComponent {
     if (value) {
       this.dateEmiiter.emit(value)
     }
-
   }
 }

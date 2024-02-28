@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from "@angular/core";
 import { RouterOutlet } from "@angular/router";
-import 'localstorage-polyfill';
+//import 'localstorage-polyfill';
 import {AngularFirestoreModule} from "@angular/fire/compat/firestore";
 import {FirestoreSubscribeService} from "./services/firestore-subscribe.service";
 import {TUserData} from "./types/types";
@@ -19,7 +19,7 @@ export class AppComponent implements OnInit {
   constructor(private firestoreSubscribe: FirestoreSubscribeService) {
     this.subscription = firestoreSubscribe.subscribeStore().subscribe(data => {
       this.userData = data;
-      console.warn(this.userData);
+      //console.warn(this.userData);
     }, err => {
       console.error('There was an error', err);
       // IMPORTANT: Here should be an error handler in the future

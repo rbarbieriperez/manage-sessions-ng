@@ -43,8 +43,8 @@ export type TInstitutionContactDetails = {
 }
 
 export type TOption = {
-  value: number;
-  label: string;
+  value: string;
+  viewValue: string;
 }
 
 export type TSession = {

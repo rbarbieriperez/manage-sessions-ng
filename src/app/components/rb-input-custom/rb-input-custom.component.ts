@@ -37,6 +37,9 @@ export class RbInputCustomComponent {
     if (value) {
       this._currentInputValue = value;
       this.onChange.emit(value);
+    } else {
+      this._currentInputValue = '';
+      this.onChange.emit('');
     }
   }
 

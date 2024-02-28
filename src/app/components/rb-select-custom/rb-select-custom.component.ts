@@ -4,12 +4,7 @@ import {MatSelectChange, MatSelectModule} from "@angular/material/select";
 import {MatInputModule} from "@angular/material/input";
 import {FormsModule} from "@angular/forms";
 import {NgForOf, NgIf} from "@angular/common";
-
-
-type TElements = Array<{
-  value: string,
-  viewValue: string
-}>
+import {TOption} from "../../types/types";
 
 
 @Component({
@@ -26,7 +21,7 @@ export class RbSelectCustomComponent implements OnInit, OnChanges {
    * Array of elements
    * @public
    */
-  @Input() elements:TElements = [];
+  @Input() elements:TOption[] = [];
 
   /**
    * Flag to use native select

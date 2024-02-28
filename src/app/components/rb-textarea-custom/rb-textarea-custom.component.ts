@@ -40,7 +40,7 @@ export class RbTextareaCustomComponent {
     if (value) {
       this.textChange.emit(value);
     } else {
-      throw new Error('text could not be retrieved');
+      this.textChange.emit('');
     }
   }
 
