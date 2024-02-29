@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
 import {Observable, ReplaySubject, Subject} from "rxjs";
-import {TUserData} from "../types/types";
+import {TAlert, TUserData} from "../types/types";
 
 
 @Injectable({
@@ -14,6 +14,10 @@ export class CommunicationService {
    * @private
    */
   private loginSubject: Subject<void> = new Subject<void>();
+  public subscribeLoginSubject$ = this.loginSubject.asObservable();
+  public emitLoginSuccess() {
+    this.loginSubject.next();
+  }
 
   /**
    * Replay Subject to handle user data changed
@@ -21,25 +25,33 @@ export class CommunicationService {
    * @private
    */
   private userDataSubject: ReplaySubject<TUserData> = new ReplaySubject<TUserData>();
-
-  public subscribeLoginSubject$ = this.loginSubject.asObservable();
   public subscribeUserData$ = this.userDataSubject.asObservable();
-
-
-  /**
-   * Emit login success
-   * @public
-   */
-  public emitLoginSuccess() {
-    this.loginSubject.next();
-  }
-
-  /**
-   * Emit new user data when changes
-   * @param userData
-   */
   public emitNewUserData(userData: TUserData) {
     this.userDataSubject.next(userData);
   }
+
+  /**
+   * Logic to open alert with close event response
+   * @private
+   */
+  private alertSubject: Subject<TAlert> = new Subject<TAlert>();
+  private alertCloseSubject: Subject<TAlert> = new Subject<TAlert>();
+
+  public subscribeAlertData$ = this.alertSubject.asObservable();
+  public subscribeAlertClosed$ = this.alertCloseSubject.asObservable();
+  public emitAlertData(alert: TAlert) {
+    this.alertSubject.next(alert);
+  }
+
+  public emitAlertCloseEvent(alert: TAlert) {
+    this.alertCloseSubject.next(alert);
+  }
+
+
+
+
+
+
+
 
 }

@@ -1,0 +1,9 @@
+<main *ngIf="alert" class="rb-alert-custom-main-container">
+  <ngb-alert
+    [type]="alert.type"
+    (closed)="_onAlertClose()"
+    #selfClosingAlert
+  >
+    {{alert.message}}
+  </ngb-alert>
+</main>

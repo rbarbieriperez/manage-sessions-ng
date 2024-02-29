@@ -166,4 +166,13 @@ export  class AddSessionComponent implements OnDestroy {
     }
   }
 
+  protected _onSubmitButtonClick(): void {
+    this.communicationService.emitAlertData({
+      type: 'success',
+      message: 'Test',
+      clearTimeMs: 5000,
+      id: ''
+    })
+  }
+
 }

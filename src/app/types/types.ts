@@ -141,3 +141,12 @@ export type TGeneralConfig = {
   backupsLimitDay: number;
   minutesBetweenBackups: number;
 }
+
+
+
+export type TAlert = {
+  type: 'success' | 'info' | 'warning',
+  message: string,
+  id: string,
+  clearTimeMs: number
+}

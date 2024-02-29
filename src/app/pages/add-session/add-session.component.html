@@ -19,7 +19,14 @@
     >
     </rb-textarea-custom>
 
-    <button mat-raised-button [disabled]="_checkButtonDisabled()"  color="primary">Guardar</button>
+    <button
+      (click)="_onSubmitButtonClick()"
+      mat-raised-button
+      [disabled]="_checkButtonDisabled()"
+      color="primary"
+    >
+      Guardar
+    </button>
   </section>
 
 </main>

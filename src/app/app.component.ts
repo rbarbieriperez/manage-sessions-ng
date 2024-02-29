@@ -8,10 +8,15 @@ import {FirestoreBackupService} from "./services/firestore-backup.service";
 import {AppDataService} from "./services/app-data.service";
 import {FirestoreQueriesService} from "./services/firestore-queries.service";
 import {CommunicationService} from "./services/communication.service";
+import {RbAlertCustomComponent} from "./components/rb-alert-custom/rb-alert-custom.component";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, AngularFirestoreModule],
+  imports: [
+    RouterOutlet,
+    AngularFirestoreModule,
+    RbAlertCustomComponent
+  ],
   providers: [
     FirestoreSubscribeService,
     FirestoreBackupService,
