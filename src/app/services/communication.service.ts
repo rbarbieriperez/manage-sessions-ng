@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
 import {Observable, ReplaySubject, Subject} from "rxjs";
-import {TAlert, TUserData} from "../types/types";
+import {TAlert, TDialog, TUserData} from "../types/types";
 
 
 @Injectable({
@@ -45,6 +45,25 @@ export class CommunicationService {
 
   public emitAlertCloseEvent(alert: TAlert) {
     this.alertCloseSubject.next(alert);
+  }
+
+  /**
+   * Handle dialog modal behavior
+   * @private
+   */
+
+  private dialogModalSubject: Subject<TDialog> = new Subject<TDialog>();
+  private dialogModalCallbackEvent: Subject<string> = new Subject<string>();
+
+  public subscribeDialogData$ = this.dialogModalSubject.asObservable();
+  public subscribeDialogCallbackEvent$ = this.dialogModalCallbackEvent.asObservable();
+
+  public emitDialogData(data: TDialog) {
+    this.dialogModalSubject.next(data);
+  }
+
+  public emitDialogCallbackEvent(event: string) {
+    this.dialogModalCallbackEvent.next(event);
   }
 
 

@@ -167,12 +167,20 @@ export  class AddSessionComponent implements OnDestroy {
   }
 
   protected _onSubmitButtonClick(): void {
-    this.communicationService.emitAlertData({
+    /*this.communicationService.emitAlertData({
       type: 'success',
       message: 'Test',
       clearTimeMs: 5000,
       id: ''
-    })
+    })*/
+
+    this.communicationService.emitDialogData({
+      title: 'Confirmar cambios',
+      content: 'Puedes editar la sesion mas tarde',
+      size: 'sm',
+      primaryButtonLabel: 'aceptar',
+      secondaryButtonLabel: 'cancelar'
+    });
   }
 
 }

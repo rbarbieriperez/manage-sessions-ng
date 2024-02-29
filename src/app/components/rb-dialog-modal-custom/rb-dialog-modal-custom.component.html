@@ -1,0 +1,24 @@
+<main *ngIf="modalData" class="rb-dialog-modal-custom-main-container">
+
+</main>
+
+<ng-template #modal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">{{modalData?.title}}</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="_onModalClose()"></button>
+  </div>
+
+  <div class="modal-body">
+    <p>{{modalData?.content}}</p>
+  </div>
+
+  <div class="modal-footer">
+    <button mat-raised-button (click)="_onSecondaryButtonClick()" *ngIf="modalData?.secondaryButtonLabel">
+      {{modalData?.secondaryButtonLabel}}
+    </button>
+
+    <button color="primary" mat-raised-button (click)="_onPrimaryButtonClick()" *ngIf="modalData?.primaryButtonLabel">
+      {{modalData?.primaryButtonLabel}}
+    </button>
+  </div>
+</ng-template>

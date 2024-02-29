@@ -9,13 +9,15 @@ import {AppDataService} from "./services/app-data.service";
 import {FirestoreQueriesService} from "./services/firestore-queries.service";
 import {CommunicationService} from "./services/communication.service";
 import {RbAlertCustomComponent} from "./components/rb-alert-custom/rb-alert-custom.component";
+import {RbDialogModalCustomComponent} from "./components/rb-dialog-modal-custom/rb-dialog-modal-custom.component";
 
 @Component({
   selector: 'app-root',
   imports: [
     RouterOutlet,
     AngularFirestoreModule,
-    RbAlertCustomComponent
+    RbAlertCustomComponent,
+    RbDialogModalCustomComponent
   ],
   providers: [
     FirestoreSubscribeService,

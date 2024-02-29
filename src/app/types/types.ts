@@ -150,3 +150,14 @@ export type TAlert = {
   id: string,
   clearTimeMs: number
 }
+
+export type TDialog = {
+  title?: string,
+  content?: string,
+  primaryButtonLabel?: string,
+  secondaryButtonLabel?: string,
+  primaryButtonEvent?: string,
+  secondaryButtonEvent?: string,
+  modalCloseEvent?: string,
+  size: 'sm' | 'lg' | 'xl'
+}
