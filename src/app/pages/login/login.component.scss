@@ -1,0 +1,26 @@
+.main-login-container {
+  width: 100%;
+  height: 100%;
+}
+
+.login-options-container {
+  position: relative;
+  top: 40%;
+  width: 80%;
+  margin: auto;
+}
+
+.google-login-container {
+  width: 100%;
+  max-width: 320px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  padding: 1rem 2rem 1rem 1rem;
+  box-sizing: border-box;
+  align-items: center;
+  margin: auto;
+  border-radius: 25px;
+  cursor: pointer;
+}

@@ -12,6 +12,7 @@ import {getAuth, provideAuth} from "@angular/fire/auth";
 import {getFirestore, provideFirestore} from "@angular/fire/firestore";
 import {getStorage, provideStorage} from "@angular/fire/storage";
 import {getFunctions, provideFunctions} from "@angular/fire/functions";
+import {CommunicationService} from "./services/communication.service";
 
 
 export const appConfig: ApplicationConfig = {
@@ -23,11 +24,10 @@ export const appConfig: ApplicationConfig = {
     provideNativeDateAdapter(),
     importProvidersFrom([
       provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
-      provideAuth(() => getAuth()),
       provideFirestore(() => getFirestore()),
+      provideAuth(() => getAuth()),
       provideStorage(() => getStorage()),
       provideFunctions(() => getFunctions()),
-
     ]),
   ],
 };

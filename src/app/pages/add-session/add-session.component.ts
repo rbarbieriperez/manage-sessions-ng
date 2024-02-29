@@ -1,4 +1,4 @@
-import {Component} from "@angular/core";
+import {Component, OnDestroy} from "@angular/core";
 import {RbHeaderCustomComponent} from "../../components/rb-header-custom/rb-header-custom.component";
 import {RbInputCustomComponent} from "../../components/rb-input-custom/rb-input-custom.component";
 import {RbSelectCustomComponent} from "../../components/rb-select-custom/rb-select-custom.component";
@@ -7,6 +7,9 @@ import {RbTextareaCustomComponent} from "../../components/rb-textarea-custom/rb-
 import {MatButton} from "@angular/material/button";
 import {FirestoreSubscribeService} from "../../services/firestore-subscribe.service";
 import {TClinic, TOption, TPatient, TSession, TUserData} from "../../types/types";
+import {AppDataService} from "../../services/app-data.service";
+import {CommunicationService} from "../../services/communication.service";
+import {Subscription} from "rxjs";
 
 const initialSessionData: TSession = {
   sessionId: 0,
@@ -34,23 +37,32 @@ const initialSessionData: TSession = {
     MatButton
   ]
 })
-export  class AddSessionComponent {
+export  class AddSessionComponent implements OnDestroy {
+  private userDataSubscription: Subscription;
+
   private userData: TUserData | undefined;
   private newSessionData: TSession = initialSessionData;
 
   protected clinicsOptionsArr: TOption[] = [];
   protected patientsOptionsArr: TOption[] = [];
-  constructor(firestoreSubscribe: FirestoreSubscribeService) {
-    firestoreSubscribe.subscribeStore().subscribe(data => {
-      console.log('hubo cambios - add session');
-      this.userData = data;
+  constructor(
+    private appData: AppDataService,
+    private communicationService: CommunicationService
+  ) {
+    this.userDataSubscription = this.communicationService.subscribeUserData$
+      .subscribe((data: TUserData) => {
+        console.warn('User data has changed at add-session.component.ts');
+        this.userData = data;
 
-      if (this.userData?.clinics && this.userData.patients) {
-        this.clinicsOptionsArr = this._generateClinicsOptionsArray(this.userData?.clinics);
-        this.patientsOptionsArr = this._generatePatientsOptionsArray(this.userData?.patients);
-      }
+        if (this.userData?.clinics && this.userData.patients) {
+          this.clinicsOptionsArr = this._generateClinicsOptionsArray(this.userData?.clinics);
+          this.patientsOptionsArr = this._generatePatientsOptionsArray(this.userData?.patients);
+        }
+      });
+  }
 
-    });
+  ngOnDestroy() {
+    this.userDataSubscription.unsubscribe();
   }
 
   /**

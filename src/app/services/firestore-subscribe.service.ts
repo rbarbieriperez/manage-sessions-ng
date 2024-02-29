@@ -10,7 +10,7 @@ import {TUserData} from "../types/types";
 })
 
 export  class FirestoreSubscribeService {
-  firestore = inject(Firestore)
+  firestore = inject(Firestore);
   userData:TUserData | undefined;
   constructor() {
     this._printEnv();
@@ -24,9 +24,7 @@ export  class FirestoreSubscribeService {
     }
   }
 
-  public subscribeStore(): Observable<TUserData | undefined> {
-    //const userId = localStorage.getItem('uid');
-    const userId = 'thelolomc@gmail.com';
+  public subscribeStore(userId: string): Observable<TUserData | undefined> {
 
     if (!userId) {
       return throwError(() => 'Missing user id');
