@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {Observable, ReplaySubject, Subject} from "rxjs";
+import {ReplaySubject, Subject} from "rxjs";
 import {TAlert, TDialog, TUserData} from "../types/types";
 
 

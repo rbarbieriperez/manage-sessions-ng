@@ -32,6 +32,7 @@ export class AppComponent implements OnInit, OnDestroy {
   userData: TUserData | undefined;
   userDataSubscription: Subscription | undefined;
   loginSubscription: Subscription | undefined;
+  private _backupServerInitialized: boolean;
   constructor(
     private firestoreSubscribe: FirestoreSubscribeService,
     private backupService: FirestoreBackupService,
@@ -40,6 +41,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private communicationService: CommunicationService,
     private router: Router
   ) {
+    this._backupServerInitialized = false;
   }
 
   private async _handleGetGeneralConfig() {
@@ -73,10 +75,15 @@ export class AppComponent implements OnInit, OnDestroy {
 
 
           if (this.appDataService.generalConfig && this.userData) {
-            this.backupService.initBackupService(this.appDataService.uid, this.appDataService.generalConfig, this.userData);
             this.communicationService.emitNewUserData(this.userData);
-            console.warn('Add subscribers process done... navigating');
-            this.router.navigate(['add-session']);
+
+            if (!this._backupServerInitialized) {
+              this._backupServerInitialized = true;
+              this.backupService.initBackupService(this.appDataService.uid, this.appDataService.generalConfig, this.userData);
+              console.warn('Add subscribers process done... navigating');
+              this.router.navigate(['add-session']);
+            }
+
           }
         });
 

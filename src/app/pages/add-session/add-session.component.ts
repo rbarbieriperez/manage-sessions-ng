@@ -10,6 +10,7 @@ import {TClinic, TOption, TPatient, TSession, TUserData} from "../../types/types
 import {AppDataService} from "../../services/app-data.service";
 import {CommunicationService} from "../../services/communication.service";
 import {Subscription} from "rxjs";
+import {FirestoreQueriesService} from "../../services/firestore-queries.service";
 
 const initialSessionData: TSession = {
   sessionId: 0,
@@ -47,7 +48,8 @@ export  class AddSessionComponent implements OnDestroy {
   protected patientsOptionsArr: TOption[] = [];
   constructor(
     private appData: AppDataService,
-    private communicationService: CommunicationService
+    private communicationService: CommunicationService,
+    private firestoreQueries: FirestoreQueriesService
   ) {
     this.userDataSubscription = this.communicationService.subscribeUserData$
       .subscribe((data: TUserData) => {
@@ -85,7 +87,8 @@ export  class AddSessionComponent implements OnDestroy {
   protected _onSelectedPatientChange(patientId: string) {
     this.newSessionData = {
       ...this.newSessionData,
-      patientId: Number(patientId)
+      patientId: Number(patientId),
+      sessionValue: this.userData?.patients.find((patient: TPatient) => patient.patientId === Number(patientId))?.sessionValue || 0
     }
   }
 
@@ -98,7 +101,7 @@ export  class AddSessionComponent implements OnDestroy {
     const _date = new Date(date);
     this.newSessionData = {
       ...this.newSessionData,
-      sessionDate: `${_date.getFullYear()}-${_date.getMonth()}-${_date.getDate()}`
+      sessionDate: `${_date.getFullYear()}-${_date.getMonth() + 1}-${_date.getDate()}`
     }
   }
 
@@ -166,21 +169,57 @@ export  class AddSessionComponent implements OnDestroy {
     }
   }
 
-  protected _onSubmitButtonClick(): void {
-    /*this.communicationService.emitAlertData({
-      type: 'success',
-      message: 'Test',
-      clearTimeMs: 5000,
-      id: ''
-    })*/
+  private _createUserDataObject(): TUserData | undefined {
+    if (this.userData) {
+      return {
+        ...this.userData,
+        sessions: [
+          ...this.userData?.sessions || [],
+          {
+            ...this.newSessionData,
+            sessionId: this._getNewSessionId()
+          }
+        ]
+      }
+    }
 
-    this.communicationService.emitDialogData({
-      title: 'Confirmar cambios',
-      content: 'Puedes editar la sesion mas tarde',
-      size: 'sm',
-      primaryButtonLabel: 'aceptar',
-      secondaryButtonLabel: 'cancelar'
-    });
+    return undefined;
   }
+  protected _onSubmitButtonClick(): void {
+    const _newUserData = this._createUserDataObject();
+    console.warn('User data to be submitted:', _newUserData);
+    if (_newUserData) {
+      this.firestoreQueries.saveData(this.appData.uid, _newUserData)
+        .then(() => {
+          this.communicationService.emitAlertData({
+            id: '',
+            type: 'success',
+            message: 'Sesión agregada con éxito!',
+            clearTimeMs: 3000
+          })
+        })
+        .catch(() => {
+          this.communicationService.emitAlertData({
+            id: '',
+            type: 'error',
+            message: 'Error al agregar la sesión',
+            clearTimeMs: 3000
+          })
+        })
+        .finally(() => this._reset());
+    }
+  }
+
+  private _reset() {
+
+  }
+  private _getNewSessionId(): number {
+    if (this.userData?.sessions.length) {
+      return Math.max(...this.userData.sessions.map(o => o.sessionId)) + 1;
+    } else {
+      return 1;
+    }
+  }
+
 
 }

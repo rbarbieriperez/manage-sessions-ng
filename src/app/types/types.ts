@@ -145,7 +145,7 @@ export type TGeneralConfig = {
 
 
 export type TAlert = {
-  type: 'success' | 'info' | 'warning',
+  type: 'success' | 'info' | 'warning' | 'error',
   message: string,
   id: string,
   clearTimeMs: number
