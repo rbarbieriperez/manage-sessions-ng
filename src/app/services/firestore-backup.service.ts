@@ -20,9 +20,7 @@ export class FirestoreBackupService {
    */
   public async initBackupService(uid: string, generalConfig: TGeneralConfig, userData: TUserData) {
     if (uid && generalConfig) {
-      console.log('Starting backup service', uid, generalConfig);
       const res = await this._getTodayBackup(uid, this._getTodayDateFormatted());
-      console.log('Get today backup', res);
       if (res === 'no-backups') {
         await this._requestNewBackupCreation(uid, [], userData);
       } else {
@@ -134,7 +132,6 @@ export class FirestoreBackupService {
    * @private
    */
   private async _getTodayBackup(uid: string, date: string) {
-    console.log('Starting getting today backup', uid, date);
     const _collection = collection(this.firestore, 'manage-sessions', uid, 'backups');
     if (_collection) {
       const _query = query(_collection, where('creationDate', '==', date));

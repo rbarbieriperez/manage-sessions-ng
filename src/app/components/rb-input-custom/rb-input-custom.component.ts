@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from "@angular/core";
+import {Component, ElementRef, EventEmitter, Input, Output, ViewChild} from "@angular/core";
 import {MatFormField, MatInputModule} from "@angular/material/input";
 import {MatIconModule} from "@angular/material/icon";
 
@@ -20,6 +20,8 @@ export class RbInputCustomComponent {
   @Input() id: string = '';
 
   @Output() onChange = new EventEmitter<string>();
+
+  @ViewChild('input') inputElement: ElementRef | undefined;
 
   /**
    * Current input value stored
@@ -45,5 +47,15 @@ export class RbInputCustomComponent {
 
   protected _onClearInput() {
     this._currentInputValue = '';
+  }
+
+  /**
+   * Clear input value
+   * @public
+   */
+  public clear() {
+    if (this.inputElement) {
+      this.inputElement.nativeElement.value = '';
+    }
   }
 }

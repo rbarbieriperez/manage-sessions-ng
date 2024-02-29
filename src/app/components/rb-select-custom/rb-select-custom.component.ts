@@ -1,4 +1,14 @@
-import {Component, EventEmitter, Input, Output, OnInit, OnChanges, SimpleChanges} from "@angular/core";
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  OnInit,
+  OnChanges,
+  SimpleChanges,
+  ViewChild,
+  ElementRef
+} from "@angular/core";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatSelectChange, MatSelectModule} from "@angular/material/select";
 import {MatInputModule} from "@angular/material/input";
@@ -44,6 +54,8 @@ export class RbSelectCustomComponent implements OnInit, OnChanges {
   @Output() elementSelected = new EventEmitter<string>();
 
 
+  protected _selectValue: string = '';
+
   ngOnInit() {
 
     if (!this.elements.length) {
@@ -80,6 +92,14 @@ export class RbSelectCustomComponent implements OnInit, OnChanges {
     } else {
       throw new Error('Selected element value could not be retrieved');
     }
+  }
+
+  /**
+   * Clear select value
+   * @public
+   */
+  public clear() {
+    this._selectValue = '';
   }
 
 }

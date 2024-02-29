@@ -1,7 +1,7 @@
 <div class="rb-datepicker-custom-main-container">
   <mat-form-field>
     <mat-label>{{label}}</mat-label>
-    <input readonly (dateChange)="_onDateSelected($event)" matInput [matDatepicker]="picker">
+    <input [(ngModel)]="_pickerValue" #input readonly (dateChange)="_onDateSelected($event)" matInput [matDatepicker]="picker">
     <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker disabled="false" #picker></mat-datepicker>
   </mat-form-field>

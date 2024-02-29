@@ -35,10 +35,10 @@ export  class FirestoreSubscribeService {
               this.userData = doc.data() as TUserData;
               return observable.next(doc.data() as TUserData)
             } else {
-              return throwError(() => 'Missing data');
+              return observable.error('Missing data');
             }
           }, () => {
-            return throwError(() => 'Error retrieving data')
+            return observable.error('Error retrieving data')
           });
 
 

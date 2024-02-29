@@ -2,7 +2,7 @@
 <div *ngIf="!isNativeSelect" class="web-select-main-container f-width">
   <mat-form-field>
     <mat-label>{{label}}</mat-label>
-    <mat-select [disabled]="disabled" (selectionChange)="_onElementSelected($event)">
+    <mat-select [(ngModel)]="_selectValue"  [disabled]="disabled" (selectionChange)="_onElementSelected($event)">
       <mat-option
         *ngFor="let element of elements"
         [value]="element.value"

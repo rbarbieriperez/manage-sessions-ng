@@ -3,6 +3,7 @@ import {NgOptimizedImage} from "@angular/common";
 import {CommunicationService} from "../../services/communication.service";
 import {FirestoreLoginService} from "../../services/firestore-login.service";
 import {AppDataService} from "../../services/app-data.service";
+import {ErrorHandlerService} from "../../services/error-handler.service";
 
 
 @Component({
@@ -20,7 +21,8 @@ export class LoginComponent {
   constructor(
     private communicationService: CommunicationService,
     private loginService: FirestoreLoginService,
-    private appDataService: AppDataService
+    private appDataService: AppDataService,
+    private errorHandlerService: ErrorHandlerService
   ) {
   }
 
@@ -31,10 +33,13 @@ export class LoginComponent {
       const { displayName, email } = res.user;
 
       if (displayName && email) {
-        this.appDataService.uid = email;
-        this.appDataService.userName = displayName;
+        this.appDataService.setUserId(email);
+        this.appDataService.setUserName(displayName);
         this.communicationService.emitLoginSuccess();
+        return;
       }
     }
+
+    this.errorHandlerService.handleError('close-session');
   }
 }

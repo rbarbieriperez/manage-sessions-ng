@@ -1,4 +1,4 @@
-import {Injectable} from "@angular/core";
+import {afterNextRender, Injectable} from "@angular/core";
 
 
 @Injectable({
@@ -11,8 +11,28 @@ export class AppDataService {
   generalConfig: any;
 
   constructor() {
-    this.uid = 'thelolomc@gmail.com';
-    this.userName = 'Rodrigo Barbieri';
+    this.uid = '';
+    this.userName = '';
     this.generalConfig = {};
+  }
+
+  getUserId() {
+    return window.localStorage?.getItem('uid') || '';
+  }
+
+  setUserId(uid: string) {
+    window.localStorage?.setItem('uid', uid);
+  }
+
+  getUserName() {
+    return window.localStorage?.getItem('userName') || '';
+  }
+
+  setUserName(userName: string) {
+    window.localStorage?.setItem('userName', userName);
+  }
+
+  clearLocalStorage() {
+    window.localStorage.clear();
   }
 }

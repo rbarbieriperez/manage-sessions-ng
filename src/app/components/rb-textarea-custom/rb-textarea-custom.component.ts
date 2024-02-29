@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from "@angular/core";
+import {Component, ElementRef, EventEmitter, Input, Output, ViewChild} from "@angular/core";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {NgIf} from "@angular/common";
@@ -35,6 +35,8 @@ export class RbTextareaCustomComponent {
 
 
   @Output() textChange = new EventEmitter<string>();
+
+  @ViewChild('textarea') textarea: ElementRef<HTMLTextAreaElement> | undefined;
   protected _onChange(event: Event) {
     const { value } = event.target as HTMLInputElement;
     if (value) {
@@ -46,5 +48,15 @@ export class RbTextareaCustomComponent {
 
   protected _onHintClicked() {
     this.onHintClick.emit();
+  }
+
+  /**
+   * Clear textarea value
+   * @public
+   */
+  public clear() {
+    if (this.textarea) {
+      this.textarea.nativeElement.value = '';
+    }
   }
 }

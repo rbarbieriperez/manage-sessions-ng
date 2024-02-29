@@ -1,4 +1,4 @@
-import {Component, OnDestroy} from "@angular/core";
+import {Component, ElementRef, OnDestroy, ViewChild} from "@angular/core";
 import {RbHeaderCustomComponent} from "../../components/rb-header-custom/rb-header-custom.component";
 import {RbInputCustomComponent} from "../../components/rb-input-custom/rb-input-custom.component";
 import {RbSelectCustomComponent} from "../../components/rb-select-custom/rb-select-custom.component";
@@ -46,6 +46,16 @@ export  class AddSessionComponent implements OnDestroy {
 
   protected clinicsOptionsArr: TOption[] = [];
   protected patientsOptionsArr: TOption[] = [];
+
+  protected buttonDisabled: boolean = true;
+
+
+  @ViewChild('datepickerCustomComponent') datepickerElement: RbDatepickerCustomComponent | undefined;
+  @ViewChild('textareaCustomComponent') textareaElement: RbTextareaCustomComponent | undefined;
+  @ViewChild('selectClinicsCustomComponent') selectClinicsElement: RbSelectCustomComponent | undefined;
+  @ViewChild('selectPatientsCustomComponent') selectPatientsElement: RbSelectCustomComponent | undefined;
+
+
   constructor(
     private appData: AppDataService,
     private communicationService: CommunicationService,
@@ -53,12 +63,14 @@ export  class AddSessionComponent implements OnDestroy {
   ) {
     this.userDataSubscription = this.communicationService.subscribeUserData$
       .subscribe((data: TUserData) => {
-        console.warn('User data has changed at add-session.component.ts');
+        console.warn('User data has changed at add-session.component.ts', data);
         this.userData = data;
 
         if (this.userData?.clinics && this.userData.patients) {
           this.clinicsOptionsArr = this._generateClinicsOptionsArray(this.userData?.clinics);
           this.patientsOptionsArr = this._generatePatientsOptionsArray(this.userData?.patients);
+          this.newSessionData = initialSessionData;
+          this._checkButtonDisabled();
         }
       });
   }
@@ -77,6 +89,7 @@ export  class AddSessionComponent implements OnDestroy {
       ...this.newSessionData,
       clinicId: Number(clinicId)
     }
+    this._checkButtonDisabled();
   }
 
   /**
@@ -90,6 +103,7 @@ export  class AddSessionComponent implements OnDestroy {
       patientId: Number(patientId),
       sessionValue: this.userData?.patients.find((patient: TPatient) => patient.patientId === Number(patientId))?.sessionValue || 0
     }
+    this._checkButtonDisabled();
   }
 
   /**
@@ -103,6 +117,7 @@ export  class AddSessionComponent implements OnDestroy {
       ...this.newSessionData,
       sessionDate: `${_date.getFullYear()}-${_date.getMonth() + 1}-${_date.getDate()}`
     }
+    this._checkButtonDisabled();
   }
 
   /**
@@ -115,6 +130,7 @@ export  class AddSessionComponent implements OnDestroy {
       ...this.newSessionData,
       sessionObs: obs
     }
+    this._checkButtonDisabled();
   }
 
   /**
@@ -157,19 +173,23 @@ export  class AddSessionComponent implements OnDestroy {
    * Method to check if submit button should be disabled
    * @protected
    */
-  protected _checkButtonDisabled(): Boolean {
+  protected _checkButtonDisabled(): void {
     if (
       this.newSessionData.sessionDate === '' ||
       this.newSessionData.clinicId === 0 ||
       this.newSessionData.patientId === 0
     ) {
-      return true;
+      this.buttonDisabled = true;
     } else {
-      return false;
+      this.buttonDisabled = false;
     }
   }
 
-  private _createUserDataObject(): TUserData | undefined {
+  /**
+   * Updates user data object with new session
+   * @private
+   */
+  private _updateUserDataObject(): TUserData | undefined {
     if (this.userData) {
       return {
         ...this.userData,
@@ -185,11 +205,17 @@ export  class AddSessionComponent implements OnDestroy {
 
     return undefined;
   }
+
+  /**
+   * Handles submit button click by update user data with new session
+   * and push to the store
+   * @protected
+   */
   protected _onSubmitButtonClick(): void {
-    const _newUserData = this._createUserDataObject();
+    const _newUserData = this._updateUserDataObject();
     console.warn('User data to be submitted:', _newUserData);
     if (_newUserData) {
-      this.firestoreQueries.saveData(this.appData.uid, _newUserData)
+      this.firestoreQueries.saveData(this.appData.getUserId(), _newUserData)
         .then(() => {
           this.communicationService.emitAlertData({
             id: '',
@@ -201,18 +227,32 @@ export  class AddSessionComponent implements OnDestroy {
         .catch(() => {
           this.communicationService.emitAlertData({
             id: '',
-            type: 'error',
+            type: 'danger',
             message: 'Error al agregar la sesión',
             clearTimeMs: 3000
           })
         })
-        .finally(() => this._reset());
+        .finally(() => this._clearElements());
     }
   }
 
-  private _reset() {
-
+  /**
+   * Clear all form elements
+   * @private
+   */
+  private _clearElements() {
+    if (this.datepickerElement && this.selectClinicsElement && this.selectPatientsElement && this.textareaElement) {
+      this.datepickerElement.clear();
+      this.selectPatientsElement.clear();
+      this.selectClinicsElement.clear();
+      this.textareaElement.clear();
+    }
   }
+
+  /**
+   * Method to generate new session id
+   * @private
+   */
   private _getNewSessionId(): number {
     if (this.userData?.sessions.length) {
       return Math.max(...this.userData.sessions.map(o => o.sessionId)) + 1;

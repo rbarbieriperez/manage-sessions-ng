@@ -1,6 +1,11 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
+  "cli": {
+    "cache": {
+      "enabled": false
+    }
+  },
   "newProjectRoot": "projects",
   "projects": {
     "manage-sessions": {
@@ -42,6 +47,7 @@
           },
           "configurations": {
             "production": {
+              "ssr": false,
               "budgets": [
                 {
                   "type": "initial",
@@ -60,6 +66,7 @@
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true,
+              "ssr": false,
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
