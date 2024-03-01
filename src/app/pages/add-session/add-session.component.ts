@@ -242,11 +242,13 @@ export  class AddSessionComponent implements OnDestroy {
    * @protected
    */
   protected _onSubmitButtonClick(): void {
+    this.communicationService.openSpinner();
     const _newUserData = this._updateUserDataObject();
     console.warn('User data to be submitted:', _newUserData);
     if (_newUserData) {
       this.firestoreQueries.saveData(this.appData.getUserId(), _newUserData)
         .then(() => {
+          this.communicationService.closeSpinner();
           this.communicationService.emitAlertData({
             id: '',
             type: 'success',
@@ -255,6 +257,7 @@ export  class AddSessionComponent implements OnDestroy {
           })
         })
         .catch(() => {
+          this.communicationService.closeSpinner();
           this.communicationService.emitAlertData({
             id: '',
             type: 'danger',
