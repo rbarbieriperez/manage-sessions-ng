@@ -14,6 +14,7 @@
       [rows]="10"
       [maxLength]="500"
       [minLength]="0"
+      (onHintClick)="_handleOpenPatientsWithSessionsRegisteredTodayModal()"
       label="Observaciones de la sesion"
       hintLabel="Ver pacientes con sesiones registradas el dia de hoy"
       hintIcon="open_in_new"
@@ -31,4 +32,24 @@
     </button>
   </section>
 
+
+  <ng-template #registeredPatientsModal let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">Pacientes con sesiones registradas el dia de hoy (Total: {{patientsWithSessionsRegisteredToday.length}})</h4>
+    </div>
+
+    <div class="modal-body">
+      <ul *ngIf="patientsWithSessionsRegisteredToday.length">
+        <li *ngFor="let item of patientsWithSessionsRegisteredToday">{{item}}</li>
+      </ul>
+
+      <span *ngIf="!patientsWithSessionsRegisteredToday.length">No hay pacientes con sesiones registradas el dia de hoy</span>
+    </div>
+
+    <div class="modal-footer">
+      <button mat-raised-button (click)="modalService?.dismissAll()">
+        Cerrar
+      </button>
+    </div>
+  </ng-template>
 </main>

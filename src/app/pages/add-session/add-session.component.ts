@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnDestroy, ViewChild} from "@angular/core";
+import {Component, inject, OnDestroy, ViewChild} from "@angular/core";
 import {RbHeaderCustomComponent} from "../../components/rb-header-custom/rb-header-custom.component";
 import {RbInputCustomComponent} from "../../components/rb-input-custom/rb-input-custom.component";
 import {RbSelectCustomComponent} from "../../components/rb-select-custom/rb-select-custom.component";
@@ -11,6 +11,9 @@ import {AppDataService} from "../../services/app-data.service";
 import {CommunicationService} from "../../services/communication.service";
 import {Subscription} from "rxjs";
 import {FirestoreQueriesService} from "../../services/firestore-queries.service";
+import {NgForOf, NgIf} from "@angular/common";
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import dayjs from "dayjs";
 
 const initialSessionData: TSession = {
   sessionId: 0,
@@ -35,10 +38,13 @@ const initialSessionData: TSession = {
     RbSelectCustomComponent,
     RbDatepickerCustomComponent,
     RbTextareaCustomComponent,
-    MatButton
+    MatButton,
+    NgForOf,
+    NgIf,
   ]
 })
 export  class AddSessionComponent implements OnDestroy {
+  protected modalService = inject(NgbModal);
   private userDataSubscription: Subscription;
 
   private userData: TUserData | undefined;
@@ -49,11 +55,14 @@ export  class AddSessionComponent implements OnDestroy {
 
   protected buttonDisabled: boolean = true;
 
+  protected patientsWithSessionsRegisteredToday: string[] = [];
+
 
   @ViewChild('datepickerCustomComponent') datepickerElement: RbDatepickerCustomComponent | undefined;
   @ViewChild('textareaCustomComponent') textareaElement: RbTextareaCustomComponent | undefined;
   @ViewChild('selectClinicsCustomComponent') selectClinicsElement: RbSelectCustomComponent | undefined;
   @ViewChild('selectPatientsCustomComponent') selectPatientsElement: RbSelectCustomComponent | undefined;
+  @ViewChild('registeredPatientsModal', { static: true }) registeredPatientsModalElement: NgbModal | undefined = undefined;
 
 
   constructor(
@@ -71,12 +80,34 @@ export  class AddSessionComponent implements OnDestroy {
           this.patientsOptionsArr = this._generatePatientsOptionsArray(this.userData?.patients);
           this.newSessionData = initialSessionData;
           this._checkButtonDisabled();
+          this.patientsWithSessionsRegisteredToday = this._getPatientsWithSessionsRegisteredToday();
         }
       });
   }
 
   ngOnDestroy() {
     this.userDataSubscription.unsubscribe();
+  }
+
+  private _getPatientsWithSessionsRegisteredToday(): string[] {
+    const today = dayjs();
+    const todayString = today.format('YYYY-M-D');
+
+    const patientsIdWithSessions = new Set(this.userData?.sessions.reduce((acc: number[], curr: TSession) => {
+      if (curr.sessionDate === todayString) {
+        acc.push(curr.patientId);
+      }
+      return acc;
+    }, []));
+
+    return Array.from(patientsIdWithSessions).map((id: number) => {
+      const patient = this.userData?.patients.find((patient: TPatient) => patient.patientId === id);
+      const clinic = this.userData?.clinics.find((clinic: TClinic) => clinic.clinicId === patient?.clinicId);
+
+      return `${patient?.names} de ${clinic?.clinicName}`;
+    });
+
+
   }
 
   /**
@@ -261,5 +292,10 @@ export  class AddSessionComponent implements OnDestroy {
     }
   }
 
+  protected _handleOpenPatientsWithSessionsRegisteredTodayModal() {
+    if (this.registeredPatientsModalElement && this.modalService) {
+      this.modalService.open(this.registeredPatientsModalElement, { size: 'lg', centered: true });
+    }
+  }
 
 }
