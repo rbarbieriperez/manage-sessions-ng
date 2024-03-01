@@ -27,6 +27,7 @@ export class LoginComponent {
   }
 
   protected async _loginWithGmailClick() {
+    this.communicationService.openSpinner();
     const res = await  this.loginService.gmailAuth();
 
     if (res && res.user) {

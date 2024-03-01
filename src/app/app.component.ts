@@ -11,6 +11,7 @@ import {CommunicationService} from "./services/communication.service";
 import {RbAlertCustomComponent} from "./components/rb-alert-custom/rb-alert-custom.component";
 import {RbDialogModalCustomComponent} from "./components/rb-dialog-modal-custom/rb-dialog-modal-custom.component";
 import {ErrorHandlerService} from "./services/error-handler.service";
+import {RbSpinnerCustomComponent} from "./components/rb-spinner-custom/rb-spinner-custom.component";
 
 @Component({
   selector: 'app-root',
@@ -18,7 +19,8 @@ import {ErrorHandlerService} from "./services/error-handler.service";
     RouterOutlet,
     AngularFirestoreModule,
     RbAlertCustomComponent,
-    RbDialogModalCustomComponent
+    RbDialogModalCustomComponent,
+    RbSpinnerCustomComponent
   ],
   providers: [
     FirestoreSubscribeService,
@@ -88,6 +90,7 @@ export class AppComponent implements OnInit, OnDestroy {
                 this.backupService.initBackupService(this.appDataService.getUserId(), this.appDataService.generalConfig, this.userData);
                 console.warn('Add subscribers process done... navigating');
                 this.router.navigate(['add-session']);
+                this.communicationService.closeSpinner();
               }
 
             }
@@ -141,7 +144,7 @@ export class AppComponent implements OnInit, OnDestroy {
    */
   ngOnInit() {
     console.log(this.appDataService.getUserId(), this.appDataService.generalConfig, this.appDataService.getUserName(), this.userData);
-
+    this.communicationService.openSpinner();
 
     if (this.appDataService.getUserId()) {
       console.warn('User is already logged, adding subscribers');

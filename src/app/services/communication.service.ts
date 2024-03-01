@@ -67,6 +67,16 @@ export class CommunicationService {
   }
 
 
+  private spinnerSubject: Subject<'open' | 'close'> = new Subject<'open' | 'close'>();
+  public subscribeOpenSpinner$ = this.spinnerSubject.asObservable();
+
+  public openSpinner() {
+    this.spinnerSubject.next('open');
+  }
+
+  public closeSpinner() {
+    this.spinnerSubject.next('close');
+  }
 
 
 

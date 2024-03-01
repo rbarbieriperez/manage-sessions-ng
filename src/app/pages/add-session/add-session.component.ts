@@ -74,7 +74,6 @@ export  class AddSessionComponent implements OnDestroy {
       .subscribe((data: TUserData) => {
         console.warn('User data has changed at add-session.component.ts', data);
         this.userData = data;
-
         if (this.userData?.clinics && this.userData.patients) {
           this.clinicsOptionsArr = this._generateClinicsOptionsArray(this.userData?.clinics);
           this.patientsOptionsArr = this._generatePatientsOptionsArray(this.userData?.patients);
