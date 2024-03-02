@@ -8,6 +8,7 @@ import {TAlert, TDialog, TUserData} from "../types/types";
 })
 
 export class CommunicationService {
+
   /**
    * Subject to handle login subscription
    * Notifies when user has logged into

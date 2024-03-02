@@ -1,4 +1,5 @@
 import {afterNextRender, Injectable} from "@angular/core";
+import {TGeneralConfig} from "../types/types";
 
 
 @Injectable({
@@ -17,22 +18,22 @@ export class AppDataService {
   }
 
   getUserId() {
-    return window.localStorage?.getItem('uid') || '';
+    return localStorage.getItem('uid') || '';
   }
 
   setUserId(uid: string) {
-    window.localStorage?.setItem('uid', uid);
+    localStorage?.setItem('uid', uid);
   }
 
   getUserName() {
-    return window.localStorage?.getItem('userName') || '';
+    return localStorage?.getItem('userName') || '';
   }
 
   setUserName(userName: string) {
-    window.localStorage?.setItem('userName', userName);
+    localStorage?.setItem('userName', userName);
   }
 
   clearLocalStorage() {
-    window.localStorage.clear();
+    localStorage.clear();
   }
 }

@@ -2,7 +2,6 @@ import {inject, Injectable} from "@angular/core";
 import {addDoc, collection, Firestore, getDoc, getDocs, query, where} from "@angular/fire/firestore";
 import {TBackup, TGeneralConfig, TUserData} from "../types/types";
 import dayjs from "dayjs";
-import {Console} from "inspector";
 
 
 @Injectable({

@@ -13,7 +13,7 @@ import {ErrorHandlerService} from "../../services/error-handler.service";
   imports: [
     NgOptimizedImage,
   ],
-  providers: [ FirestoreLoginService ],
+  providers: [ ],
   selector: 'rb-login-component'
 })
 
@@ -28,8 +28,8 @@ export class LoginComponent {
 
   protected async _loginWithGmailClick() {
     this.communicationService.openSpinner();
-    const res = await  this.loginService.gmailAuth();
-
+    const res = await this.loginService.gmailAuth();
+    console.log(res);
     if (res && res.user) {
       const { displayName, email } = res.user;
 

@@ -1,0 +1,4 @@
+{
+  "backupsLimitDay": 3,
+  "minutesBetweenBackups": 700
+}

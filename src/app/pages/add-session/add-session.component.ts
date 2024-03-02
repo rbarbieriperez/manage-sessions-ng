@@ -29,9 +29,7 @@ const initialSessionData: TSession = {
   templateUrl: './add-session.component.html',
   styleUrl: './add-session.component.scss',
   standalone: true,
-  providers: [
-    FirestoreSubscribeService
-  ],
+  providers: [],
   imports: [
     RbHeaderCustomComponent,
     RbInputCustomComponent,

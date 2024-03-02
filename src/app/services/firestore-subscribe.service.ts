@@ -25,25 +25,22 @@ export  class FirestoreSubscribeService {
   }
 
   public subscribeStore(userId: string): Observable<TUserData | undefined> {
-
-    if (!userId) {
-      return throwError(() => 'Missing user id');
-    } else {
-        return new Observable<TUserData>((observable) => {
-          return onSnapshot(doc(this.firestore, 'manage-sessions', userId), (doc) => {
-            if (doc.exists()) {
-              this.userData = doc.data() as TUserData;
-              return observable.next(doc.data() as TUserData)
-            } else {
-              return observable.error('Missing data');
-            }
-          }, () => {
-            return observable.error('Error retrieving data')
-          });
-
-
+    return new Observable<TUserData>((observable) => {
+      if (!userId) {
+        return observable.error('missing-user-id');
+      } else {
+        return onSnapshot(doc(this.firestore, 'manage-sessions', userId), (doc) => {
+          if (doc.exists()) {
+            this.userData = doc.data() as TUserData;
+            return observable.next(doc.data() as TUserData)
+          } else {
+            return observable.error('missing-data');
+          }
+        }, () => {
+          return observable.error('Error retrieving data')
         });
-    }
+      }
+    });
   }
 
 }

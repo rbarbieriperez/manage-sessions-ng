@@ -22,13 +22,7 @@ import {RbSpinnerCustomComponent} from "./components/rb-spinner-custom/rb-spinne
     RbDialogModalCustomComponent,
     RbSpinnerCustomComponent
   ],
-  providers: [
-    FirestoreSubscribeService,
-    FirestoreBackupService,
-    AppDataService,
-    FirestoreQueriesService,
-    ErrorHandlerService
-  ],
+  providers: [],
   standalone: true,
   templateUrl: './app.component.html'
 })
@@ -37,6 +31,7 @@ export class AppComponent implements OnInit, OnDestroy {
   userDataSubscription: Subscription | undefined;
   loginSubscription: Subscription | undefined;
   private _backupServerInitialized: boolean;
+  private _isNewUser:boolean = false;
   constructor(
     private firestoreSubscribe: FirestoreSubscribeService,
     private backupService: FirestoreBackupService,
@@ -51,7 +46,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
   private async _handleGetGeneralConfig() {
     const res = await this.firestoreQueries.getAppConfig();
-
     if (!res) {
       return  false;
     } else {
@@ -66,9 +60,9 @@ export class AppComponent implements OnInit, OnDestroy {
    */
   private async _addSubscribers() {
     try {
-
       if (!Object.values(this.appDataService.generalConfig).length) {
         const generalConfigRes = await this._handleGetGeneralConfig();
+        console.log(generalConfigRes);
         if (generalConfigRes) {
           this.appDataService.generalConfig = generalConfigRes;
         } else {
@@ -80,8 +74,6 @@ export class AppComponent implements OnInit, OnDestroy {
         .subscribe({
           next: data => {
             this.userData = data;
-
-
             if (this.appDataService.generalConfig && this.userData) {
               this.communicationService.emitNewUserData(this.userData);
 
@@ -105,14 +97,17 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   private _handleSubscriptionErrors(err: string) {
-    if (err = 'missing-data') {
+    console.log('vamos por error', err);
+    if (err === 'missing-data' && !this._isNewUser) {
       this._handleIsNewUser();
     }
+
+    return;
   }
 
   private _createEmptyUserDataObject(): TUserData {
     return {
-      name: this.appDataService.userName,
+      name: this.appDataService.getUserName(),
       surname: '',
       sessions: [],
       patients: [],
@@ -129,9 +124,10 @@ export class AppComponent implements OnInit, OnDestroy {
    */
   private _handleIsNewUser() {
     console.warn('User is new, saving empty data.');
-    this.firestoreQueries.saveData(this.appDataService.uid, this._createEmptyUserDataObject())
-      .then(() => {
-        this._addSubscribers();
+    this.firestoreQueries.saveData(this.appDataService.getUserId(), this._createEmptyUserDataObject())
+      .then(async () => {
+        this._isNewUser = true;
+        await this._addSubscribers();
       })
       .catch(() => {
         this.errorHandlerService.handleError('close-session');
@@ -142,21 +138,20 @@ export class AppComponent implements OnInit, OnDestroy {
    * If user id exists on appDataService we automatically add subscribers to app
    * If user id does not exist on appDataService we add login subscriber
    */
-  ngOnInit() {
+  async ngOnInit() {
     console.log(this.appDataService.getUserId(), this.appDataService.generalConfig, this.appDataService.getUserName(), this.userData);
     this.communicationService.openSpinner();
-
     if (this.appDataService.getUserId()) {
       console.warn('User is already logged, adding subscribers');
-      this._addSubscribers();
+      await this._addSubscribers();
     } else {
       if (!(this.router.url === '')) {
-        this.router.navigate(['']);
+        await this.router.navigate(['']);
       }
       this.loginSubscription = this.communicationService.subscribeLoginSubject$
-        .subscribe(() => {
+        .subscribe(async () => {
           console.warn('Login success', this.appDataService.getUserId(), this.appDataService.getUserName());
-          this._addSubscribers();
+          await this._addSubscribers();
         })
     }
   }
@@ -165,7 +160,6 @@ export class AppComponent implements OnInit, OnDestroy {
     console.log('destruyo');
     this.userDataSubscription?.unsubscribe();
     this.loginSubscription?.unsubscribe();
-    console.log(this.loginSubscription);
   }
 }
 
