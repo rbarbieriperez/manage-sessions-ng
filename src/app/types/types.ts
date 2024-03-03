@@ -161,3 +161,12 @@ export type TDialog = {
   modalCloseEvent?: string,
   size: 'sm' | 'lg' | 'xl'
 }
+
+export type TMenuCustom = {
+  title: string;
+  options: Array<{
+    icon?: string,
+    text?: string,
+    redirectTo?: string
+  }>
+}

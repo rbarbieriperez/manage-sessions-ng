@@ -304,5 +304,4 @@ export  class AddSessionComponent implements OnDestroy {
       this.modalService.open(this.registeredPatientsModalElement, { size: 'lg', centered: true });
     }
   }
-
 }

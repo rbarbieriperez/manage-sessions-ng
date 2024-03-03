@@ -1,0 +1,13 @@
+<ng-template #templateRef let-offcanvas>
+  <div class="offcanvas-header">
+    <h4 class="offcanvas-title">{{configuration?.title}}</h4>
+    <button type="button" class="btn-close" aria-label="close" (click)="offcanvas?.dismiss('Cross click')"></button>
+  </div>
+
+  <div class="offcanvas-body">
+    <div class="offcanvas-body__option" (click)="_onMenuOptionSelected(item?.redirectTo)" *ngFor="let item of configuration?.options">
+      <mat-icon>{{item?.icon}}</mat-icon>
+      <span>{{item?.text}}</span>
+    </div>
+  </div>
+</ng-template>

@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
 import {ReplaySubject, Subject} from "rxjs";
-import {TAlert, TDialog, TUserData} from "../types/types";
+import {TAlert, TDialog, TMenuCustom, TUserData} from "../types/types";
 
 
 @Injectable({
@@ -12,7 +12,7 @@ export class CommunicationService {
   /**
    * Subject to handle login subscription
    * Notifies when user has logged into
-   * @private
+   * @public
    */
   private loginSubject: Subject<void> = new Subject<void>();
   public subscribeLoginSubject$ = this.loginSubject.asObservable();
@@ -23,7 +23,7 @@ export class CommunicationService {
   /**
    * Replay Subject to handle user data changed
    * Notifies when user data has changed with previous value
-   * @private
+   * @public
    */
   private userDataSubject: ReplaySubject<TUserData> = new ReplaySubject<TUserData>();
   public subscribeUserData$ = this.userDataSubject.asObservable();
@@ -33,7 +33,7 @@ export class CommunicationService {
 
   /**
    * Logic to open alert with close event response
-   * @private
+   * @public
    */
   private alertSubject: Subject<TAlert> = new Subject<TAlert>();
   private alertCloseSubject: Subject<TAlert> = new Subject<TAlert>();
@@ -50,7 +50,7 @@ export class CommunicationService {
 
   /**
    * Handle dialog modal behavior
-   * @private
+   * @public
    */
 
   private dialogModalSubject: Subject<TDialog> = new Subject<TDialog>();
@@ -68,6 +68,10 @@ export class CommunicationService {
   }
 
 
+  /**
+   * Handle spinner open/close
+   * @public
+   */
   private spinnerSubject: Subject<'open' | 'close'> = new Subject<'open' | 'close'>();
   public subscribeOpenSpinner$ = this.spinnerSubject.asObservable();
 
@@ -79,6 +83,20 @@ export class CommunicationService {
     this.spinnerSubject.next('close');
   }
 
+  /**
+   * Handle
+   * @public
+   */
+  private menuSubject: Subject<{ action: 'open' | 'close', configuration?: TMenuCustom }> = new Subject<{ action: 'open' | 'close', configuration?: TMenuCustom }>();
+  public subscribeOpenMenu$ = this.menuSubject.asObservable();
+
+  public openMenu(configuration: TMenuCustom) {
+    this.menuSubject.next({action: 'open', configuration});
+  }
+
+  public closeMenu() {
+    this.menuSubject.next({ action: 'close' });
+  }
 
 
 

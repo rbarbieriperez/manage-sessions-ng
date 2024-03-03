@@ -1,6 +1,4 @@
 <main class="add-session-page-main-container">
-  <rb-header-custom headerTitle="Agregar Sesión"></rb-header-custom>
-
   <section class="add-session-page-form-container">
     <rb-select-custom id="selectClinicsCustomComponentId" #selectClinicsCustomComponent (elementSelected)="_onSelectedClinicChange($event)" label="Clínicas" [elements]="clinicsOptionsArr"></rb-select-custom>
     <rb-select-custom id="selectPatientsCustomComponentId" #selectPatientsCustomComponent (elementSelected)="_onSelectedPatientChange($event)" label="Pacientes" [elements]="patientsOptionsArr"></rb-select-custom>

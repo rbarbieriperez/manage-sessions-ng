@@ -1,6 +1,8 @@
-
+<rb-header-custom (menuIconClicked)="_handleMenuOpen()" *ngIf="router.url !== ''" headerTitle="Agregar Sesión"></rb-header-custom>
 
 <router-outlet/>
+
 <rb-alert-custom></rb-alert-custom>
 <rb-spinner-custom></rb-spinner-custom>
+<rb-menu-custom></rb-menu-custom>
 <rb-dialog-modal-custom></rb-dialog-modal-custom>

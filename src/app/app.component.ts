@@ -12,6 +12,9 @@ import {RbAlertCustomComponent} from "./components/rb-alert-custom/rb-alert-cust
 import {RbDialogModalCustomComponent} from "./components/rb-dialog-modal-custom/rb-dialog-modal-custom.component";
 import {ErrorHandlerService} from "./services/error-handler.service";
 import {RbSpinnerCustomComponent} from "./components/rb-spinner-custom/rb-spinner-custom.component";
+import {RbMenuCustomComponent} from "./components/rb-menu-custom/rb-menu-custom.component";
+import {RbHeaderCustomComponent} from "./components/rb-header-custom/rb-header-custom.component";
+import {NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-root',
@@ -20,7 +23,10 @@ import {RbSpinnerCustomComponent} from "./components/rb-spinner-custom/rb-spinne
     AngularFirestoreModule,
     RbAlertCustomComponent,
     RbDialogModalCustomComponent,
-    RbSpinnerCustomComponent
+    RbSpinnerCustomComponent,
+    RbMenuCustomComponent,
+    RbHeaderCustomComponent,
+    NgIf
   ],
   providers: [],
   standalone: true,
@@ -39,7 +45,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private firestoreQueries: FirestoreQueriesService,
     private communicationService: CommunicationService,
     private errorHandlerService: ErrorHandlerService,
-    private router: Router
+    protected router: Router
   ) {
     this._backupServerInitialized = false;
   }
@@ -158,6 +164,33 @@ export class AppComponent implements OnInit, OnDestroy {
     }
   }
 
+  protected _handleMenuOpen() {
+    this.communicationService.openMenu({
+      title: `Bienvenido/a ${this.appDataService.getUserName()}`,
+      options: [
+        {
+          text: 'Agregar Sesion',
+          icon: 'date_range',
+          redirectTo: 'add-session'
+        },
+        {
+          text: 'Administrar Clinicas',
+          icon: 'work_outline',
+          redirectTo: 'manage-clinics'
+        },
+        {
+          text: 'Administrar Pacientes',
+          icon: 'person',
+          redirectTo: 'manage-patients'
+        },
+        {
+          text: 'Reportes',
+          icon: 'poll',
+          redirectTo: 'reports'
+        }
+      ]
+    });
+  }
   ngOnDestroy() {
     console.log('destruyo');
     this.userDataSubscription?.unsubscribe();
