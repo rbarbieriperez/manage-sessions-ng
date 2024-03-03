@@ -14,6 +14,7 @@ import {FirestoreQueriesService} from "../../services/firestore-queries.service"
 import {NgForOf, NgIf} from "@angular/common";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import dayjs from "dayjs";
+import {ErrorHandlerService} from "../../services/error-handler.service";
 
 const initialSessionData: TSession = {
   sessionId: 0,
@@ -42,7 +43,7 @@ const initialSessionData: TSession = {
   ]
 })
 export  class AddSessionComponent implements OnDestroy {
-  protected modalService = inject(NgbModal);
+  public modalService = inject(NgbModal);
   private userDataSubscription: Subscription;
 
   private userData: TUserData | undefined;
@@ -58,7 +59,7 @@ export  class AddSessionComponent implements OnDestroy {
 
   @ViewChild('datepickerCustomComponent') datepickerElement: RbDatepickerCustomComponent | undefined;
   @ViewChild('textareaCustomComponent') textareaElement: RbTextareaCustomComponent | undefined;
-  @ViewChild('selectClinicsCustomComponent') selectClinicsElement: RbSelectCustomComponent | undefined;
+  @ViewChild('selectClinicsCustomComponent') public selectClinicsElement: RbSelectCustomComponent | undefined;
   @ViewChild('selectPatientsCustomComponent') selectPatientsElement: RbSelectCustomComponent | undefined;
   @ViewChild('registeredPatientsModal', { static: true }) registeredPatientsModalElement: NgbModal | undefined = undefined;
 
@@ -66,11 +67,13 @@ export  class AddSessionComponent implements OnDestroy {
   constructor(
     private appData: AppDataService,
     private communicationService: CommunicationService,
-    private firestoreQueries: FirestoreQueriesService
+    private firestoreQueries: FirestoreQueriesService,
+    private errorHandlerService: ErrorHandlerService,
   ) {
+    console.log('entro al constructor')
     this.userDataSubscription = this.communicationService.subscribeUserData$
       .subscribe((data: TUserData) => {
-        console.warn('User data has changed at add-session.component.ts', data);
+        //console.warn('User data has changed at add-session.component.ts', data);
         this.userData = data;
         if (this.userData?.clinics && this.userData.patients) {
           this.clinicsOptionsArr = this._generateClinicsOptionsArray(this.userData?.clinics);
@@ -113,6 +116,7 @@ export  class AddSessionComponent implements OnDestroy {
    * @protected
    */
   protected _onSelectedClinicChange(clinicId: string) {
+    //console.log('entro a change clinic', clinicId, JSON.stringify(this.userData));
     this.newSessionData = {
       ...this.newSessionData,
       clinicId: Number(clinicId)
@@ -246,6 +250,7 @@ export  class AddSessionComponent implements OnDestroy {
     if (_newUserData) {
       this.firestoreQueries.saveData(this.appData.getUserId(), _newUserData)
         .then(() => {
+          console.warn('Session saved correctly');
           this.communicationService.closeSpinner();
           this.communicationService.emitAlertData({
             id: '',
@@ -261,7 +266,8 @@ export  class AddSessionComponent implements OnDestroy {
             type: 'danger',
             message: 'Error al agregar la sesión',
             clearTimeMs: 3000
-          })
+          });
+          this.errorHandlerService.validateError();
         })
         .finally(() => this._clearElements());
     }
@@ -277,6 +283,7 @@ export  class AddSessionComponent implements OnDestroy {
       this.selectPatientsElement.clear();
       this.selectClinicsElement.clear();
       this.textareaElement.clear();
+      this._checkButtonDisabled();
     }
   }
 

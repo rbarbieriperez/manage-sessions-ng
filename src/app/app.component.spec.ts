@@ -64,6 +64,7 @@ describe('AppComponent', () => {
     errorHandlerService = TestBed.inject(ErrorHandlerService);
   }));
 
+
   it('should open spinner on load', done => {
     const openSpinnerSpy = spyOn(communicationService, 'openSpinner');
     fixture.detectChanges();
@@ -96,6 +97,7 @@ describe('AppComponent', () => {
       spyOn(firestoreSubscribeService, 'subscribeStore').and.returnValue((new Observable(obs => obs.next(JSON.parse(JSON.stringify(userData))))));
       spyOn(firestoreQueriesService, 'getAppConfig').and.returnValue(JSON.parse(JSON.stringify(generalConfig)));
       spyOn(backupService, 'initBackupService').and.returnValue(Promise.resolve());
+      spyOn(errorHandlerService, 'handleError').and.callFake(() => {});
       appDataService.setUserId('1234');
     });
 
@@ -145,12 +147,12 @@ describe('AppComponent', () => {
 
     it('if application general config could not be retrieved session should be closed', done => {
       firestoreQueriesService.getAppConfig = jasmine.createSpy().and.returnValue(Promise.resolve(false));
-      const handleError = spyOn(errorHandlerService, "handleError");
+      errorHandlerService.handleError = jasmine.createSpy().and.returnValue(null);
       fixture.detectChanges();
       fixture.whenStable()
         .then(() => {
           communicationService.emitLoginSuccess();
-          expect(handleError).toHaveBeenCalledWith('close-session');
+          expect(errorHandlerService.handleError).toHaveBeenCalledWith('close-session');
           done();
         });
     });
@@ -181,11 +183,11 @@ describe('AppComponent', () => {
       firestoreQueriesService.getAppConfig = jasmine.createSpy().and.returnValue(() => {
         throw new Error('error');
       })();
-      const errorHandlerSpy = spyOn(errorHandlerService, 'handleError');
+      errorHandlerService.handleError = jasmine.createSpy().and.returnValue(null)
       fixture.detectChanges();
       fixture.whenStable()
         .then(() => {
-          expect(errorHandlerSpy).toHaveBeenCalledWith('close-session');
+          expect(errorHandlerService.handleError).toHaveBeenCalledWith('close-session');
           done();
         });
     });
@@ -193,11 +195,11 @@ describe('AppComponent', () => {
     it('If any error has occurred while adding new user data session should be closed', done => {
       firestoreQueriesService.saveData = jasmine.createSpy().and.returnValue(Promise.reject());
       firestoreSubscribeService.subscribeStore = jasmine.createSpy().and.returnValue((new Observable(obs => obs.error('missing-data'))));
-      const errorHandlerSpy = spyOn(errorHandlerService, 'handleError');
+      errorHandlerService.handleError = jasmine.createSpy().and.returnValue(null);
       fixture.detectChanges();
       fixture.whenStable()
         .then(() => {
-          expect(errorHandlerSpy).toHaveBeenCalledWith('close-session');
+          expect(errorHandlerService.handleError).toHaveBeenCalledWith('close-session');
           done();
         });
     });

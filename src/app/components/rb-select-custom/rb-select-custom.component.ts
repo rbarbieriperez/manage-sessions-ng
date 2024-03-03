@@ -47,6 +47,8 @@ export class RbSelectCustomComponent implements OnInit, OnChanges {
 
   @Input() disabled: boolean = false;
 
+  @Input() id: string = '';
+
   /**
    * Emits an event when selection has changed
    * @public

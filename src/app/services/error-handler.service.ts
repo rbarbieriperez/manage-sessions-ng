@@ -1,5 +1,6 @@
 import {Injectable} from "@angular/core";
 import {Router} from "@angular/router";
+import {AppDataService} from "./app-data.service";
 
 
 @Injectable({
@@ -8,7 +9,8 @@ import {Router} from "@angular/router";
 
 export class ErrorHandlerService {
   constructor(
-    private router: Router
+    private router: Router,
+    private appDataService: AppDataService
   ) {
   }
 
@@ -22,7 +24,17 @@ export class ErrorHandlerService {
 
   }
 
+  /**
+   * Validate if all the needed data is present after error
+   */
+  public validateError() {
+    if (!this.appDataService.getUserId()) {
+      this.handleError('close-session');
+    }
+  }
+
   private _closeSession() {
     this.router.navigate(['']);
+    window.location.reload();
   }
 }

@@ -5,7 +5,6 @@ import {FirestoreLoginService} from "../../services/firestore-login.service";
 import {AppDataService} from "../../services/app-data.service";
 import {ErrorHandlerService} from "../../services/error-handler.service";
 import {FirestoreQueriesService} from "../../services/firestore-queries.service";
-import {By} from "@angular/platform-browser";
 import {importProvidersFrom} from "@angular/core";
 import {initializeApp, provideFirebaseApp} from "@angular/fire/app";
 import {environment} from "../../../environments/environment";
@@ -13,8 +12,6 @@ import {getFirestore, provideFirestore} from "@angular/fire/firestore";
 import {getAuth, provideAuth} from "@angular/fire/auth";
 import {getStorage, provideStorage} from "@angular/fire/storage";
 import {getFunctions, provideFunctions} from "@angular/fire/functions";
-import firebase from "firebase/compat";
-import UserCredential = firebase.auth.UserCredential;
 
 
 const _gmailClick = () => {
@@ -61,11 +58,13 @@ describe('LoginComponent', () => {
     loginService = TestBed.inject(FirestoreLoginService);
     appDataService = TestBed.inject(AppDataService);
     errorHandlerService = TestBed.inject(ErrorHandlerService);
+
+    spyOn(errorHandlerService, 'handleError').and.callFake(() => {});
   }));
 
   describe('Login with gmail', () => {
 
-    afterEach(() => {
+    beforeEach(() => {
       appDataService.clearLocalStorage();
     });
 
@@ -139,12 +138,12 @@ describe('LoginComponent', () => {
 
   it('handleError method from error handle service should be called if no response from gmail auth', done => {
     loginService.gmailAuth = jasmine.createSpy().and.returnValue(Promise.resolve(false));
-    const handleError = spyOn(errorHandlerService, 'handleError');
+    errorHandlerService.handleError = jasmine.createSpy().and.returnValue(null);
     _gmailClick();
     fixture.detectChanges();
     fixture.whenStable()
       .then(() => {
-        expect(handleError).toHaveBeenCalledWith('close-session');
+        expect(errorHandlerService.handleError).toHaveBeenCalledWith('close-session');
         done();
       });
   });

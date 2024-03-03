@@ -139,6 +139,7 @@ export class AppComponent implements OnInit, OnDestroy {
    * If user id does not exist on appDataService we add login subscriber
    */
   async ngOnInit() {
+    console.warn('App component init');
     console.log(this.appDataService.getUserId(), this.appDataService.generalConfig, this.appDataService.getUserName(), this.userData);
     this.communicationService.openSpinner();
     if (this.appDataService.getUserId()) {
@@ -147,6 +148,7 @@ export class AppComponent implements OnInit, OnDestroy {
     } else {
       if (!(this.router.url === '')) {
         await this.router.navigate(['']);
+        this.communicationService.closeSpinner();
       }
       this.loginSubscription = this.communicationService.subscribeLoginSubject$
         .subscribe(async () => {
