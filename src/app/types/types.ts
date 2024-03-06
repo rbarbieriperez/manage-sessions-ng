@@ -61,7 +61,14 @@ export type TClinic = {
   clinicId: number;
   clinicName: string;
   address: TAddress;
-  contactDetails?: Array<TContactDetail>
+  contactDetails: TClinicContactDetail
+}
+
+export type TClinicContactDetail = {
+  mobilePhoneNumber?: string,
+  phoneNumber?: string,
+  emailAddress?: string,
+  website?: string
 }
 
 export type TSessionType = {

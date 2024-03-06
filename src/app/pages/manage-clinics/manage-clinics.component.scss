@@ -1,0 +1,13 @@
+.manage-clinics-main-container {
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 3rem;
+  padding: 0 1rem 0 1rem;
+
+  & .add-clinic-container {
+    margin-top: 1.5rem;
+  }
+}

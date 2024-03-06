@@ -1,0 +1,29 @@
+<main class="manage-clinics-main-container">
+  <rb-autocomplete-custom
+    placeholder=""
+    label="Nombre de la clínica"
+    [options]="registeredClinicsOptions"
+    [showHint]="true"
+    hintText="Selecciona una clínica de la lista para modificarla y/o eliminarla"
+    [inputDisabled]="_clinicInputDisabled"
+    (selectedValue)="_onClinicSelected($event)"
+    (clearBtnClick)="_onInputClearSelection()"
+    (textChange)="_onClinicNameChange($event)"
+    #autocompleteCustomComponent
+  >
+  </rb-autocomplete-custom>
+
+  <section *ngIf="!_isUpdateDeleteForm" class="add-clinic-container">
+    <rb-add-clinic-custom
+      [submitButtonDisabled]="submitNewClinicBtnDisabled"
+      (onClinicDataChange)="_onNewClinicDataChange($event)"
+      (onSubmitClinic)="_onSubmitNewClinic()"
+      #addClinicCustomComponent
+    >
+    </rb-add-clinic-custom>
+  </section>
+
+  <section *ngIf="_isUpdateDeleteForm">
+
+  </section>
+</main>

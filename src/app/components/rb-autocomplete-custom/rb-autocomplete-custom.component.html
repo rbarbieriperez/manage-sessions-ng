@@ -1,0 +1,48 @@
+<main class="rb-autocomplete-custom-main-container">
+  <mat-form-field *ngIf="!inputDisabled">
+    <mat-label>{{label}}</mat-label>
+    <input
+      type="text"
+      placeholder="{{placeholder}}"
+      matInput
+      [formControl]="formControl"
+      [matAutocomplete]="auto"
+      (input)="_onInputChangeValue($event)"
+      [(ngModel)]="_selectedViewValue"
+    />
+
+    <mat-autocomplete (optionSelected)="_onAutocompleteValueSelected($event)" #auto="matAutocomplete">
+      <mat-option  *ngFor="let option of options" [value]="option.value">{{option.viewValue}}</mat-option>
+    </mat-autocomplete>
+
+
+    <button mat-icon-button matSuffix (click)="_onClearIconClick()">
+      <mat-icon matSuffix>close</mat-icon>
+    </button>
+
+    <mat-hint align="start" *ngIf="showHint">{{hintText}}</mat-hint>
+  </mat-form-field>
+
+  <mat-form-field *ngIf="inputDisabled">
+    <mat-label>{{label}}</mat-label>
+    <input
+      type="text"
+      placeholder="{{placeholder}}"
+      matInput
+      [matAutocomplete]="auto"
+      [disabled]="true"
+      (input)="_onInputChangeValue($event)"
+      [(ngModel)]="_selectedViewValue"
+    />
+
+    <mat-autocomplete (optionSelected)="_onAutocompleteValueSelected($event)" #auto="matAutocomplete">
+      <mat-option *ngFor="let option of options" [value]="option.value">{{option.viewValue}}</mat-option>
+    </mat-autocomplete>
+
+    <button mat-icon-button matSuffix (click)="_onClearIconClick()">
+      <mat-icon matSuffix>close</mat-icon>
+    </button>
+
+    <mat-hint align="start" *ngIf="showHint">{{hintText}}</mat-hint>
+  </mat-form-field>
+</main>

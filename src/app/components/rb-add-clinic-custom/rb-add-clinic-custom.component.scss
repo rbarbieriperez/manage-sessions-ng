@@ -1,0 +1,9 @@
+.rb-add-clinic-custom-main-container {
+  & button {
+    position: absolute;
+    bottom: 1rem;
+    transform: translateX(50%);
+    right: 50%;
+    width: 90%;
+  }
+}

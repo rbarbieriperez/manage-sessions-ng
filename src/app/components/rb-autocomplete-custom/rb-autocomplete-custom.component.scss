@@ -1,0 +1,17 @@
+
+
+.rb-autocomplete-custom-main-container {
+  width: 100%;
+  height: 100%;
+
+  & mat-form-field {
+    width: 100%;
+  }
+
+  ::ng-deep mat-form-field {
+    & .mat-mdc-form-field-hint-wrapper {
+      padding: 0;
+
+    }
+  }
+}

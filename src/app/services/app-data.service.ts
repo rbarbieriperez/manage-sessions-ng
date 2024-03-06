@@ -1,5 +1,6 @@
 import {afterNextRender, Injectable} from "@angular/core";
-import {TGeneralConfig} from "../types/types";
+import {TGeneralConfig, TUserData} from "../types/types";
+import {FirestoreSubscribeService} from "./firestore-subscribe.service";
 
 
 @Injectable({
@@ -10,6 +11,7 @@ export class AppDataService {
   uid: string;
   userName: string;
   generalConfig: any;
+  userData: TUserData | undefined;
 
   constructor() {
     this.uid = '';

@@ -80,6 +80,7 @@ export class AppComponent implements OnInit, OnDestroy {
         .subscribe({
           next: data => {
             this.userData = data;
+            this.appDataService.userData = data;
             if (this.appDataService.generalConfig && this.userData) {
               this.communicationService.emitNewUserData(this.userData);
 

@@ -1,0 +1,68 @@
+<section class="rb-add-clinic-custom-main-container">
+
+  <rb-input-custom
+    label="Dirección completa"
+    (onChange)="_onFullAddressChange($event)"
+    [maxLength]="100"
+    #address
+  >
+  </rb-input-custom>
+
+  <rb-input-custom
+    label="Número de puerta"
+    (onChange)="_onNumberChange($event)"
+    [maxLength]="4"
+    #number
+  >
+  </rb-input-custom>
+
+  <rb-input-custom
+    label="Datos adicionales"
+    (onChange)="_onAdditionalDetailsChange($event)"
+    [maxLength]="50"
+    #additionalInfo
+  >
+  </rb-input-custom>
+
+  <rb-input-custom
+    label="Correo electrónico"
+    (onChange)="_onEmailAddressChange($event)"
+    [maxLength]="100"
+    #email
+  >
+  </rb-input-custom>
+
+  <rb-input-custom
+    label="Celular"
+    (onChange)="_onMobilePhoneNumberChange($event)"
+    [maxLength]="40"
+    #mobilePhone
+  >
+  </rb-input-custom>
+
+  <rb-input-custom
+    label="Teléfono"
+    (onChange)="_onPhoneNumberChange($event)"
+    [maxLength]="40"
+    #phone
+  >
+  </rb-input-custom>
+
+  <rb-input-custom
+    label="Sitio web"
+    (onChange)="_onWebSiteChange($event)"
+    [maxLength]="100"
+    #website
+  >
+  </rb-input-custom>
+
+  <button
+    (click)="_onSubmitClinicButtonClick()"
+    mat-raised-button
+    [disabled]="submitButtonDisabled"
+    color="primary"
+    id="submitButton"
+  >
+    Agregar
+  </button>
+</section>

@@ -47,6 +47,7 @@ export class RbInputCustomComponent {
 
   protected _onClearInput() {
     this._currentInputValue = '';
+    this.onChange.emit('');
   }
 
   /**
