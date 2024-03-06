@@ -65,10 +65,10 @@ export type TClinic = {
 }
 
 export type TClinicContactDetail = {
-  mobilePhoneNumber?: string,
-  phoneNumber?: string,
-  emailAddress?: string,
-  website?: string
+  mobilePhoneNumber: string,
+  phoneNumber: string,
+  emailAddress: string,
+  website: string
 }
 
 export type TSessionType = {

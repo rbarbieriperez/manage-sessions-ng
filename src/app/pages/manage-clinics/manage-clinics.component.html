@@ -13,17 +13,16 @@
   >
   </rb-autocomplete-custom>
 
-  <section *ngIf="!_isUpdateDeleteForm" class="add-clinic-container">
+  <section class="add-clinic-container">
     <rb-add-clinic-custom
       [submitButtonDisabled]="submitNewClinicBtnDisabled"
       (onClinicDataChange)="_onNewClinicDataChange($event)"
       (onSubmitClinic)="_onSubmitNewClinic()"
+      [updateDeleteForm]="_isUpdateDeleteForm"
+      [clinicData]="newClinicData"
       #addClinicCustomComponent
     >
     </rb-add-clinic-custom>
   </section>
 
-  <section *ngIf="_isUpdateDeleteForm">
-
-  </section>
 </main>

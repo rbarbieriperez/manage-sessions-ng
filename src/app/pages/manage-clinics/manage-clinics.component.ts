@@ -45,7 +45,7 @@ export class ManageClinicsComponent implements OnDestroy {
 
   protected _clinicInputDisabled: boolean = false;
 
-  private newClinicData: TClinic = initialClinicData;
+  protected newClinicData: TClinic = initialClinicData;
 
   private subscription: Subscription;
 
@@ -108,9 +108,11 @@ export class ManageClinicsComponent implements OnDestroy {
    * @protected
    */
   protected _onClinicSelected(clinicId: string) {
-    if (clinicId) {
+    const clinic = this.userData?.clinics.find((clinic: TClinic) => clinic.clinicId === Number(clinicId));
+    if (clinic) {
       this._clinicInputDisabled = true;
       this._isUpdateDeleteForm = true;
+      this.newClinicData = clinic;
     }
   }
 
@@ -121,6 +123,7 @@ export class ManageClinicsComponent implements OnDestroy {
   protected _onInputClearSelection() {
     this._clinicInputDisabled = false;
     this._isUpdateDeleteForm = false;
+    this.addClinicCustomComponent?.clearValues();
   }
 
   /**

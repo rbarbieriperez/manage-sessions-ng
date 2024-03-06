@@ -1,9 +1,12 @@
 .rb-add-clinic-custom-main-container {
-  & button {
+  & .submit-button-container, & .update-delete-buttons-container {
     position: absolute;
     bottom: 1rem;
     transform: translateX(50%);
     right: 50%;
     width: 90%;
+    display: flex;
+    flex-direction: column;
+    row-gap: 1rem;
   }
 }

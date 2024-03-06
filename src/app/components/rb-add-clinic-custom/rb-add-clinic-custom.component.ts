@@ -1,7 +1,8 @@
-import {Component, EventEmitter, Input, Output, ViewChild} from "@angular/core";
+import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild} from "@angular/core";
 import {TClinic} from "../../types/types";
 import {RbInputCustomComponent} from "../rb-input-custom/rb-input-custom.component";
 import {MatButton} from "@angular/material/button";
+import {NgIf} from "@angular/common";
 
 type TClinicNoId = Omit<TClinic, 'clinicId' | 'clinicName'>;
 
@@ -26,17 +27,21 @@ const initialClinicData: TClinicNoId = {
   styleUrl: './rb-add-clinic-custom.component.scss',
   imports: [
     RbInputCustomComponent,
-    MatButton
+    MatButton,
+    NgIf
   ],
   selector: 'rb-add-clinic-custom'
 })
 
-export class RbAddClinicCustomComponent {
+export class RbAddClinicCustomComponent implements OnChanges {
 
   @Output() onClinicDataChange = new EventEmitter<TClinicNoId>();
   @Output() onSubmitClinic = new EventEmitter<void>();
+  @Output() onDeleteClinic = new EventEmitter<void>();
+  @Input() clinicData: TClinicNoId | undefined;
 
   @Input() submitButtonDisabled: boolean = false;
+  @Input() updateDeleteForm: boolean = false;
   protected _clinicData: TClinicNoId = initialClinicData;
 
   @ViewChild('address') addressInput: RbInputCustomComponent | undefined = undefined;
@@ -46,6 +51,17 @@ export class RbAddClinicCustomComponent {
   @ViewChild('mobilePhone') mobilePhoneInput: RbInputCustomComponent | undefined = undefined;
   @ViewChild('phone') phoneInput: RbInputCustomComponent | undefined = undefined;
   @ViewChild('website') websiteInput: RbInputCustomComponent | undefined = undefined;
+
+
+  constructor() {
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    console.log('entramos a onchanges', changes);
+    if (changes['clinicData'] && this.clinicData) {
+      this._clinicData = this.clinicData;
+    }
+  }
 
   protected _onFullAddressChange(value: string) {
     this._clinicData = {
@@ -156,5 +172,9 @@ export class RbAddClinicCustomComponent {
 
   protected _onSubmitClinicButtonClick() {
     this.onSubmitClinic.emit();
+  }
+
+  protected _onDeleteButtonClick() {
+    this.onDeleteClinic.emit();
   }
 }

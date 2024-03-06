@@ -4,6 +4,7 @@
     label="Dirección completa"
     (onChange)="_onFullAddressChange($event)"
     [maxLength]="100"
+    [initialValue]="_clinicData.address.fullAddress"
     #address
   >
   </rb-input-custom>
@@ -12,6 +13,7 @@
     label="Número de puerta"
     (onChange)="_onNumberChange($event)"
     [maxLength]="4"
+    [initialValue]="_clinicData.address.number"
     #number
   >
   </rb-input-custom>
@@ -20,6 +22,7 @@
     label="Datos adicionales"
     (onChange)="_onAdditionalDetailsChange($event)"
     [maxLength]="50"
+    [initialValue]="_clinicData.address.additionalInfo"
     #additionalInfo
   >
   </rb-input-custom>
@@ -28,6 +31,7 @@
     label="Correo electrónico"
     (onChange)="_onEmailAddressChange($event)"
     [maxLength]="100"
+    [initialValue]="_clinicData.contactDetails.emailAddress"
     #email
   >
   </rb-input-custom>
@@ -36,6 +40,7 @@
     label="Celular"
     (onChange)="_onMobilePhoneNumberChange($event)"
     [maxLength]="40"
+    [initialValue]="_clinicData.contactDetails.mobilePhoneNumber"
     #mobilePhone
   >
   </rb-input-custom>
@@ -44,6 +49,7 @@
     label="Teléfono"
     (onChange)="_onPhoneNumberChange($event)"
     [maxLength]="40"
+    [initialValue]="_clinicData.contactDetails.phoneNumber"
     #phone
   >
   </rb-input-custom>
@@ -52,17 +58,41 @@
     label="Sitio web"
     (onChange)="_onWebSiteChange($event)"
     [maxLength]="100"
+    [initialValue]="_clinicData.contactDetails.website"
     #website
   >
   </rb-input-custom>
 
-  <button
-    (click)="_onSubmitClinicButtonClick()"
-    mat-raised-button
-    [disabled]="submitButtonDisabled"
-    color="primary"
-    id="submitButton"
-  >
-    Agregar
-  </button>
+  <div class="submit-button-container"  *ngIf="!updateDeleteForm">
+    <button
+      (click)="_onSubmitClinicButtonClick()"
+      mat-raised-button
+      [disabled]="submitButtonDisabled"
+      color="primary"
+      id="submitButton"
+    >
+      Agregar
+    </button>
+  </div>
+
+  <div class="update-delete-buttons-container" *ngIf="updateDeleteForm">
+    <button
+      (click)="_onSubmitClinicButtonClick()"
+      mat-raised-button
+      [disabled]="submitButtonDisabled"
+      color="primary"
+      id="updateButton"
+    >
+      Modificar
+    </button>
+
+    <button
+      (click)="_onDeleteButtonClick()"
+      mat-raised-button
+      color="warn"
+      id="deleteButton"
+    >
+      Eliminar
+    </button>
+  </div>
 </section>

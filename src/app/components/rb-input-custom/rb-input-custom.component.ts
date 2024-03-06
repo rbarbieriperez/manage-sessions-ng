@@ -1,4 +1,4 @@
-import {Component, ElementRef, EventEmitter, Input, Output, ViewChild} from "@angular/core";
+import {Component, ElementRef, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild} from "@angular/core";
 import {MatFormField, MatInputModule} from "@angular/material/input";
 import {MatIconModule} from "@angular/material/icon";
 
@@ -10,7 +10,7 @@ import {MatIconModule} from "@angular/material/icon";
   imports: [MatInputModule, MatFormField, MatIconModule]
 })
 
-export class RbInputCustomComponent {
+export class RbInputCustomComponent implements  OnChanges {
 
   @Input() label: string = 'test';
   @Input() required: boolean = false;
@@ -18,6 +18,7 @@ export class RbInputCustomComponent {
   @Input() maxLength: number = 10;
   @Input() disabled: boolean = false;
   @Input() id: string = '';
+  @Input() initialValue: string = '';
 
   @Output() onChange = new EventEmitter<string>();
 
@@ -28,6 +29,14 @@ export class RbInputCustomComponent {
    * @protected
    */
   protected _currentInputValue:string = '';
+
+
+  ngOnChanges(changes: SimpleChanges) {
+    console.log('input change', changes);
+    if (changes['initialValue'] && this.initialValue) {
+      this._currentInputValue = this.initialValue;
+    }
+  }
 
   /**
    * Emits an event when input value changes and store it on component
@@ -56,6 +65,8 @@ export class RbInputCustomComponent {
    */
   public clear() {
     if (this.inputElement) {
+      this._currentInputValue = '';
+      this.onChange.emit('');
       this.inputElement.nativeElement.value = '';
     }
   }
