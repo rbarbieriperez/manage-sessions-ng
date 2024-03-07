@@ -1,4 +1,4 @@
-import {Component, OnDestroy, ViewChild} from "@angular/core";
+import {ChangeDetectorRef, Component, OnDestroy, ViewChild} from "@angular/core";
 import {RbAutocompleteCustomComponent} from "../../components/rb-autocomplete-custom/rb-autocomplete-custom.component";
 import {AppDataService} from "../../services/app-data.service";
 import {TClinic, TOption, TPatient, TSession, TUserData} from "../../types/types";
@@ -10,6 +10,8 @@ import {FirestoreQueriesService} from "../../services/firestore-queries.service"
 import {CommunicationService} from "../../services/communication.service";
 import {ErrorHandlerService} from "../../services/error-handler.service";
 import {RbSelectCustomComponent} from "../../components/rb-select-custom/rb-select-custom.component";
+import {MatButtonToggle, MatButtonToggleGroup} from "@angular/material/button-toggle";
+import {MatIcon} from "@angular/material/icon";
 
 type TClinicNoId = Omit<TClinic, 'clinicId' | 'clinicName'>;
 const initialClinicData: TClinic = {
@@ -36,26 +38,63 @@ const initialClinicData: TClinic = {
     RbAutocompleteCustomComponent,
     NgIf,
     RbAddClinicCustomComponent,
-    RbSelectCustomComponent
+    RbSelectCustomComponent,
+    MatButtonToggleGroup,
+    MatButtonToggle,
+    MatIcon
   ],
   selector: 'manage-clinics'
 })
 
 export class ManageClinicsComponent implements OnDestroy {
 
+  /**
+   * TOption array with all the registered clinics
+   * @protected
+   */
   protected registeredClinicsOptions: TOption[] = [];
 
+  /**
+   * Disables autocomplete input
+   * @protected
+   */
   protected _clinicInputDisabled: boolean = false;
 
+  /**
+   * New clinic data or update clinic data
+   * @protected
+   */
   protected newClinicData: TClinic = initialClinicData;
 
+  /**
+   * Store user data subscription
+   * @private
+   */
   private subscription: Subscription;
 
+  /**
+   * Full user data
+   * @private
+   */
   private userData: TUserData | undefined;
 
+  /**
+   * Flag to indicate if is update/delete form or add
+   * @protected
+   */
   protected _isUpdateDeleteForm: boolean = false;
 
+  /**
+   * Stores clinic data after search to compare with updated data
+   * @private
+   */
   private _lastClinicData: TClinic | undefined;
+
+  /**
+   * Flag to indicate if is add/update/delete form or patient's list form
+   * @protected
+   */
+  protected _isUpdateDeleteView: boolean = true;
 
   @ViewChild('autocompleteCustomComponent') autocompleteCustomComponent: RbAutocompleteCustomComponent | undefined;
 
@@ -74,7 +113,8 @@ export class ManageClinicsComponent implements OnDestroy {
     private firestoreSubscribeService: FirestoreSubscribeService,
     private firestoreQueriesService: FirestoreQueriesService,
     private communicationService: CommunicationService,
-    private errorHandlerService: ErrorHandlerService
+    private errorHandlerService: ErrorHandlerService,
+    private cdRef:ChangeDetectorRef
   ) {
     this.subscription = this.firestoreSubscribeService.subscribeStore(this.appDataService.getUserId())
       .subscribe((data) => {
@@ -87,6 +127,26 @@ export class ManageClinicsComponent implements OnDestroy {
         }
       });
 
+  }
+
+  /**
+   * Show the add/update/delete view with initial state
+   * @protected
+   */
+  protected _toggleAddUpdateDeleteView() {
+    this._isUpdateDeleteView = true;
+    this._isUpdateDeleteForm = false;
+    this._clinicInputDisabled = false;
+    this.cdRef.detectChanges();
+    this._clearClinicElements();
+  }
+
+  /**
+   * Show patients registered on clinic view
+   * @protected
+   */
+  protected _togglePatientListView() {
+    this._isUpdateDeleteView = false;
   }
 
   /**
@@ -303,7 +363,8 @@ export class ManageClinicsComponent implements OnDestroy {
       size: 'sm',
       primaryButtonLabel: 'Confirmar',
       secondaryButtonLabel: 'Cancelar',
-      primaryButtonEvent: 'confirm-deletion'
+      primaryButtonEvent: 'confirm-deletion',
+      secondaryButtonEvent: 'reject-deletion'
     });
 
     this.communicationService.subscribeDialogCallbackEvent$.subscribe(value => {

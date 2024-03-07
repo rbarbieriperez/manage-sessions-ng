@@ -1,30 +1,46 @@
 <main class="manage-clinics-main-container">
-  <rb-autocomplete-custom
-    placeholder=""
-    label="Seleccciona una clínica"
-    [options]="registeredClinicsOptions"
-    [showHint]="true"
-    hintText="Selecciona una clínica de la lista para modificarla y/o eliminarla"
-    [inputDisabled]="_clinicInputDisabled"
-    (selectedValue)="_onClinicSelected($event)"
-    (clearBtnClick)="_onInputClearSelection()"
-    (textChange)="_onClinicNameChange($event)"
-    #autocompleteCustomComponent
-  >
-  </rb-autocomplete-custom>
 
-  <section class="add-clinic-container">
-    <rb-add-clinic-custom
-      [submitButtonDisabled]="submitNewClinicBtnDisabled"
-      (onClinicDataChange)="_onNewClinicDataChange($event)"
-      (onSubmitClinic)="_onSubmitNewClinic()"
-      (onUpdateClinic)="_onUpdateClinic()"
-      (onDeleteClinic)="_onDeleteClinic()"
-      [updateDeleteForm]="_isUpdateDeleteForm"
-      [clinicData]="newClinicData"
-      #addClinicCustomComponent
-    >
-    </rb-add-clinic-custom>
+  <section class="manage-clinics-toggle-buttons-container">
+    <mat-button-toggle-group>
+      <mat-button-toggle (click)="_toggleAddUpdateDeleteView()"><mat-icon>description</mat-icon></mat-button-toggle>
+      <mat-button-toggle (click)="_togglePatientListView()"><mat-icon>face</mat-icon></mat-button-toggle>
+    </mat-button-toggle-group>
   </section>
+
+  <section class="add-update-delete-container" *ngIf="_isUpdateDeleteView">
+    <rb-autocomplete-custom
+      placeholder=""
+      label="Seleccciona una clínica"
+      [options]="registeredClinicsOptions"
+      [showHint]="true"
+      hintText="Selecciona una clínica de la lista para modificarla y/o eliminarla"
+      [inputDisabled]="_clinicInputDisabled"
+      (selectedValue)="_onClinicSelected($event)"
+      (clearBtnClick)="_onInputClearSelection()"
+      (textChange)="_onClinicNameChange($event)"
+      #autocompleteCustomComponent
+    >
+    </rb-autocomplete-custom>
+
+    <section class="add-clinic-container">
+      <rb-add-clinic-custom
+        [submitButtonDisabled]="submitNewClinicBtnDisabled"
+        (onClinicDataChange)="_onNewClinicDataChange($event)"
+        (onSubmitClinic)="_onSubmitNewClinic()"
+        (onUpdateClinic)="_onUpdateClinic()"
+        (onDeleteClinic)="_onDeleteClinic()"
+        [updateDeleteForm]="_isUpdateDeleteForm"
+        [clinicData]="newClinicData"
+        #addClinicCustomComponent
+      >
+      </rb-add-clinic-custom>
+    </section>
+  </section>
+
+  <section *ngIf="!_isUpdateDeleteView">
+
+  </section>
+
+
 
 </main>
