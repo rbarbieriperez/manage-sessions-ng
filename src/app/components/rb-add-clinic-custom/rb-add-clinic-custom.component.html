@@ -1,67 +1,79 @@
 <section class="rb-add-clinic-custom-main-container">
 
-  <rb-input-custom
-    label="Dirección completa"
-    (onChange)="_onFullAddressChange($event)"
-    [maxLength]="100"
-    [initialValue]="_clinicData.address.fullAddress"
-    #address
-  >
-  </rb-input-custom>
+  <div class="add-clinic-custom-fields-container">
+    <rb-input-custom
+      label="Nombre*"
+      (onChange)="_onClinicNameChanges($event)"
+      [maxLength]="100"
+      [initialValue]="_clinicData.clinicName"
+      #name
+    >
+    </rb-input-custom>
 
-  <rb-input-custom
-    label="Número de puerta"
-    (onChange)="_onNumberChange($event)"
-    [maxLength]="4"
-    [initialValue]="_clinicData.address.number"
-    #number
-  >
-  </rb-input-custom>
+    <rb-input-custom
+      label="Dirección completa"
+      (onChange)="_onFullAddressChange($event)"
+      [maxLength]="100"
+      [initialValue]="_clinicData.address.fullAddress"
+      #address
+    >
+    </rb-input-custom>
 
-  <rb-input-custom
-    label="Datos adicionales"
-    (onChange)="_onAdditionalDetailsChange($event)"
-    [maxLength]="50"
-    [initialValue]="_clinicData.address.additionalInfo"
-    #additionalInfo
-  >
-  </rb-input-custom>
+    <rb-input-custom
+      label="Número de puerta"
+      (onChange)="_onNumberChange($event)"
+      [maxLength]="4"
+      [initialValue]="_clinicData.address.number"
+      #number
+    >
+    </rb-input-custom>
 
-  <rb-input-custom
-    label="Correo electrónico"
-    (onChange)="_onEmailAddressChange($event)"
-    [maxLength]="100"
-    [initialValue]="_clinicData.contactDetails.emailAddress"
-    #email
-  >
-  </rb-input-custom>
+    <rb-input-custom
+      label="Datos adicionales"
+      (onChange)="_onAdditionalDetailsChange($event)"
+      [maxLength]="50"
+      [initialValue]="_clinicData.address.additionalInfo"
+      #additionalInfo
+    >
+    </rb-input-custom>
 
-  <rb-input-custom
-    label="Celular"
-    (onChange)="_onMobilePhoneNumberChange($event)"
-    [maxLength]="40"
-    [initialValue]="_clinicData.contactDetails.mobilePhoneNumber"
-    #mobilePhone
-  >
-  </rb-input-custom>
+    <rb-input-custom
+      label="Correo electrónico"
+      (onChange)="_onEmailAddressChange($event)"
+      [maxLength]="100"
+      [initialValue]="_clinicData.contactDetails.emailAddress"
+      #email
+    >
+    </rb-input-custom>
 
-  <rb-input-custom
-    label="Teléfono"
-    (onChange)="_onPhoneNumberChange($event)"
-    [maxLength]="40"
-    [initialValue]="_clinicData.contactDetails.phoneNumber"
-    #phone
-  >
-  </rb-input-custom>
+    <rb-input-custom
+      label="Celular"
+      (onChange)="_onMobilePhoneNumberChange($event)"
+      [maxLength]="40"
+      [initialValue]="_clinicData.contactDetails.mobilePhoneNumber"
+      #mobilePhone
+    >
+    </rb-input-custom>
 
-  <rb-input-custom
-    label="Sitio web"
-    (onChange)="_onWebSiteChange($event)"
-    [maxLength]="100"
-    [initialValue]="_clinicData.contactDetails.website"
-    #website
-  >
-  </rb-input-custom>
+    <rb-input-custom
+      label="Teléfono"
+      (onChange)="_onPhoneNumberChange($event)"
+      [maxLength]="40"
+      [initialValue]="_clinicData.contactDetails.phoneNumber"
+      #phone
+    >
+    </rb-input-custom>
+
+    <rb-input-custom
+      label="Sitio web"
+      (onChange)="_onWebSiteChange($event)"
+      [maxLength]="100"
+      [initialValue]="_clinicData.contactDetails.website"
+      #website
+    >
+    </rb-input-custom>
+  </div>
+
 
   <div class="submit-button-container"  *ngIf="!updateDeleteForm">
     <button
@@ -77,7 +89,7 @@
 
   <div class="update-delete-buttons-container" *ngIf="updateDeleteForm">
     <button
-      (click)="_onSubmitClinicButtonClick()"
+      (click)="_onUpdateClinicButtonClick()"
       mat-raised-button
       [disabled]="submitButtonDisabled"
       color="primary"

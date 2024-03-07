@@ -1,7 +1,7 @@
 import {Component, OnDestroy, ViewChild} from "@angular/core";
 import {RbAutocompleteCustomComponent} from "../../components/rb-autocomplete-custom/rb-autocomplete-custom.component";
 import {AppDataService} from "../../services/app-data.service";
-import {TClinic, TOption, TUserData} from "../../types/types";
+import {TClinic, TOption, TPatient, TSession, TUserData} from "../../types/types";
 import {FirestoreSubscribeService} from "../../services/firestore-subscribe.service";
 import {Subscription} from "rxjs";
 import {NgIf} from "@angular/common";
@@ -9,6 +9,7 @@ import {RbAddClinicCustomComponent} from "../../components/rb-add-clinic-custom/
 import {FirestoreQueriesService} from "../../services/firestore-queries.service";
 import {CommunicationService} from "../../services/communication.service";
 import {ErrorHandlerService} from "../../services/error-handler.service";
+import {RbSelectCustomComponent} from "../../components/rb-select-custom/rb-select-custom.component";
 
 type TClinicNoId = Omit<TClinic, 'clinicId' | 'clinicName'>;
 const initialClinicData: TClinic = {
@@ -34,7 +35,8 @@ const initialClinicData: TClinic = {
   imports: [
     RbAutocompleteCustomComponent,
     NgIf,
-    RbAddClinicCustomComponent
+    RbAddClinicCustomComponent,
+    RbSelectCustomComponent
   ],
   selector: 'manage-clinics'
 })
@@ -52,6 +54,8 @@ export class ManageClinicsComponent implements OnDestroy {
   private userData: TUserData | undefined;
 
   protected _isUpdateDeleteForm: boolean = false;
+
+  private _lastClinicData: TClinic | undefined;
 
   @ViewChild('autocompleteCustomComponent') autocompleteCustomComponent: RbAutocompleteCustomComponent | undefined;
 
@@ -79,7 +83,7 @@ export class ManageClinicsComponent implements OnDestroy {
           this.newClinicData = initialClinicData;
           this.userData = data;
           this.registeredClinicsOptions = this._computeRegisteredClinicsOptions();
-          this._validateSubmitNewClinicButtonDisabled();
+          this._validateSubmitClinicButtonDisabled();
         }
       });
 
@@ -113,6 +117,7 @@ export class ManageClinicsComponent implements OnDestroy {
       this._clinicInputDisabled = true;
       this._isUpdateDeleteForm = true;
       this.newClinicData = clinic;
+      this._lastClinicData = clinic;
     }
   }
 
@@ -136,7 +141,7 @@ export class ManageClinicsComponent implements OnDestroy {
       ...this.newClinicData,
       clinicName: value
     };
-    this._validateSubmitNewClinicButtonDisabled();
+    this._validateSubmitClinicButtonDisabled();
   }
 
   /**
@@ -153,20 +158,18 @@ export class ManageClinicsComponent implements OnDestroy {
       ...this.newClinicData,
       ...clinicData
     };
-    this._validateSubmitNewClinicButtonDisabled();
+    this._validateSubmitClinicButtonDisabled();
   }
 
   /**
    * Check if button should be disabled or not
    * @protected
    */
-  protected _validateSubmitNewClinicButtonDisabled() {
-    if (this.newClinicData.clinicName) {
-      this.submitNewClinicBtnDisabled = false;
-    } else {
-      this.submitNewClinicBtnDisabled = true;
-    }
+  protected _validateSubmitClinicButtonDisabled() {
+    this.submitNewClinicBtnDisabled = !this.newClinicData.clinicName || (this._isUpdateDeleteForm ? this._validateIfDataHasNotChanged() : false);
   }
+
+
 
   /**
    * Method to handle submit clinic
@@ -197,7 +200,7 @@ export class ManageClinicsComponent implements OnDestroy {
           });
           this.errorHandlerService.validateError();
         })
-        .finally(() => this._clearAddClinicElements());
+        .finally(() => this._clearClinicElements());
     }
   }
 
@@ -205,16 +208,151 @@ export class ManageClinicsComponent implements OnDestroy {
    * Clear all add clinic elements
    * @private
    */
-  private _clearAddClinicElements() {
+  private _clearClinicElements() {
     this.addClinicCustomComponent?.clearValues();
     this.autocompleteCustomComponent?.clear();
-    this._validateSubmitNewClinicButtonDisabled();
+    this._validateSubmitClinicButtonDisabled();
   }
 
   /**
    * --- END OF ADD NEW CLINIC METHODS ----
    */
 
+  /**
+   * --- UPDATE CLINIC METHODS -----
+   */
+
+  /**
+   * Open dialog with information and add subscriber to confirm operation
+   * @protected
+   */
+  protected _onUpdateClinic() {
+    this.communicationService.emitDialogData({
+      title: 'Confirmar operación',
+      content: 'Modificar clínica',
+      size: 'sm',
+      primaryButtonLabel: 'Confirmar',
+      secondaryButtonLabel: 'Cancelar',
+      primaryButtonEvent: 'confirm-operation',
+      secondaryButtonEvent: 'reject-operation'
+    });
+
+    this.communicationService.subscribeDialogCallbackEvent$.subscribe(value => {
+      if (value === 'confirm-operation') {
+        this._confirmUpdateClinic();
+      }
+    });
+  }
+
+  /**
+   * Save data to store with updated clinic
+   * @private
+   */
+  private _confirmUpdateClinic() {
+    this.communicationService.openSpinner();
+    const updateUserData = this._updateUserDataObject();
+
+    if (updateUserData) {
+      this.firestoreQueriesService.saveData(this.appDataService.getUserId(), updateUserData)
+        .then(() => {
+          this.communicationService.closeSpinner();
+          this.communicationService.emitAlertData({
+            id: '',
+            type: 'success',
+            message: '¡Clínica modificada con éxito!',
+            clearTimeMs: 3000
+          });
+        })
+        .catch(() => {
+          this.communicationService.closeSpinner();
+          this.communicationService.emitAlertData({
+            id: '',
+            type: 'danger',
+            message: 'Ha ocurrido un error al modificar la clínica',
+            clearTimeMs: 3000
+          });
+        })
+        .finally(() => this._clearClinicElements());
+    }
+  }
+
+  /**
+   * Compare old data with new data to determinate if submit button should be disabled
+   * @private
+   */
+  private _validateIfDataHasNotChanged() {
+    return JSON.stringify(this._lastClinicData) === JSON.stringify(this.newClinicData);
+  }
+
+  /**
+   * --- END OF UPDATE CLINIC METHODS -----
+   */
+
+  /**
+   * ----- DELETE CLINIC METHOD -----
+   */
+
+  /**
+   * Opens dialog and add subscriber to handle confirm operation
+   * @protected
+   */
+  protected _onDeleteClinic() {
+    this.communicationService.emitDialogData({
+      title: 'Confirmar eliminación',
+      content: 'Si eliminas la clínica también se eliminaran los pacientes registrados con sus respectivas sesiones.',
+      size: 'sm',
+      primaryButtonLabel: 'Confirmar',
+      secondaryButtonLabel: 'Cancelar',
+      primaryButtonEvent: 'confirm-deletion'
+    });
+
+    this.communicationService.subscribeDialogCallbackEvent$.subscribe(value => {
+      if (value === 'confirm-deletion') {
+        this._confirmDeleteClinic();
+      }
+    });
+  }
+
+  /**
+   * Update user data and update store with user data without the delete clinic, patients and sessions
+   * @private
+   */
+  private _confirmDeleteClinic() {
+    if (this.userData) {
+      this.communicationService.openSpinner();
+      this.userData = {
+        ...this.userData,
+        patients: this.userData?.patients.filter((patient: TPatient) => patient.clinicId !== this.newClinicData.clinicId) || [],
+        clinics: this.userData?.clinics.filter((clinic: TClinic) => clinic.clinicId !== this.newClinicData.clinicId) || [],
+        sessions: this.userData?.sessions.filter((session: TSession) => session.clinicId !== this.newClinicData.clinicId) || []
+      };
+
+      this.firestoreQueriesService.saveData(this.appDataService.getUserId(), this.userData)
+        .then(() => {
+          this.communicationService.closeSpinner();
+          this.communicationService.emitAlertData({
+            id: '',
+            type: 'success',
+            message: '¡Clínica eliminada con éxito!',
+            clearTimeMs: 3000
+          });
+        })
+        .catch(() => {
+          this.communicationService.closeSpinner();
+          this.communicationService.emitAlertData({
+            id: '',
+            type: 'danger',
+            message: 'Ha ocurrido un error al eliminar la clínica',
+            clearTimeMs: 3000
+          });
+        })
+        .finally(() => this._clearClinicElements());
+    }
+  }
+
+  /**
+   * ----- END OF DELETE CLINIC METHOD -----
+   */
 
   /**
    * Generate new clinic id based on registered clinics
@@ -234,6 +372,15 @@ export class ManageClinicsComponent implements OnDestroy {
    */
   private _updateUserDataObject(): TUserData | undefined {
     if (this.userData) {
+      if (this._isUpdateDeleteForm) {
+        this.userData = {
+          ...this.userData,
+          clinics: [
+            ...this.userData.clinics.filter((clinic: TClinic) => clinic.clinicId !== this.newClinicData.clinicId)
+          ]
+        }
+      }
+
       return {
         ...this.userData,
         clinics: [
@@ -248,7 +395,6 @@ export class ManageClinicsComponent implements OnDestroy {
     }
     return undefined;
   }
-
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }

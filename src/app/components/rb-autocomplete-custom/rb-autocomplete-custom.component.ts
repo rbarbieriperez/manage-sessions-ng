@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output, ViewChild} from "@angular/core";
+import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild} from "@angular/core";
 import {TOption} from "../../types/types";
 import {MatFormField, MatHint, MatLabel, MatSuffix} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
@@ -36,7 +36,7 @@ import {MatIconButton} from "@angular/material/button";
   styleUrl: './rb-autocomplete-custom.component.scss'
 })
 
-export class RbAutocompleteCustomComponent {
+export class RbAutocompleteCustomComponent implements OnChanges {
   protected formControl = new FormControl('');
   protected _selectedViewValue: string = '';
 
@@ -46,6 +46,7 @@ export class RbAutocompleteCustomComponent {
   @Input() inputDisabled: boolean = false;
   @Input() showHint: boolean = false;
   @Input() hintText: string = '';
+  @Input() searchMode: boolean = true;
 
   @Output() selectedValue = new EventEmitter<string>();
   @Output() textChange = new EventEmitter<string>();
@@ -53,8 +54,15 @@ export class RbAutocompleteCustomComponent {
 
   @ViewChild(MatAutocompleteTrigger) selectComponent: MatAutocompleteTrigger | undefined;
 
+  protected _searchOptions: TOption[] = [];
 
   constructor() {
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if(changes['options'] && this.options) {
+      this._searchOptions = this.options;
+    }
   }
 
   /**
@@ -78,11 +86,18 @@ export class RbAutocompleteCustomComponent {
    */
   protected _onInputChangeValue(event: Event) {
     const { value } = event.target as HTMLInputElement;
-    this.selectComponent?.closePanel();
     if (value) {
       this.textChange.emit(value);
     } else {
       this.textChange.emit('');
+    }
+
+    if (this.searchMode) {
+      if (value) {
+        this._searchOptions = this.options.filter((option: TOption) => option.viewValue.toLowerCase().includes(value.toLowerCase()));
+      } else {
+        this._searchOptions = this.options;
+      }
     }
   }
 
@@ -93,15 +108,11 @@ export class RbAutocompleteCustomComponent {
     this.selectedValue.emit('');
     this.formControl.setValue('');
     this.formControl.reset();
+    this._searchOptions = this.options;
   }
 
   public clear() {
-    this.clearBtnClick.emit();
-    this._selectedViewValue = '';
-    this.textChange.emit('');
-    this.selectedValue.emit('');
-    this.formControl.setValue('');
-    this.formControl.reset();
+    this._onClearIconClick();
   }
 
 

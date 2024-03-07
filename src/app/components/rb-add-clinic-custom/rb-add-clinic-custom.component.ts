@@ -4,9 +4,10 @@ import {RbInputCustomComponent} from "../rb-input-custom/rb-input-custom.compone
 import {MatButton} from "@angular/material/button";
 import {NgIf} from "@angular/common";
 
-type TClinicNoId = Omit<TClinic, 'clinicId' | 'clinicName'>;
+type TClinicNoId = Omit<TClinic, 'clinicId'>;
 
 const initialClinicData: TClinicNoId = {
+  clinicName: '',
   address: {
     fullAddress: '',
     number: '',
@@ -37,6 +38,7 @@ export class RbAddClinicCustomComponent implements OnChanges {
 
   @Output() onClinicDataChange = new EventEmitter<TClinicNoId>();
   @Output() onSubmitClinic = new EventEmitter<void>();
+  @Output() onUpdateClinic = new EventEmitter<void>();
   @Output() onDeleteClinic = new EventEmitter<void>();
   @Input() clinicData: TClinicNoId | undefined;
 
@@ -44,6 +46,7 @@ export class RbAddClinicCustomComponent implements OnChanges {
   @Input() updateDeleteForm: boolean = false;
   protected _clinicData: TClinicNoId = initialClinicData;
 
+  @ViewChild('name') nameInput: RbInputCustomComponent | undefined = undefined;
   @ViewChild('address') addressInput: RbInputCustomComponent | undefined = undefined;
   @ViewChild('number') numberInput: RbInputCustomComponent | undefined = undefined;
   @ViewChild('additionalInfo') additionalInfoInput: RbInputCustomComponent | undefined = undefined;
@@ -57,10 +60,18 @@ export class RbAddClinicCustomComponent implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log('entramos a onchanges', changes);
     if (changes['clinicData'] && this.clinicData) {
       this._clinicData = this.clinicData;
     }
+  }
+
+  protected _onClinicNameChanges(value: string) {
+    this._clinicData = {
+      ...this._clinicData,
+      clinicName: value
+    }
+
+    this.onClinicDataChange.emit(this._clinicData);
   }
 
   protected _onFullAddressChange(value: string) {
@@ -152,6 +163,7 @@ export class RbAddClinicCustomComponent implements OnChanges {
     this._clinicData = initialClinicData;
 
     if (
+      this.nameInput &&
       this.addressInput &&
       this.numberInput &&
       this.additionalInfoInput &&
@@ -160,6 +172,7 @@ export class RbAddClinicCustomComponent implements OnChanges {
       this.phoneInput &&
       this.websiteInput
     ) {
+      this.nameInput.clear();
       this.addressInput.clear();
       this.numberInput.clear();
       this.additionalInfoInput.clear();
@@ -172,6 +185,10 @@ export class RbAddClinicCustomComponent implements OnChanges {
 
   protected _onSubmitClinicButtonClick() {
     this.onSubmitClinic.emit();
+  }
+
+  protected _onUpdateClinicButtonClick() {
+    this.onUpdateClinic.emit();
   }
 
   protected _onDeleteButtonClick() {

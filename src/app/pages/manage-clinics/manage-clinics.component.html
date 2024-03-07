@@ -1,7 +1,7 @@
 <main class="manage-clinics-main-container">
   <rb-autocomplete-custom
     placeholder=""
-    label="Nombre de la clínica"
+    label="Seleccciona una clínica"
     [options]="registeredClinicsOptions"
     [showHint]="true"
     hintText="Selecciona una clínica de la lista para modificarla y/o eliminarla"
@@ -18,6 +18,8 @@
       [submitButtonDisabled]="submitNewClinicBtnDisabled"
       (onClinicDataChange)="_onNewClinicDataChange($event)"
       (onSubmitClinic)="_onSubmitNewClinic()"
+      (onUpdateClinic)="_onUpdateClinic()"
+      (onDeleteClinic)="_onDeleteClinic()"
       [updateDeleteForm]="_isUpdateDeleteForm"
       [clinicData]="newClinicData"
       #addClinicCustomComponent

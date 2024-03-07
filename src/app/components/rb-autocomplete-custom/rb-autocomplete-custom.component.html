@@ -12,7 +12,7 @@
     />
 
     <mat-autocomplete (optionSelected)="_onAutocompleteValueSelected($event)" #auto="matAutocomplete">
-      <mat-option  *ngFor="let option of options" [value]="option.value">{{option.viewValue}}</mat-option>
+      <mat-option  *ngFor="let option of _searchOptions" [value]="option.value">{{option.viewValue}}</mat-option>
     </mat-autocomplete>
 
 

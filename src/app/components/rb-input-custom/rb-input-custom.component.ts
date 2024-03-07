@@ -32,7 +32,6 @@ export class RbInputCustomComponent implements  OnChanges {
 
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log('input change', changes);
     if (changes['initialValue'] && this.initialValue) {
       this._currentInputValue = this.initialValue;
     }
