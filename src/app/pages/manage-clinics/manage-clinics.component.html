@@ -18,9 +18,12 @@
       (selectedValue)="_onClinicSelected($event)"
       (clearBtnClick)="_onInputClearSelection()"
       (textChange)="_onClinicNameChange($event)"
+      [forceValue]="_forceAutocompleteValue"
       #autocompleteCustomComponent
     >
     </rb-autocomplete-custom>
+
+    <mat-divider></mat-divider>
 
     <section class="add-clinic-container">
       <rb-add-clinic-custom
@@ -37,8 +40,9 @@
     </section>
   </section>
 
-  <section *ngIf="!_isUpdateDeleteView">
-
+  <section class="mt-4" *ngIf="!_isUpdateDeleteView">
+    <rb-patients-clinic-list-custom [patients]="_getPatientsOnClinic()">
+    </rb-patients-clinic-list-custom>
   </section>
 
 

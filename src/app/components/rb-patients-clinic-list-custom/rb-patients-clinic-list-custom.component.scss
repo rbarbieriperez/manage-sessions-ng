@@ -1,0 +1,20 @@
+.accordion-container {
+  display: flex;
+  flex-direction: column;
+  row-gap: 1rem;
+}
+
+.accordion-patient-data-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.inline-values {
+  display: flex;
+  flex-direction: row;
+}
+
+.no-patients-container {
+  width: 100%;
+  text-align: center;
+}

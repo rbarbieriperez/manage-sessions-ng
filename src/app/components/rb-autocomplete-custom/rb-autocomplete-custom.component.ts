@@ -1,4 +1,14 @@
-import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild} from "@angular/core";
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  SimpleChanges,
+  ViewChild
+} from "@angular/core";
 import {TOption} from "../../types/types";
 import {MatFormField, MatHint, MatLabel, MatSuffix} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
@@ -47,6 +57,7 @@ export class RbAutocompleteCustomComponent implements OnChanges {
   @Input() showHint: boolean = false;
   @Input() hintText: string = '';
   @Input() searchMode: boolean = true;
+  @Input() forceValue: string = '';
 
   @Output() selectedValue = new EventEmitter<string>();
   @Output() textChange = new EventEmitter<string>();
@@ -63,7 +74,12 @@ export class RbAutocompleteCustomComponent implements OnChanges {
     if(changes['options'] && this.options) {
       this._searchOptions = this.options;
     }
+
+    if(changes['forceValue'] && this.forceValue) {
+      this._selectedViewValue = this.forceValue;
+    }
   }
+
 
   /**
    * Emit selected value

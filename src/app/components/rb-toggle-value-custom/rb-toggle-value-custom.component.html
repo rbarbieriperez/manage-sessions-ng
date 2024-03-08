@@ -1,0 +1,5 @@
+<div class="toggle-value-custom-container">
+  <span *ngIf="!_isMasked">{{value}}</span>
+  <span *ngIf="_isMasked">{{_getChars(value)}}</span>
+  <mat-icon (click)="_isMasked = !_isMasked" class="icon-display">{{_isMasked ? 'visibility_off' : 'visibility'}}</mat-icon>
+</div>

@@ -12,6 +12,10 @@ import {ErrorHandlerService} from "../../services/error-handler.service";
 import {RbSelectCustomComponent} from "../../components/rb-select-custom/rb-select-custom.component";
 import {MatButtonToggle, MatButtonToggleGroup} from "@angular/material/button-toggle";
 import {MatIcon} from "@angular/material/icon";
+import {MatDivider} from "@angular/material/divider";
+import {
+  RbPatientsClinicListCustomComponent
+} from "../../components/rb-patients-clinic-list-custom/rb-patients-clinic-list-custom.component";
 
 type TClinicNoId = Omit<TClinic, 'clinicId' | 'clinicName'>;
 const initialClinicData: TClinic = {
@@ -41,7 +45,9 @@ const initialClinicData: TClinic = {
     RbSelectCustomComponent,
     MatButtonToggleGroup,
     MatButtonToggle,
-    MatIcon
+    MatIcon,
+    MatDivider,
+    RbPatientsClinicListCustomComponent
   ],
   selector: 'manage-clinics'
 })
@@ -96,6 +102,8 @@ export class ManageClinicsComponent implements OnDestroy {
    */
   protected _isUpdateDeleteView: boolean = true;
 
+  protected _forceAutocompleteValue: string = '';
+
   @ViewChild('autocompleteCustomComponent') autocompleteCustomComponent: RbAutocompleteCustomComponent | undefined;
 
   /**
@@ -135,10 +143,15 @@ export class ManageClinicsComponent implements OnDestroy {
    */
   protected _toggleAddUpdateDeleteView() {
     this._isUpdateDeleteView = true;
-    this._isUpdateDeleteForm = false;
+
+    if (this.newClinicData.clinicName) {
+      this._forceAutocompleteValue = this.newClinicData.clinicName;
+    }
+
+    /*this._isUpdateDeleteForm = false;
     this._clinicInputDisabled = false;
     this.cdRef.detectChanges();
-    this._clearClinicElements();
+    this._clearClinicElements();*/
   }
 
   /**
@@ -164,6 +177,19 @@ export class ManageClinicsComponent implements OnDestroy {
     });
 
     return  _options;
+  }
+
+  /**
+   * Returns all the patient associated to a clinic
+   * @protected
+   */
+  protected _getPatientsOnClinic(): TPatient[] {
+    if (this.newClinicData.clinicId) {
+      return this.userData?.patients.filter((patient: TPatient) => patient.clinicId === this.newClinicData.clinicId)
+        .sort((a, b) => a.names.localeCompare(b.names))|| [];
+    }
+
+    return  [];
   }
 
   /**

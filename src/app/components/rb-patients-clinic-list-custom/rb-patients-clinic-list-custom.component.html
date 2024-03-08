@@ -1,0 +1,25 @@
+
+<div class="patients-clinic-list-main-container">
+  <div class="accordion-container" *ngIf="patients.length">
+    <mat-accordion *ngFor="let patient of patients">
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{patient.names + ' ' + patient.surnames}}
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="accordion-patient-data-container">
+          <span>Fecha de Nacimiento: {{dayjs(patient.bornDate).format('DD-MM-YYYY')}}</span>
+          <span class="inline-values">Monto por sesión: $<rb-toggle-value-custom value="{{patient.sessionValue}}"></rb-toggle-value-custom></span>
+          <span class="mt-2">Observaciones del paciente: <br/> {{patient.observations ? patient.observations : 'Sin información'}}</span>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+
+  <div class="no-patients-container" *ngIf="!patients.length">
+    <p>La clínica seleccionada no tiene pacientes registrados.</p>
+  </div>
+
+
+</div>
