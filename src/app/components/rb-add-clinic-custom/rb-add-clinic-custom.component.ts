@@ -184,7 +184,6 @@ export class RbAddClinicCustomComponent implements OnChanges {
   }
 
   protected _onSubmitClinicButtonClick() {
-    console.log('entro a submitClinicButtonClick');
     this.onSubmitClinic.emit();
   }
 

@@ -9,7 +9,7 @@
           </mat-panel-title>
         </mat-expansion-panel-header>
         <div class="accordion-patient-data-container">
-          <span>Fecha de Nacimiento: {{dayjs(patient.bornDate).format('DD-MM-YYYY')}}</span>
+          <span>Fecha de Nacimiento: {{dayjs(patient.bornDate).format('DD/MM/YYYY')}}</span>
           <span class="inline-values">Monto por sesión: $<rb-toggle-value-custom value="{{patient.sessionValue}}"></rb-toggle-value-custom></span>
           <span class="mt-2">Observaciones del paciente: <br/> {{patient.observations ? patient.observations : 'Sin información'}}</span>
         </div>

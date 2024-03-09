@@ -1,4 +1,4 @@
-<rb-header-custom (menuIconClicked)="_handleMenuOpen()" *ngIf="!router.url.includes('login')" headerTitle="Agregar Sesión"></rb-header-custom>
+<rb-header-custom (menuIconClicked)="_handleMenuOpen()" *ngIf="!router.url.includes('login')" headerTitle="{{appDataService.currentPageName}}"></rb-header-custom>
 
 <router-outlet/>
 

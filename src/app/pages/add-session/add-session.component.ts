@@ -70,7 +70,7 @@ export  class AddSessionComponent implements OnDestroy {
     private firestoreQueries: FirestoreQueriesService,
     private errorHandlerService: ErrorHandlerService,
   ) {
-    console.log('entro al constructor')
+    this.appData.currentPageName = 'Agregar sesión';
     this.userDataSubscription = this.communicationService.subscribeUserData$
       .subscribe((data: TUserData) => {
         //console.warn('User data has changed at add-session.component.ts', data);

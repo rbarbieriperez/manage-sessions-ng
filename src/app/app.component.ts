@@ -41,7 +41,7 @@ export class AppComponent implements OnInit, OnDestroy {
   constructor(
     private firestoreSubscribe: FirestoreSubscribeService,
     private backupService: FirestoreBackupService,
-    private appDataService: AppDataService,
+    protected appDataService: AppDataService,
     private firestoreQueries: FirestoreQueriesService,
     private communicationService: CommunicationService,
     private errorHandlerService: ErrorHandlerService,

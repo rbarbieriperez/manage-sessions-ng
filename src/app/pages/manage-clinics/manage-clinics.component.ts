@@ -125,6 +125,7 @@ export class ManageClinicsComponent implements OnDestroy, OnInit {
     private errorHandlerService: ErrorHandlerService,
     private cdRef:ChangeDetectorRef
   ) {
+    this.appDataService.currentPageName = 'Administrar clínicas';
     console.log('userid', this.appDataService.getUserId());
     this.subscription = this.communicationService.subscribeUserData$
       .subscribe((data) => {
@@ -243,7 +244,6 @@ export class ManageClinicsComponent implements OnDestroy, OnInit {
    * @protected
    */
   protected _onNewClinicDataChange(clinicData: TClinicNoId) {
-    console.log('entro a _onNewClinicDataChange', clinicData);
     this.newClinicData = {
       ...this.newClinicData,
       ...clinicData
@@ -267,7 +267,6 @@ export class ManageClinicsComponent implements OnDestroy, OnInit {
    */
   protected _onSubmitNewClinic() {
     const updateUserData: TUserData | undefined = this._updateUserDataObject();
-    console.log('_onSubmitNewClinic',updateUserData);
     if (updateUserData) {
       this.communicationService.openSpinner();
       this.firestoreQueriesService.saveData(this.appDataService.getUserId(), updateUserData)

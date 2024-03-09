@@ -8,15 +8,18 @@ import {FirestoreSubscribeService} from "./firestore-subscribe.service";
 })
 
 export class AppDataService {
-  uid: string;
-  userName: string;
-  generalConfig: any;
-  userData: TUserData | undefined;
+  private uid: string;
+  private userName: string;
+  public generalConfig: any;
+  public userData: TUserData | undefined;
+  public currentPageName: string;
+
 
   constructor() {
     this.uid = '';
     this.userName = '';
     this.generalConfig = {};
+    this.currentPageName = '';
   }
 
   getUserId() {
