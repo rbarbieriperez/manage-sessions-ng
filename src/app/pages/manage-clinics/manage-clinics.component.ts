@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, OnDestroy, ViewChild} from "@angular/core";
+import {ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from "@angular/core";
 import {RbAutocompleteCustomComponent} from "../../components/rb-autocomplete-custom/rb-autocomplete-custom.component";
 import {AppDataService} from "../../services/app-data.service";
 import {TClinic, TOption, TPatient, TSession, TUserData} from "../../types/types";
@@ -53,7 +53,7 @@ const initialClinicData: TClinic = {
   selector: 'manage-clinics'
 })
 
-export class ManageClinicsComponent implements OnDestroy {
+export class ManageClinicsComponent implements OnDestroy, OnInit {
 
   /**
    * TOption array with all the registered clinics
@@ -136,6 +136,10 @@ export class ManageClinicsComponent implements OnDestroy {
           this._validateSubmitClinicButtonDisabled();
         }
       });
+
+  }
+
+  ngOnInit() {
 
   }
 
@@ -253,7 +257,6 @@ export class ManageClinicsComponent implements OnDestroy {
    */
   protected _validateSubmitClinicButtonDisabled() {
     this.submitNewClinicBtnDisabled = !this.newClinicData.clinicName || (this._isUpdateDeleteForm ? this._validateIfDataHasNotChanged() : false);
-    this.cdRef.detectChanges();
   }
 
 

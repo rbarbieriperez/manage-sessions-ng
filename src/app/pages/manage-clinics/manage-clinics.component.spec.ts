@@ -106,7 +106,6 @@ describe('ManageClinicsComponent', () => {
     });
 
     it('Clicking on submit button should open spinner', done => {
-      const button = document.getElementById('submitButton');
       communicationService.openSpinner = jasmine.createSpy();
       firestoreQueriesService.saveData = jasmine.createSpy().and.returnValue(Promise.resolve(true));
       fixture.detectChanges();
@@ -114,14 +113,13 @@ describe('ManageClinicsComponent', () => {
         .then(() => {
           component.addClinicCustomComponent?.nameInput?.onChange.emit('aadsf');
           fixture.detectChanges();
-          button?.click();
+          document.getElementById('submitButton')?.click();
           expect(communicationService.openSpinner).toHaveBeenCalled();
           done();
         });
     });
 
     it('If clinic was submitted correctly spinner should be closed', done => {
-      const button = document.getElementById('submitButton');
       communicationService.closeSpinner = jasmine.createSpy();
       firestoreQueriesService.saveData = jasmine.createSpy().and.returnValue(Promise.resolve(true));
       fixture.detectChanges();
@@ -129,7 +127,7 @@ describe('ManageClinicsComponent', () => {
         .then(() => {
           component.addClinicCustomComponent?.nameInput?.onChange.emit('aadsf');
           fixture.detectChanges();
-          button?.click();
+          document.getElementById('submitButton')?.click();
           setTimeout(() => {
             expect(communicationService.closeSpinner).toHaveBeenCalled();
             done();
@@ -138,7 +136,6 @@ describe('ManageClinicsComponent', () => {
     });
 
     it('If clinic was submitted correctly alert should be opened', done => {
-      const button = document.getElementById('submitButton');
       communicationService.emitAlertData = jasmine.createSpy();
       firestoreQueriesService.saveData = jasmine.createSpy().and.returnValue(Promise.resolve(true));
       fixture.detectChanges();
@@ -146,7 +143,7 @@ describe('ManageClinicsComponent', () => {
         .then(() => {
           component.addClinicCustomComponent?.nameInput?.onChange.emit('aadsf');
           fixture.detectChanges();
-          button?.click();
+          document.getElementById('submitButton')?.click();
           setTimeout(() => {
             expect(communicationService.emitAlertData).toHaveBeenCalledWith({
               id: '',
@@ -160,7 +157,6 @@ describe('ManageClinicsComponent', () => {
     });
 
     it('If there was an error while submitting new clinic spinner should be closed', done => {
-      const button = document.getElementById('submitButton');
       communicationService.closeSpinner = jasmine.createSpy();
       firestoreQueriesService.saveData = jasmine.createSpy().and.returnValue(Promise.reject());
       errorHandlerService.validateError = jasmine.createSpy().and.callFake(() => {});
@@ -169,7 +165,7 @@ describe('ManageClinicsComponent', () => {
         .then(() => {
           component.addClinicCustomComponent?.nameInput?.onChange.emit('aadsf');
           fixture.detectChanges();
-          button?.click();
+          document.getElementById('submitButton')?.click();
           setTimeout(() => {
             expect(communicationService.closeSpinner).toHaveBeenCalled();
             done();
@@ -178,7 +174,6 @@ describe('ManageClinicsComponent', () => {
     });
 
     it('If there was an error while submitting new clinic error alert should be shown', done => {
-      const button = document.getElementById('submitButton');
       communicationService.emitAlertData = jasmine.createSpy();
       firestoreQueriesService.saveData = jasmine.createSpy().and.returnValue(Promise.reject());
       errorHandlerService.validateError = jasmine.createSpy().and.callFake(() => {});
@@ -187,7 +182,7 @@ describe('ManageClinicsComponent', () => {
         .then(() => {
           component.addClinicCustomComponent?.nameInput?.onChange.emit('aadsf');
           fixture.detectChanges();
-          button?.click();
+          document.getElementById('submitButton')?.click();
           setTimeout(() => {
             expect(communicationService.emitAlertData).toHaveBeenCalledWith({
               id: '',
@@ -201,7 +196,6 @@ describe('ManageClinicsComponent', () => {
     });
 
     it('If there was an error while submitting new clinic validateError from error handler service should be called', done => {
-      const button = document.getElementById('submitButton');
       firestoreQueriesService.saveData = jasmine.createSpy().and.returnValue(Promise.reject());
       errorHandlerService.validateError = jasmine.createSpy().and.callFake(() => {});
       fixture.detectChanges();
@@ -209,7 +203,7 @@ describe('ManageClinicsComponent', () => {
         .then(() => {
           component.addClinicCustomComponent?.nameInput?.onChange.emit('aadsf');
           fixture.detectChanges();
-          button?.click();
+          document.getElementById('submitButton')?.click();
           setTimeout(() => {
             expect(errorHandlerService.validateError).toHaveBeenCalled();
             done();
@@ -218,19 +212,16 @@ describe('ManageClinicsComponent', () => {
     });
 
     it('After submitting new clinic elements should be cleared', done => {
-      const button = document.getElementById('submitButton');
       firestoreQueriesService.saveData = jasmine.createSpy().and.returnValue(Promise.resolve());
-
-      if (component.addClinicCustomComponent) {
-        component.addClinicCustomComponent.clearValues = jasmine.createSpy();
-      }
-
       fixture.detectChanges();
       fixture.whenStable()
         .then(() => {
+          if (component.addClinicCustomComponent) {
+            component.addClinicCustomComponent.clearValues = jasmine.createSpy();
+          }
           component.addClinicCustomComponent?.nameInput?.onChange.emit('aadsf');
           fixture.detectChanges();
-          button?.click();
+          document.getElementById('submitButton')?.click();
           setTimeout(() => {
             expect(component.addClinicCustomComponent?.clearValues).toHaveBeenCalled();
             done();
@@ -468,14 +459,12 @@ describe('ManageClinicsComponent', () => {
 
     it('After updating a clinic elements should be cleared', done => {
       firestoreQueriesService.saveData = jasmine.createSpy().and.returnValue(Promise.resolve());
-
-      if (component.addClinicCustomComponent) {
-        component.addClinicCustomComponent.clearValues = jasmine.createSpy();
-      }
-
       fixture.detectChanges();
       fixture.whenStable()
         .then(() => {
+          if (component.addClinicCustomComponent) {
+            component.addClinicCustomComponent.clearValues = jasmine.createSpy();
+          }
           component.autocompleteCustomComponent?.selectedValue.emit('1');
           component.addClinicCustomComponent?.nameInput?.onChange.emit('aadsf');
           fixture.detectChanges();
@@ -647,13 +636,13 @@ describe('ManageClinicsComponent', () => {
     });
 
     it('After deletion process elements should be cleared', done => {
-      if(component.addClinicCustomComponent) {
-        component.addClinicCustomComponent.clearValues = jasmine.createSpy();
-      }
       firestoreQueriesService.saveData = jasmine.createSpy().and.returnValue(Promise.resolve());
       fixture.detectChanges();
       fixture.whenStable()
         .then(() => {
+          if(component.addClinicCustomComponent) {
+            component.addClinicCustomComponent.clearValues = jasmine.createSpy();
+          }
           component.autocompleteCustomComponent?.selectedValue.emit('1');
           fixture.detectChanges();
           document.getElementById('deleteButton')?.click();
