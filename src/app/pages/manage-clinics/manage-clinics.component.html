@@ -2,8 +2,8 @@
 
   <section class="manage-clinics-toggle-buttons-container">
     <mat-button-toggle-group>
-      <mat-button-toggle (click)="_toggleAddUpdateDeleteView()"><mat-icon>description</mat-icon></mat-button-toggle>
-      <mat-button-toggle (click)="_togglePatientListView()"><mat-icon>face</mat-icon></mat-button-toggle>
+      <mat-button-toggle id="manage-clinics-btn" (click)="_toggleAddUpdateDeleteView()"><mat-icon>description</mat-icon></mat-button-toggle>
+      <mat-button-toggle id="patient-list-btn" (click)="_togglePatientListView()"><mat-icon>face</mat-icon></mat-button-toggle>
     </mat-button-toggle-group>
   </section>
 
@@ -17,7 +17,6 @@
       [inputDisabled]="_clinicInputDisabled"
       (selectedValue)="_onClinicSelected($event)"
       (clearBtnClick)="_onInputClearSelection()"
-      (textChange)="_onClinicNameChange($event)"
       [forceValue]="_forceAutocompleteValue"
       #autocompleteCustomComponent
     >

@@ -304,7 +304,7 @@ describe('AddSessionComponent', () => {
         });
     });
 
-    it('If there is no sessions new session id will be 1', done => {
+    it('If there are no sessions new session id will be 1', done => {
       const button = document.getElementById('submitButton');
       appDataService.setUserId('1234');
       const _userData: TUserData = {
@@ -318,7 +318,7 @@ describe('AddSessionComponent', () => {
         .then(() => {
           component.selectClinicsElement?.elementSelected.emit('1');
           component.selectPatientsElement?.elementSelected.emit('1');
-          component.datepickerElement?.dateEmiiter.emit(new Date);
+          component.datepickerElement?.dateEmiiter.emit(new Date('2024-3-3'));
           fixture.detectChanges();
           button?.click();
           setTimeout(() => {

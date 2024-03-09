@@ -49,6 +49,7 @@ const initialClinicData: TClinic = {
     MatDivider,
     RbPatientsClinicListCustomComponent
   ],
+  providers: [],
   selector: 'manage-clinics'
 })
 
@@ -124,7 +125,8 @@ export class ManageClinicsComponent implements OnDestroy {
     private errorHandlerService: ErrorHandlerService,
     private cdRef:ChangeDetectorRef
   ) {
-    this.subscription = this.firestoreSubscribeService.subscribeStore(this.appDataService.getUserId())
+    console.log('userid', this.appDataService.getUserId());
+    this.subscription = this.communicationService.subscribeUserData$
       .subscribe((data) => {
         if (data) {
           console.warn('User data has changed at manage-clinics', data);
@@ -184,12 +186,8 @@ export class ManageClinicsComponent implements OnDestroy {
    * @protected
    */
   protected _getPatientsOnClinic(): TPatient[] {
-    if (this.newClinicData.clinicId) {
-      return this.userData?.patients.filter((patient: TPatient) => patient.clinicId === this.newClinicData.clinicId)
-        .sort((a, b) => a.names.localeCompare(b.names))|| [];
-    }
-
-    return  [];
+    return this.userData?.patients.filter((patient: TPatient) => patient.clinicId === this.newClinicData.clinicId)
+      .sort((a, b) => a.names.localeCompare(b.names))|| [];
   }
 
   /**
@@ -222,13 +220,14 @@ export class ManageClinicsComponent implements OnDestroy {
    * @param value
    * @protected
    */
-  protected _onClinicNameChange(value: string) {
+  /*protected _onClinicNameChange(value: string) {
+    console.log('entro a _onClinicNameChange', value);
     this.newClinicData = {
       ...this.newClinicData,
       clinicName: value
     };
     this._validateSubmitClinicButtonDisabled();
-  }
+  }*/
 
   /**
    * --- ADD NEW CLINIC METHODS ----
@@ -240,6 +239,7 @@ export class ManageClinicsComponent implements OnDestroy {
    * @protected
    */
   protected _onNewClinicDataChange(clinicData: TClinicNoId) {
+    console.log('entro a _onNewClinicDataChange', clinicData);
     this.newClinicData = {
       ...this.newClinicData,
       ...clinicData
@@ -253,6 +253,7 @@ export class ManageClinicsComponent implements OnDestroy {
    */
   protected _validateSubmitClinicButtonDisabled() {
     this.submitNewClinicBtnDisabled = !this.newClinicData.clinicName || (this._isUpdateDeleteForm ? this._validateIfDataHasNotChanged() : false);
+    this.cdRef.detectChanges();
   }
 
 
@@ -263,7 +264,7 @@ export class ManageClinicsComponent implements OnDestroy {
    */
   protected _onSubmitNewClinic() {
     const updateUserData: TUserData | undefined = this._updateUserDataObject();
-    console.log(updateUserData);
+    console.log('_onSubmitNewClinic',updateUserData);
     if (updateUserData) {
       this.communicationService.openSpinner();
       this.firestoreQueriesService.saveData(this.appDataService.getUserId(), updateUserData)
@@ -357,6 +358,7 @@ export class ManageClinicsComponent implements OnDestroy {
             message: 'Ha ocurrido un error al modificar la clínica',
             clearTimeMs: 3000
           });
+          this.errorHandlerService.validateError();
         })
         .finally(() => this._clearClinicElements());
     }
@@ -432,6 +434,7 @@ export class ManageClinicsComponent implements OnDestroy {
             message: 'Ha ocurrido un error al eliminar la clínica',
             clearTimeMs: 3000
           });
+          this.errorHandlerService.validateError();
         })
         .finally(() => this._clearClinicElements());
     }

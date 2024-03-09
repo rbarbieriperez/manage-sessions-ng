@@ -1,7 +1,7 @@
 
 <div class="patients-clinic-list-main-container">
   <div class="accordion-container" *ngIf="patients.length">
-    <mat-accordion *ngFor="let patient of patients">
+    <mat-accordion id="mat-accordion" *ngFor="let patient of patients">
       <mat-expansion-panel>
         <mat-expansion-panel-header>
           <mat-panel-title>
@@ -17,7 +17,7 @@
     </mat-accordion>
   </div>
 
-  <div class="no-patients-container" *ngIf="!patients.length">
+  <div id="no-patients-message" class="no-patients-container" *ngIf="!patients.length">
     <p>La clínica seleccionada no tiene pacientes registrados.</p>
   </div>
 
