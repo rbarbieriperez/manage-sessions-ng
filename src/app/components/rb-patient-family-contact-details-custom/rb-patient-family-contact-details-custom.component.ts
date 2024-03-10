@@ -4,9 +4,9 @@ import {
   EventEmitter,
   Input,
   OnChanges,
-  Output,
+  Output, QueryList,
   SimpleChanges,
-  ViewChild
+  ViewChild, ViewChildren
 } from "@angular/core";
 import {TFamily} from "../../types/types";
 import {MatAccordion, MatExpansionModule, MatExpansionPanel} from "@angular/material/expansion";
@@ -44,7 +44,7 @@ export class RbPatientFamilyContactDetailsCustomComponent implements OnChanges {
 
 
   @ViewChild('indexButtons') indexButtons: ElementRef[] | undefined;
-  @ViewChild('accordion') accordion: MatAccordion | undefined;
+  @ViewChildren(MatExpansionPanel) panels: QueryList<MatExpansionPanel> | undefined;
   protected _newFamilyContactDetailsData: TFamily[] = [];
   protected _contactDetailSelectedIndex: number = -1;
 
@@ -155,6 +155,7 @@ export class RbPatientFamilyContactDetailsCustomComponent implements OnChanges {
   public clear() {
     this._contactDetailSelectedIndex = -1;
     this._newFamilyContactDetailsData = [];
-    this.accordion?.closeAll();
+    this._initForm = false;
+    this.panels?.forEach(panel => panel.close());
   }
 }

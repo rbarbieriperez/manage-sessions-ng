@@ -3,6 +3,7 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {NgIf} from "@angular/common";
 import {MatIcon} from "@angular/material/icon";
+import {FormsModule} from "@angular/forms";
 
 
 @Component({
@@ -10,7 +11,7 @@ import {MatIcon} from "@angular/material/icon";
   selector: 'rb-textarea-custom',
   styleUrl: './rb-textarea-custom.component.scss',
   templateUrl: './rb-textarea-custom.component.html',
-  imports: [MatFormFieldModule, MatInputModule, NgIf, MatIcon]
+  imports: [MatFormFieldModule, MatInputModule, NgIf, MatIcon, FormsModule]
 })
 
 export class RbTextareaCustomComponent implements OnChanges {

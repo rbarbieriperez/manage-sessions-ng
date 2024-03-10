@@ -164,11 +164,14 @@ export class ManagePatientsComponent {
    * @protected
    */
   protected _onSelectedPatientAutocompleteChange(value: string) {
-    const foundPatiennt = this.userData?.patients.find((patient: TPatient) => patient.patientId === Number(value)) || initialPatientData
-    this.currentPatientData = foundPatiennt;
-    this.newPatientData = foundPatiennt;
-    this._forcePatientsAutocompleteValue = `${this.currentPatientData.names} ${this.currentPatientData.surnames}`;
-    this._validateIsUpdateDeleteForm();
+    if (value) {
+      const foundPatient = this.userData?.patients.find((patient: TPatient) => patient.patientId === Number(value)) || initialPatientData
+      this.currentPatientData = foundPatient;
+      this.newPatientData = foundPatient;
+      this._forcePatientsAutocompleteValue = `${this.currentPatientData.names} ${this.currentPatientData.surnames}`;
+      this._patientsAutocompleteDisabled = true;
+      this._validateIsUpdateDeleteForm();
+    }
   }
 
   /**
@@ -176,12 +179,14 @@ export class ManagePatientsComponent {
    * @protected
    */
   protected _onClearSelectedClinicAutocomplete() {
+    this.patientsAutocomplete?.clear();
+    this.managePatientComponent?.clearFields();
     this.selectedClinicId = 0;
     this.currentPatientData = initialPatientData;
+    this.newPatientData = initialPatientData;
     this._clinicsAutocompleteDisabled = false;
     this._patientsAutocompleteDisabled = true;
     this._showClinicsAutocompleteHint = false;
-    this.patientsAutocomplete?.clear();
     this._validateIsUpdateDeleteForm();
   }
 
@@ -190,8 +195,11 @@ export class ManagePatientsComponent {
    * @protected
    */
   protected _onClearSelectedPatientAutocomplete() {
+    this.managePatientComponent?.clearFields();
     this.currentPatientData = initialPatientData;
     this.newPatientData = initialPatientData;
+    this._patientsAutocompleteDisabled = false;
+    console.log(this._patientsAutocompleteDisabled);
     this._validateIsUpdateDeleteForm();
   }
 

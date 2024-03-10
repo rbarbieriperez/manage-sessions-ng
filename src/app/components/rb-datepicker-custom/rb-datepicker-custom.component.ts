@@ -61,6 +61,6 @@ export class RbDatepickerCustomComponent implements OnChanges {
    * @public
    */
   public clear() {
-    this._pickerValue = '';
+    this._pickerValueDate = undefined;
   }
 }

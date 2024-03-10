@@ -1,4 +1,14 @@
-import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild} from "@angular/core";
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  QueryList,
+  SimpleChanges,
+  ViewChild,
+  ViewChildren
+} from "@angular/core";
 import {TAddress} from "../../types/types";
 import {
   MatAccordion, MatExpansionModule,
@@ -35,7 +45,8 @@ export class RbPatientAddressCustomComponent implements OnChanges {
   @ViewChild('fullAddress') fullAddress: RbInputCustomComponent | undefined;
   @ViewChild('number') number: RbInputCustomComponent | undefined;
   @ViewChild('additionalInfo') additionalInfo: RbInputCustomComponent | undefined;
-  @ViewChild('accordion') accordion: MatAccordion | undefined;
+
+  @ViewChildren(MatExpansionPanel) panels: QueryList<MatExpansionPanel> | undefined;
 
   protected _newAddressData: TAddress = initialAddressData;
 
@@ -69,6 +80,7 @@ export class RbPatientAddressCustomComponent implements OnChanges {
     this.fullAddress?.clear();
     this.additionalInfo?.clear();
     this.number?.clear();
-    this.accordion?.closeAll();
+
+    this.panels?.forEach(panel => panel.close());
   }
 }
