@@ -1,0 +1,40 @@
+<div class="patient-address-main-container">
+  <mat-accordion #accordion>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Información de residencia
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <div class="form-container">
+        <rb-input-custom
+          label="Dirección completa"
+          [maxLength]="100"
+          (onChange)="_onDataChange($event, 'fullAddress')"
+          [initialValue]="_newAddressData.fullAddress"
+          #fullAddress
+        >
+        </rb-input-custom>
+
+        <rb-input-custom
+          label="Número de puerta"
+          type="number"
+          [maxLength]="6"
+          (onChange)="_onDataChange($event, 'number')"
+          [initialValue]="_newAddressData.number"
+          #number
+        >
+        </rb-input-custom>
+
+        <rb-input-custom
+          label="Datos adicionales"
+          (onChange)="_onDataChange($event, 'additionalInfo')"
+          [maxLength]="50"
+          [initialValue]="_newAddressData.additionalInfo"
+          #additionalInfo
+        >
+        </rb-input-custom>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>

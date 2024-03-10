@@ -1,0 +1,52 @@
+<div class="patient-contact-detail-container" [hidden]="hidden">
+  <button (click)="_onDeleteContactDetail()" class="delete-icon" mat-icon-button>
+    <mat-icon>delete</mat-icon>
+  </button>
+
+  <div class="patient-contact-detail-form">
+    <rb-select-custom
+      [elements]="relationTypeOptionsArray"
+      label="Relación"
+      (elementSelected)="_onSelectedRelationChange($event)"
+      [defaultValue]="_newContactDetailData.relationType"
+      #relationType
+    >
+    </rb-select-custom>
+
+    <rb-input-custom
+      label="Nombres"
+      [initialValue]="_newContactDetailData.names"
+      (onChange)="_onNameChanged($event)"
+      [maxLength]="50"
+      #names
+    >
+    </rb-input-custom>
+
+    <rb-input-custom
+      label="Apellidos"
+      [maxLength]="50"
+      (onChange)="_onSurnameChanged($event)"
+      [initialValue]="_newContactDetailData.surnames"
+      #surnames
+    >
+    </rb-input-custom>
+
+    <rb-select-custom
+      [elements]="contactTypeOptionsArray"
+      label="Tipo de contacto"
+      (elementSelected)="_onSelectedContactTypeChange($event)"
+      [defaultValue]="_newContactDetailData.contactType"
+      #contactType
+    >
+    </rb-select-custom>
+
+    <rb-input-custom
+      label="Valor"
+      [maxLength]="50"
+      (onChange)="_onDetailChanged($event)"
+      [initialValue]="_newContactDetailData.contactDetail"
+      #contactDetail
+    >
+    </rb-input-custom>
+  </div>
+</div>

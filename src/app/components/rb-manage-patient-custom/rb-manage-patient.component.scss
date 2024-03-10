@@ -1,0 +1,43 @@
+.patient-info {
+  font-weight: bold;
+}
+
+.manage-patient-main-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  padding-bottom: 7rem;
+}
+
+.manage-patient-basic-information-container {
+
+}
+
+.submit-button-container {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+
+  & button {
+    width: 100%;
+  }
+}
+
+.update-delete-buttons-container {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  row-gap: 1rem;
+  justify-content: center;
+}
+
+.expandible-elements-container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 2rem;
+  row-gap: 1rem;
+}

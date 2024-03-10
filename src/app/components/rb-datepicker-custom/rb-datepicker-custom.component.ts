@@ -1,10 +1,11 @@
-import {Component, ElementRef, EventEmitter, Input, Output, ViewChild} from "@angular/core";
+import {Component, ElementRef, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild} from "@angular/core";
 import {MatInputModule} from "@angular/material/input";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatDatepickerInputEvent, MatDatepickerModule} from "@angular/material/datepicker";
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from "@angular/material/core";
 import {MomentDateAdapter} from "@angular/material-moment-adapter";
 import {FormsModule} from "@angular/forms";
+import dayjs from "dayjs";
 
 const MY_DATE_FORMATS = {
   parse: {
@@ -30,19 +31,28 @@ const MY_DATE_FORMATS = {
   imports: [MatInputModule, MatFormFieldModule, MatDatepickerModule, FormsModule]
 })
 
-export class RbDatepickerCustomComponent {
+export class RbDatepickerCustomComponent implements OnChanges {
 
   @Input() label: string = '';
   @Input() disabled: boolean = false;
+  @Input() defaultValue: string = '';
   @Output() dateEmiiter = new EventEmitter<Date>();
 
   protected _pickerValue: string = '';
+
+  protected _pickerValueDate: Date | undefined;
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['defaultValue'] && this.defaultValue) {
+      this._pickerValueDate = new Date(this.defaultValue);
+    }
+  }
 
   protected _onDateSelected(event: MatDatepickerInputEvent<Date>) {
     const { value } = event;
 
     if (value) {
-      this.dateEmiiter.emit(value)
+      this.dateEmiiter.emit(value);
     }
   }
 

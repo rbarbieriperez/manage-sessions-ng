@@ -21,6 +21,7 @@ export type TPatient = {
   sessionValue: number;
   sessionTime: number;
   observations: string;
+  address: TAddress;
   family: Array<TFamily>;
   schooling?: TPatientSchooling // cambiar a estricto
 };
@@ -33,13 +34,15 @@ export type TPatientSchooling = {
 }
 
 export type TSchedule = {
-  [since: string ]: string;
+  since: string;
   to: string;
 }
 
 export type TInstitutionContactDetails = {
-  phoneNumbers: string[];
-  emailAddresses: string[];
+  mobilePhoneNumber: '',
+  phoneNumber: '',
+  emailAddress: '',
+  website: ''
 }
 
 export type TOption = {

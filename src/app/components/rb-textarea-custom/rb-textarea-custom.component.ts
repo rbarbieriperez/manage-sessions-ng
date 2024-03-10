@@ -1,4 +1,4 @@
-import {Component, ElementRef, EventEmitter, Input, Output, ViewChild} from "@angular/core";
+import {Component, ElementRef, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild} from "@angular/core";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {NgIf} from "@angular/common";
@@ -13,11 +13,12 @@ import {MatIcon} from "@angular/material/icon";
   imports: [MatFormFieldModule, MatInputModule, NgIf, MatIcon]
 })
 
-export class RbTextareaCustomComponent {
+export class RbTextareaCustomComponent implements OnChanges {
   @Input() label:string = 'label';
 
   @Input() rows:number = 2;
   @Input() cols:number = 20;
+  @Input() defaultValue: string = '';
 
   @Input() maxLength: number = 10;
   @Input() minLength: number = 0;
@@ -37,11 +38,22 @@ export class RbTextareaCustomComponent {
   @Output() textChange = new EventEmitter<string>();
 
   @ViewChild('textarea') textarea: ElementRef<HTMLTextAreaElement> | undefined;
+
+  protected _textAreaValue: string = '';
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['defaultValue'] && this.defaultValue) {
+      this._textAreaValue = this.defaultValue;
+    }
+  }
+
   protected _onChange(event: Event) {
     const { value } = event.target as HTMLInputElement;
     if (value) {
       this.textChange.emit(value);
+      this._textAreaValue = value;
     } else {
+      this._textAreaValue = '';
       this.textChange.emit('');
     }
   }
@@ -57,6 +69,7 @@ export class RbTextareaCustomComponent {
   public clear() {
     if (this.textarea) {
       this.textarea.nativeElement.value = '';
+      this._textAreaValue = '';
     }
   }
 }

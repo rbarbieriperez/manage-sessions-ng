@@ -1,0 +1,60 @@
+<main class="manage-patients-main-container">
+
+  <section *ngIf="isManagePatientsFormView" class="manage-patients-form-container">
+    <section class="toggle-buttons-container">
+      <mat-button-toggle-group>
+        <mat-button-toggle id="manage-clinics-btn" (click)="_setIsManagePatientsFormView()"><mat-icon>description</mat-icon></mat-button-toggle>
+        <mat-button-toggle id="patient-list-btn" (click)="_setIsManagePatientsSessionsView()"><mat-icon>face</mat-icon></mat-button-toggle>
+      </mat-button-toggle-group>
+    </section>
+
+    <section class="search-form-container">
+      <rb-autocomplete-custom
+        placeholder=""
+        label="Seleccciona una clínica"
+        [options]="clinicsOptionArray"
+        [inputDisabled]="_clinicsAutocompleteDisabled"
+        (selectedValue)="_onSelectedClinicAutocompleteChange($event)"
+        (clearBtnClick)="_onClearSelectedClinicAutocomplete()"
+        [forceValue]="_forceClinicAutocompleteValue"
+        [showHint]="_showClinicsAutocompleteHint"
+        hintText="La clínica seleccionada no tiene pacientes registrados."
+        #clinicsAutocomplete
+      ></rb-autocomplete-custom>
+      <rb-autocomplete-custom
+        placeholder=""
+        label="Selecciona un paciente"
+        [options]="patientsOnClinicOptionArray"
+        [inputDisabled]="_patientsAutocompleteDisabled"
+        (selectedValue)="_onSelectedPatientAutocompleteChange($event)"
+        (clearBtnClick)="_onClearSelectedPatientAutocomplete()"
+        [forceValue]="_forcePatientsAutocompleteValue"
+        [showHint]="true"
+        hintText="Selecciona una clínica y su respectivo paciente para modificarlo y/o eliminarlo."
+        #patientsAutocomplete
+      ></rb-autocomplete-custom>
+    </section>
+
+    <mat-divider></mat-divider>
+
+    <section class="manage-patient-data-container">
+      <rb-manage-patient
+        (emitPatientData)="onPatientDataChanged($event)"
+        [clinics]="userData && userData.clinics"
+        [submitButtonDisabled]="submitButtonDisabled"
+        (onSubmitBtnClick)="onSubmitNewPatient()"
+        [isUpdateDeleteForm]="isUpdateDeleteForm"
+        [patientData]="newPatientData"
+        #managePatientComponent
+      >
+      </rb-manage-patient>
+    </section>
+  </section>
+
+  <section *ngIf="!isManagePatientsFormView" class="manage-patients-sessions-container">
+
+  </section>
+
+
+
+</main>

@@ -1,0 +1,129 @@
+<div class="manage-patient-main-container">
+
+  <p class="patient-info">Información básica del paciente</p>
+
+  <section class="manage-patient-basic-information-container">
+    <rb-select-custom
+      label="Clínica*"
+      [elements]="clinicsOptionsArray"
+      [disabled]="!clinicsOptionsArray.length"
+      [defaultValue]="_getClinicDefaultValue(_newPatientData.clinicId)"
+      (elementSelected)="_onClinicSelected($event)"
+      #clinic
+    >
+    </rb-select-custom>
+
+    <rb-input-custom
+      label="Nombres*"
+      [maxLength]="50"
+      (onChange)="_onPatientNameChange($event)"
+      [initialValue]="_newPatientData.names"
+      #names
+    >
+    </rb-input-custom>
+
+    <rb-input-custom
+      label="Apellidos*"
+      [maxLength]="50"
+      (onChange)="_onPatientSurnameChange($event)"
+      [initialValue]="_newPatientData.surnames"
+      #surnames
+    >
+    </rb-input-custom>
+
+    <rb-datepicker-custom
+      label="Fecha de nacimiento*"
+      (dateEmiiter)="_onPatientBornDateChanged($event)"
+      [defaultValue]="_newPatientData.bornDate"
+      #bornDate
+    >
+    </rb-datepicker-custom>
+
+    <rb-input-custom
+      label="Monto de la sesión*"
+      [maxLength]="20"
+      [isMoneyInput]="true"
+      [initialValue]="_newPatientData.sessionValue.toString()"
+      (onChange)="_onPatientSessionValueChanged($event)"
+      type="number"
+      #sessionAmount
+    >
+    </rb-input-custom>
+
+    <rb-input-custom
+      label="Tiempo de sesión (m)*"
+      [maxLength]="20"
+      (onChange)="_onPatientSessionTimeChanged($event)"
+      [initialValue]="_newPatientData.sessionTime.toString()"
+      type="number"
+      #sessionTime
+    >
+    </rb-input-custom>
+
+    <rb-textarea-custom
+      label="Observaciones del paciente"
+      [maxLength]="500"
+      [rows]="10"
+      [showCharactersCounter]="true"
+      (textChange)="_onPatientObsChanged($event)"
+      [defaultValue]="_newPatientData.observations"
+
+      #observations
+    >
+    </rb-textarea-custom>
+
+    <div class="expandible-elements-container">
+      <rb-patient-address-custom
+        (onAddressChange)="_onPatientAddressInformationChanged($event)"
+        [addressData]="_newPatientData.address"
+        #addressCustomComponent
+      >
+      </rb-patient-address-custom>
+
+      <rb-patient-family-contact-details-custom
+        [familyContactDetailsData]="_newPatientData.family"
+        (onFamilyContactDetailsChange)="_onPatientFamilyContactDetailsDataChanged($event)"
+        #familyCustomComponent
+      >
+      </rb-patient-family-contact-details-custom>
+    </div>
+
+
+  </section>
+
+
+
+  <section *ngIf="!isUpdateDeleteForm" class="submit-button-container">
+    <button
+      (click)="_onSubmitButtonClick()"
+      mat-raised-button
+      [disabled]="submitButtonDisabled"
+      color="primary"
+      id="submitButton"
+    >
+      Agregar
+    </button>
+  </section>
+
+  <section *ngIf="isUpdateDeleteForm" class="update-delete-buttons-container">
+    <button
+      (click)="_onUpdateButtonClick()"
+      mat-raised-button
+      [disabled]="submitButtonDisabled"
+      color="primary"
+      id="updateButton"
+    >
+      Modificar
+    </button>
+
+    <button
+      (click)="_onDeleteButtonClick()"
+      mat-raised-button
+      color="warn"
+      id="deleteButton"
+    >
+      Eliminar
+    </button>
+  </section>
+
+</div>

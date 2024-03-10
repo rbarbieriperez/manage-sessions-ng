@@ -5,13 +5,15 @@
       [placeholder]="label"
       [disabled]="disabled"
       [required]="required"
-      type="text"
+      [type]="type"
       [id]="id"
       [value]="_currentInputValue"
       (input)="_onTextChange($event)"
       matInput
+      [pattern]="pattern"
       #input
     >
     <mat-icon (click)="_onClearInput()" matSuffix>close</mat-icon>
+    <span class="money-item" *ngIf="isMoneyInput" matTextPrefix>$&nbsp;</span>
   </mat-form-field>
 </div>

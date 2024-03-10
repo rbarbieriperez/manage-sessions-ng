@@ -1,0 +1,32 @@
+<div class="patient-contact-details-main-container">
+  <mat-accordion #accordion>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Información de contacto
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <div class="form-container">
+        <rb-patient-contact-detail-custom
+          *ngFor="let family of _newFamilyContactDetailsData; index as i; trackBy: trackFamilyContactDetail"
+          [contactDetailData]="family"
+          [elementIndex]="i"
+          (onContactDetailDelete)="_onContactDetailsDeleteElement($event)"
+          [hidden]="!(i === _contactDetailSelectedIndex)"
+          (onContactDetailDataChange)="_onFamilyContactDetailsChange($event)"
+        >
+        </rb-patient-contact-detail-custom>
+      </div>
+
+      <div class="nav-buttons-container">
+        <button #indexButtons (click)="_onContactDetailIndexBtnClick(i)" *ngFor="let family of _newFamilyContactDetailsData; index as i; trackBy: trackButtonListElement" mat-mini-fab [color]="i === _contactDetailSelectedIndex ? 'accent' : 'basic'">
+          <mat-icon>looks_{{['one', 'two', '3'][i]}}</mat-icon>
+        </button>
+
+        <button (click)="_addNewFamilyContactDetails()" [disabled]="_newFamilyContactDetailsData.length === 3" mat-mini-fab color="accent">
+          <mat-icon>add</mat-icon>
+        </button>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>

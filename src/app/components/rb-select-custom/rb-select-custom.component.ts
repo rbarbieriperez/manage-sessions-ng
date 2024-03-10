@@ -49,11 +49,14 @@ export class RbSelectCustomComponent implements OnInit, OnChanges {
 
   @Input() id: string = '';
 
-  /**
+  @Input() defaultValue: string = '';
+
+    /**
    * Emits an event when selection has changed
    * @public
    */
   @Output() elementSelected = new EventEmitter<string>();
+
 
 
   protected _selectValue: string = '';
@@ -69,6 +72,10 @@ export class RbSelectCustomComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     if(changes['elements']?.currentValue?.length) {
       this.disabled = false;
+    }
+
+    if(changes['defaultValue'] && this.defaultValue) {
+      this._selectValue = this.defaultValue;
     }
   }
 

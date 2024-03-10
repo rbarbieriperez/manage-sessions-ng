@@ -1,13 +1,14 @@
 import {Component, ElementRef, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild} from "@angular/core";
 import {MatFormField, MatInputModule} from "@angular/material/input";
 import {MatIconModule} from "@angular/material/icon";
+import {NgIf} from "@angular/common";
 
 @Component({
   standalone: true,
   selector: 'rb-input-custom',
   templateUrl: './rb-input-custom.component.html',
   styleUrl: './rb-input-custom.component.scss',
-  imports: [MatInputModule, MatFormField, MatIconModule]
+  imports: [MatInputModule, MatFormField, MatIconModule, NgIf]
 })
 
 export class RbInputCustomComponent implements  OnChanges {
@@ -19,10 +20,14 @@ export class RbInputCustomComponent implements  OnChanges {
   @Input() disabled: boolean = false;
   @Input() id: string = '';
   @Input() initialValue: string = '';
+  @Input() type: 'text' | 'number' = 'text';
+  @Input() pattern: string = '';
 
+  @Input() isMoneyInput: boolean = false;
   @Output() onChange = new EventEmitter<string>();
 
   @ViewChild('input') inputElement: ElementRef | undefined;
+
 
   /**
    * Current input value stored
