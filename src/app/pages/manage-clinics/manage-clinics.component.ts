@@ -465,24 +465,29 @@ export class ManageClinicsComponent implements OnDestroy, OnInit {
   private _updateUserDataObject(): TUserData | undefined {
     if (this.userData) {
       if (this._isUpdateDeleteForm) {
-        this.userData = {
+        const clinicIndex = this.userData.clinics.findIndex((clinic: TClinic) => clinic.clinicId === this.newClinicData.clinicId);
+        return {
           ...this.userData,
           clinics: [
-            ...this.userData.clinics.filter((clinic: TClinic) => clinic.clinicId !== this.newClinicData.clinicId)
+            ...this.userData.clinics.slice(0, clinicIndex),
+            { ...this.userData.clinics[clinicIndex], ...this.newClinicData },
+            ...this.userData.clinics.slice(clinicIndex + 1)
           ]
         }
       }
 
-      return {
-        ...this.userData,
-        clinics: [
-          ...this.userData.clinics || [],
-          {
-            ...this.newClinicData,
-            clinicId: this._generateNewClinicId()
-          }
+      if (!this._isUpdateDeleteForm) {
+        return {
+          ...this.userData,
+          clinics: [
+            ...this.userData.clinics || [],
+            {
+              ...this.newClinicData,
+              clinicId: this._generateNewClinicId()
+            }
 
-        ]
+          ]
+        }
       }
     }
     return undefined;

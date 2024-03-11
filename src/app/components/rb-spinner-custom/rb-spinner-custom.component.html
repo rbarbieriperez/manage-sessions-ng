@@ -1,4 +1,4 @@
-<main *ngIf="_spinnerState" class="rb-spinner-custom-main-container">
+<main [style]="'top:'+spinnerPos+'px'" *ngIf="_spinnerState" class="rb-spinner-custom-main-container">
   <div class="veil"></div>
   <mat-spinner></mat-spinner>
 </main>

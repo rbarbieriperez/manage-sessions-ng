@@ -1,4 +1,4 @@
-import {Component, OnDestroy, ViewChild} from "@angular/core";
+import {Component, OnDestroy, OnInit, ViewChild} from "@angular/core";
 import {NgbAlert, NgbAlertModule} from "@ng-bootstrap/ng-bootstrap";
 import {NgIf} from "@angular/common";
 import {TAlert} from "../../types/types";
@@ -14,9 +14,10 @@ import {Subscription} from "rxjs";
   imports: [NgbAlertModule, NgIf]
 })
 
-export class RbAlertCustomComponent implements OnDestroy {
+export class RbAlertCustomComponent implements OnDestroy, OnInit {
   protected alert: TAlert | undefined = undefined;
   private subscription: Subscription;
+  protected alertPos: number = 0;
 
   @ViewChild('selfClosingAlert', { static: false }) selfClosingAlert: NgbAlert | undefined = undefined;
 
@@ -31,6 +32,12 @@ export class RbAlertCustomComponent implements OnDestroy {
           this._clearAlert();
         }, data.clearTimeMs);
       });
+  }
+
+  ngOnInit() {
+    window.addEventListener('scroll', e => {
+      this.alertPos = window.scrollY;
+    });
   }
 
   /**

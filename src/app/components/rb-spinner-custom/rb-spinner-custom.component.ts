@@ -1,4 +1,4 @@
-import {Component, OnDestroy} from "@angular/core";
+import {Component, OnDestroy, OnInit, ViewChild} from "@angular/core";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {CommunicationService} from "../../services/communication.service";
 import {Subscription} from "rxjs";
@@ -16,10 +16,13 @@ import {NgIf} from "@angular/common";
   styleUrl: './rb-spinner-custom.component.scss'
 })
 
-export class RbSpinnerCustomComponent implements OnDestroy {
+export class RbSpinnerCustomComponent implements OnDestroy, OnInit {
 
   private subscription: Subscription;
   protected _spinnerState: boolean = false;
+
+  protected spinnerPos: number = 0;
+
   constructor(private communicationService: CommunicationService) {
     this.subscription = this.communicationService.subscribeOpenSpinner$
       .subscribe(event => {
@@ -29,6 +32,12 @@ export class RbSpinnerCustomComponent implements OnDestroy {
           this._closeSpinner();
         }
       })
+  }
+
+  ngOnInit() {
+    window.addEventListener('scroll', e => {
+      this.spinnerPos = window.scrollY;
+    });
   }
 
   ngOnDestroy() {

@@ -1,6 +1,7 @@
 .manage-patients-main-container {
   width: 100%;
-  height: 100%;
+  height: 90vh;
+  overflow-y: scroll;
 }
 
 .manage-patients-form-container {

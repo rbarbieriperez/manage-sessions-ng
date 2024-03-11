@@ -43,6 +43,8 @@
         [clinics]="userData && userData.clinics"
         [submitButtonDisabled]="submitButtonDisabled"
         (onSubmitBtnClick)="onSubmitNewPatient()"
+        (onUpdateBtnClick)="handleUpdatePatientBtnClick()"
+        (onDeleteBtnClick)="handleDeletePatientBtnClick()"
         [isUpdateDeleteForm]="isUpdateDeleteForm"
         [patientData]="newPatientData"
         #managePatientComponent

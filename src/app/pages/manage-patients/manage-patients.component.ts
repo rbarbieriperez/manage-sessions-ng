@@ -278,11 +278,78 @@ export class ManagePatientsComponent {
   }
 
   /**
+   * Method to handle update patient button click
+   * Opens confirm dialog
+   * @protected
+   */
+  protected handleUpdatePatientBtnClick() {
+    this.communicationService.emitDialogData({
+      title: 'Confirmar modificación',
+      content: 'Podrás volver a modificar los datos nuevamente.',
+      size: 'sm',
+      primaryButtonLabel: 'Confirmar',
+      secondaryButtonLabel: 'Cancelar',
+      primaryButtonEvent: 'confirm-update',
+      secondaryButtonEvent: 'reject-update'
+    });
+
+    this.communicationService.subscribeDialogCallbackEvent$.subscribe(val => {
+      if (val === 'confirm-update') {
+        this._onConfirmUpdate();
+      }
+    });
+  }
+
+  /**
+   * Handle patient update
+   * @private
+   */
+  private _onConfirmUpdate() {
+    this.communicationService.openSpinner();
+    const updatedUserDataObject = this._updateUserDataObject();
+    if (updatedUserDataObject) {
+      this.firestoreQueriesService.saveData(this.appDataService.getUserId(), updatedUserDataObject)
+        .then(() => {
+          this.communicationService.closeSpinner();
+          this.communicationService.emitAlertData({
+            id: '',
+            type: 'success',
+            message: 'Clínica modificada con éxito',
+            clearTimeMs: 3000
+          });
+        })
+        .catch(() => {
+          this.communicationService.closeSpinner();
+          this.communicationService.emitAlertData({
+            id: '',
+            type: 'danger',
+            message: 'Ha ocurrido un error al modificar la clínica',
+            clearTimeMs: 3000
+          });
+          this.errorHandlerService.validateError();
+        })
+        .finally(() => this._clearFields());
+    }
+  }
+
+  protected handleDeletePatientBtnClick() {
+    this.communicationService.emitAlertData({
+      id: '',
+      clearTimeMs: 100000000000,
+      message: 'test',
+      type: 'success'
+    })
+  }
+
+  /**
    * Clear all the fields of the manage patient component
    * @private
    */
   private _clearFields() {
     this.managePatientComponent?.clearFields();
+    this._onClearSelectedClinicAutocomplete();
+    this._onClearSelectedPatientAutocomplete();
+    this.clinicsAutocomplete?.clear();
   }
 
   /**
@@ -291,15 +358,30 @@ export class ManagePatientsComponent {
    */
   private _updateUserDataObject(): TUserData | undefined {
     if (this.userData) {
-      return {
-        ...this.userData,
-        patients: [
-          ...this.userData?.patients,
-          {
-            ...this.newPatientData,
-            patientId: this._generateNewPatientId()
-          }
-        ]
+
+      if (this.isUpdateDeleteForm) {
+        const patientIndex = this.userData.patients.findIndex((patient: TPatient) => patient.patientId === this.newPatientData.patientId);
+        return {
+          ...this.userData,
+          patients: [
+            ...this.userData.patients.slice(0, patientIndex),
+            { ...this.userData.patients[patientIndex], ...this.newPatientData },
+            ...this.userData.patients.slice(patientIndex + 1)
+          ]
+        }
+      }
+
+      if (!this.isUpdateDeleteForm) {
+        return {
+          ...this.userData,
+          patients: [
+            ...this.userData?.patients,
+            {
+              ...this.newPatientData,
+              patientId: this._generateNewPatientId()
+            }
+          ]
+        }
       }
     }
     return undefined;
