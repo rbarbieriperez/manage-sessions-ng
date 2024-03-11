@@ -4,7 +4,7 @@ import {ErrorHandlerService} from "../../services/error-handler.service";
 import {FirestoreQueriesService} from "../../services/firestore-queries.service";
 import {CommunicationService} from "../../services/communication.service";
 import {Subscription} from "rxjs";
-import {TClinic, TOption, TPatient, TUserData} from "../../types/types";
+import {TClinic, TOption, TPatient, TSession, TUserData} from "../../types/types";
 import {NgIf} from "@angular/common";
 import {MatButtonToggle, MatButtonToggleGroup} from "@angular/material/button-toggle";
 import {MatIcon} from "@angular/material/icon";
@@ -332,13 +332,64 @@ export class ManagePatientsComponent {
     }
   }
 
+  /**
+   * Handle delete button click
+   * Opens confirm dialog
+   * @protected
+   */
   protected handleDeletePatientBtnClick() {
-    this.communicationService.emitAlertData({
-      id: '',
-      clearTimeMs: 100000000000,
-      message: 'test',
-      type: 'success'
+    this.communicationService.emitDialogData({
+      title: 'Confirmar eliminación',
+      content: 'Al eliminar este paciente también estarás eliminando las sesiones que tuviera registradas.',
+      size: 'sm',
+      primaryButtonLabel: 'Confirmar',
+      primaryButtonEvent: 'confirm-deletion',
+      secondaryButtonLabel: 'Cancelar',
+      secondaryButtonEvent: 'cancel'
+    });
+
+    this.communicationService.subscribeDialogCallbackEvent$.subscribe(ev => {
+      if (ev === 'confirm-deletion') {
+        this._handlePatientDeletion();
+      }
     })
+  }
+
+  /**
+   * Method to handle patient deletion
+   * @private
+   */
+  private _handlePatientDeletion() {
+    if (this.userData) {
+      this.communicationService.openSpinner();
+      this.userData = {
+        ...this.userData,
+        patients: this.userData.patients.filter((patient: TPatient) => patient.patientId !== this.newPatientData.patientId),
+        sessions: this.userData.sessions.filter((session: TSession) => session.patientId !== this.newPatientData.patientId)
+      };
+
+      this.firestoreQueriesService.saveData(this.appDataService.getUserId(), this.userData)
+        .then(() => {
+          this.communicationService.closeSpinner();
+          this.communicationService.emitAlertData({
+            id: '',
+            type: 'success',
+            message: 'Paciente eliminado con éxito',
+            clearTimeMs: 3000
+          });
+        })
+        .catch(() => {
+          this.communicationService.closeSpinner();
+          this.communicationService.emitAlertData({
+            id: '',
+            type: 'danger',
+            message: 'Ha ocurrido un error al eliminar el paciente',
+            clearTimeMs: 3000
+          });
+          this.errorHandlerService.validateError();
+        })
+        .finally(() => this._clearFields());
+    }
   }
 
   /**
