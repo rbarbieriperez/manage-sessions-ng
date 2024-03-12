@@ -23,7 +23,7 @@ export type TPatient = {
   observations: string;
   address: TAddress;
   family: Array<TFamily>;
-  schooling?: TPatientSchooling // cambiar a estricto
+  schooling: TPatientSchooling // cambiar a estricto
 };
 
 export type TPatientSchooling = {
@@ -31,6 +31,8 @@ export type TPatientSchooling = {
   turn: string,
   schedule: TSchedule;
   institutionContactDetails: TInstitutionContactDetails;
+  institutionObs: string;
+  address: TAddress;
 }
 
 export type TSchedule = {

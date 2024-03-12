@@ -48,7 +48,8 @@ export class RbInputCustomComponent implements  OnChanges {
    * @protected
    */
   protected _onTextChange(e: Event) {
-    const { value } = e.target as HTMLInputElement;
+    let { value } = e.target as HTMLInputElement;
+
     if (value) {
       this._currentInputValue = value;
       this.onChange.emit(value);

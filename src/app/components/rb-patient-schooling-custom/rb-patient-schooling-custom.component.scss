@@ -1,0 +1,16 @@
+.schedule-container {
+  display: flex;
+  flex-direction: row;
+  column-gap: 1rem;
+
+  & rb-timepicker-custom {
+    width: 47%;
+  }
+}
+
+.accordion-items-container {
+  display: flex;
+  flex-direction: column;
+  row-gap: 1rem;
+  margin-top: 1rem;
+}

@@ -1,0 +1,18 @@
+<div>
+  <mat-form-field>
+    <mat-label>{{label}}</mat-label>
+    <input
+      [ngxTimepicker]="picker"
+      [value]="_value"
+      [format]="format"
+      [min]="min"
+      [max]="max"
+      matInput
+    >
+    <ngx-material-timepicker
+      (timeSet)="_handleTimeSet($event)"
+      #picker
+    >
+    </ngx-material-timepicker>
+  </mat-form-field>
+</div>

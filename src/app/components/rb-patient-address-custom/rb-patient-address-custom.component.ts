@@ -40,6 +40,7 @@ export class RbPatientAddressCustomComponent implements OnChanges {
 
 
   @Input() addressData: TAddress | undefined;
+  @Input() title: string = '';
   @Output() onAddressChange = new EventEmitter<TAddress>();
 
   @ViewChild('fullAddress') fullAddress: RbInputCustomComponent | undefined;

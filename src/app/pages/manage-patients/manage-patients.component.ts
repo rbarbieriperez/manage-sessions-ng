@@ -35,12 +35,18 @@ const initialPatientData: TPatient = {
       since: '',
       to: ''
     },
+    institutionObs: '',
     institutionName: '',
     institutionContactDetails: {
       emailAddress: '',
       website: '',
       phoneNumber: '',
       mobilePhoneNumber: ''
+    },
+    address: {
+      fullAddress: '',
+      additionalInfo: '',
+      number: ''
     }
   }
 
@@ -165,7 +171,8 @@ export class ManagePatientsComponent {
    */
   protected _onSelectedPatientAutocompleteChange(value: string) {
     if (value) {
-      const foundPatient = this.userData?.patients.find((patient: TPatient) => patient.patientId === Number(value)) || initialPatientData
+      const foundPatient = this.userData?.patients.find((patient: TPatient) => patient.patientId === Number(value)) || initialPatientData;
+      console.log('foundPatinet', foundPatient);
       this.currentPatientData = foundPatient;
       this.newPatientData = foundPatient;
       this._forcePatientsAutocompleteValue = `${this.currentPatientData.names} ${this.currentPatientData.surnames}`;

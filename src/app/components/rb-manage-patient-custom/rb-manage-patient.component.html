@@ -74,6 +74,7 @@
 
     <div class="expandible-elements-container">
       <rb-patient-address-custom
+        title="Información de residencia"
         (onAddressChange)="_onPatientAddressInformationChanged($event)"
         [addressData]="_newPatientData.address"
         #addressCustomComponent
@@ -86,6 +87,13 @@
         #familyCustomComponent
       >
       </rb-patient-family-contact-details-custom>
+
+      <rb-patient-schooling-custom
+        [schoolingData]="_newPatientData.schooling"
+        (emitSchoolingData)="_onPatientSchoolingDataChanged($event)"
+        #patientSchoolingCustomComponent
+      >
+      </rb-patient-schooling-custom>
     </div>
 
 

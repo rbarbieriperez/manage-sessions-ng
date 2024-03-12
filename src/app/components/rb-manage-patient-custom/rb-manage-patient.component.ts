@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild} from "@angular/core";
-import {TAddress, TClinic, TFamily, TOption, TPatient} from "../../types/types";
+import {TAddress, TClinic, TFamily, TOption, TPatient, TPatientSchooling} from "../../types/types";
 import {RbInputCustomComponent} from "../rb-input-custom/rb-input-custom.component";
 import {RbSelectCustomComponent} from "../rb-select-custom/rb-select-custom.component";
 import {RbDatepickerCustomComponent} from "../rb-datepicker-custom/rb-datepicker-custom.component";
@@ -11,6 +11,7 @@ import {RbPatientAddressCustomComponent} from "../rb-patient-address-custom/rb-p
 import {
   RbPatientFamilyContactDetailsCustomComponent
 } from "../rb-patient-family-contact-details-custom/rb-patient-family-contact-details-custom.component";
+import {RbPatientSchoolingCustomComponent} from "../rb-patient-schooling-custom/rb-patient-schooling-custom.component";
 
 
 type TPatientNoId = Omit<TPatient, 'patientId'>;
@@ -35,12 +36,18 @@ const initialPatientData: TPatientNoId = {
       since: '',
       to: ''
     },
+    institutionObs: '',
     institutionName: '',
     institutionContactDetails: {
       emailAddress: '',
       website: '',
       phoneNumber: '',
       mobilePhoneNumber: ''
+    },
+    address: {
+      fullAddress: '',
+      number: '',
+      additionalInfo: ''
     }
   }
 
@@ -58,7 +65,8 @@ const initialPatientData: TPatientNoId = {
     MatButton,
     NgIf,
     RbPatientAddressCustomComponent,
-    RbPatientFamilyContactDetailsCustomComponent
+    RbPatientFamilyContactDetailsCustomComponent,
+    RbPatientSchoolingCustomComponent
   ],
   styleUrl: './rb-manage-patient.component.scss'
 })
@@ -83,6 +91,7 @@ export class RbManagePatientComponent implements OnChanges {
   @ViewChild('observations') observations: RbTextareaCustomComponent | undefined;
   @ViewChild('addressCustomComponent') address: RbPatientAddressCustomComponent | undefined;
   @ViewChild('familyCustomComponent') family: RbPatientFamilyContactDetailsCustomComponent | undefined;
+  @ViewChild('patientSchoolingCustomComponent') schooling: RbPatientSchoolingCustomComponent | undefined;
 
   protected clinicsOptionsArray: TOption[] = [];
   protected _newPatientData: TPatientNoId = initialPatientData;
@@ -93,6 +102,7 @@ export class RbManagePatientComponent implements OnChanges {
     }
 
     if(changes['patientData'] && this.patientData) {
+      console.log('patient data has changed', this.patientData);
       this._newPatientData = this.patientData;
     }
   }
@@ -234,6 +244,19 @@ export class RbManagePatientComponent implements OnChanges {
  }
 
   /**
+   * Handle patient schooling information change event and emit data
+   * @param schooling
+   * @protected
+   */
+ protected _onPatientSchoolingDataChanged(schooling: TPatientSchooling) {
+   this._newPatientData = {
+     ...this._newPatientData,
+     schooling
+   };
+   this.emitPatientData.emit(this._newPatientData);
+ }
+
+  /**
    * Handle submit button click
    * @protected
    */
@@ -271,6 +294,8 @@ export class RbManagePatientComponent implements OnChanges {
     this.observations?.clear();
     this.address?.clear();
     this.family?.clear();
+    this.schooling?.clear();
+
  }
 
  protected _getClinicDefaultValue(clinicId: number) {

@@ -1,0 +1,120 @@
+<div class="patient-schooling-main-container">
+  <mat-accordion>
+    <mat-expansion-panel #accordion>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Información de escolarización
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <div class="form-container">
+        <rb-input-custom
+          [initialValue]="_newSchoolingData.institutionName"
+          [maxLength]="100"
+          label="Nombre de la institución"
+          (onChange)="_onValueChange($event, 'institutionName')"
+          #institutionName
+        >
+        </rb-input-custom>
+
+        <rb-select-custom
+          [elements]="_turnOptionsArray"
+          label="Turno"
+          [defaultValue]="_newSchoolingData.turn"
+          (elementSelected)="_onValueChange($event, 'turn')"
+          #turn
+        >
+        </rb-select-custom>
+
+        <div class="schedule-container">
+          <rb-timepicker-custom
+            label="Desde:"
+            [value]="_newSchoolingData.schedule.since"
+            min="00:00"
+            max="12:00"
+            [format]="24"
+            (dateSelected)="_onValueChange($event, 'schedule.since')"
+            #scheduleSince
+          >
+          </rb-timepicker-custom>
+
+          <rb-timepicker-custom
+            label="Hasta:"
+            [value]="_newSchoolingData.schedule.to"
+            min="12:00"
+            max="23:59"
+            [format]="24"
+            (dateSelected)="_onValueChange($event, 'schedule.to')"
+            #scheduleTo
+          >
+          </rb-timepicker-custom>
+        </div>
+
+        <rb-textarea-custom
+          [defaultValue]="_newSchoolingData.institutionObs"
+          [rows]="5"
+          [maxLength]="250"
+          [showCharactersCounter]="true"
+          (textChange)="_onValueChange($event, 'institutionObs')"
+          label="Notas de la institución"
+          #obs
+        >
+        </rb-textarea-custom>
+
+        <div class="accordion-items-container">
+          <rb-patient-address-custom
+            title="Dirección de la institución"
+            [addressData]="_newSchoolingData.address"
+            (onAddressChange)="_onValueChange($event, 'address')"
+            #address
+          >
+          </rb-patient-address-custom>
+
+          <mat-accordion>
+            <mat-expansion-panel #accordion>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  Información de contacto
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <rb-input-custom
+                label="Correo"
+                (onChange)="_onValueChange($event, 'institutionContactDetails.emailAddress')"
+                [initialValue]="_newSchoolingData.institutionContactDetails.emailAddress"
+                [maxLength]="100"
+                #email
+              >
+              </rb-input-custom>
+
+              <rb-input-custom
+                label="Celular"
+                (onChange)="_onValueChange($event, 'institutionContactDetails.mobilePhoneNumber')"
+                [maxLength]="50"
+                [initialValue]="_newSchoolingData.institutionContactDetails.mobilePhoneNumber"
+                #mobilePhone
+              >
+              </rb-input-custom>
+
+              <rb-input-custom
+                label="Teléfono"
+                [initialValue]="_newSchoolingData.institutionContactDetails.phoneNumber"
+                (onChange)="_onValueChange($event, 'institutionContactDetails.phoneNumber')"
+                [maxLength]="50"
+                #phone
+              >
+              </rb-input-custom>
+
+              <rb-input-custom
+                label="Sitio Web"
+                [maxLength]="100"
+                (onChange)="_onValueChange($event, 'institutionContactDetails.website')"
+                [initialValue]="_newSchoolingData.institutionContactDetails.website"
+                #website
+              >
+              </rb-input-custom>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </div>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>
