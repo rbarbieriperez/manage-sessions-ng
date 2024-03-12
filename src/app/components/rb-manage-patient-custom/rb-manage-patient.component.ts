@@ -209,10 +209,10 @@ export class RbManagePatientComponent implements OnChanges {
    * @param value
    * @protected
    */
- protected _onPatientObsChanged(value: string) {
+ protected _onPatientObsChanged(observations: string) {
     this._newPatientData = {
       ...this._newPatientData,
-      observations: value
+      observations
     };
     this.emitPatientData.emit(this._newPatientData);
  }
@@ -285,6 +285,7 @@ export class RbManagePatientComponent implements OnChanges {
    * @public
    */
  public clearFields() {
+
     this.clinic?.clear();
     this.names?.clear();
     this.surnames?.clear();

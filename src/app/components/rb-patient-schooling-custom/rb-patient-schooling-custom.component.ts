@@ -125,6 +125,7 @@ export class RbPatientSchoolingCustomComponent implements OnChanges {
    * Clear all fields
    */
   public clear() {
+    this._newSchoolingData = initialSchoolingData;
     this.institutionName?.clear();
     this.turn?.clear();
     this.scheduleSince?.clear();
@@ -136,6 +137,5 @@ export class RbPatientSchoolingCustomComponent implements OnChanges {
     this.website?.clear();
     this.obs?.clear();
     this.accordion?.forEach(a => a.close());
-    this._newSchoolingData = initialSchoolingData;
   }
 }

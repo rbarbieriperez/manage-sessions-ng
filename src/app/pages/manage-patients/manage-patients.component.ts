@@ -100,7 +100,7 @@ export class ManagePatientsComponent {
     this.subscription = this.communicationService.subscribeUserData$
       .subscribe(data => {
         console.warn('User data has changed at manage-patients.component.ts', data);
-        this.userData = data;
+        this.userData = _.assign(data);
         this.clinicsOptionArray = this._getClinicsOptionArray();
         this._clinicsAutocompleteDisabled = !this.clinicsOptionArray.length;
       });
@@ -172,12 +172,13 @@ export class ManagePatientsComponent {
   protected _onSelectedPatientAutocompleteChange(value: string) {
     if (value) {
       const foundPatient = this.userData?.patients.find((patient: TPatient) => patient.patientId === Number(value)) || initialPatientData;
-      console.log('foundPatinet', foundPatient);
-      this.currentPatientData = foundPatient;
-      this.newPatientData = foundPatient;
+      console.log('userData', this.userData);
+      this.currentPatientData = _.assign(foundPatient);
+      this.newPatientData = _.assign(foundPatient);
       this._forcePatientsAutocompleteValue = `${this.currentPatientData.names} ${this.currentPatientData.surnames}`;
       this._patientsAutocompleteDisabled = true;
       this._validateIsUpdateDeleteForm();
+      console.log('user data after selecting a patient', this.userData);
     }
   }
 
@@ -189,8 +190,8 @@ export class ManagePatientsComponent {
     this.patientsAutocomplete?.clear();
     this.managePatientComponent?.clearFields();
     this.selectedClinicId = 0;
-    this.currentPatientData = initialPatientData;
-    this.newPatientData = initialPatientData;
+    this.currentPatientData = _.assign(initialPatientData);
+    this.newPatientData = _.assign(initialPatientData);
     this._clinicsAutocompleteDisabled = false;
     this._patientsAutocompleteDisabled = true;
     this._showClinicsAutocompleteHint = false;
@@ -202,12 +203,14 @@ export class ManagePatientsComponent {
    * @protected
    */
   protected _onClearSelectedPatientAutocomplete() {
+    console.log('userData before clear', this.userData);
     this.managePatientComponent?.clearFields();
-    this.currentPatientData = initialPatientData;
-    this.newPatientData = initialPatientData;
+    this.currentPatientData = _.assign(initialPatientData);
+    this.newPatientData = _.assign(initialPatientData);
     this._patientsAutocompleteDisabled = false;
     console.log(this._patientsAutocompleteDisabled);
     this._validateIsUpdateDeleteForm();
+    console.log('userData after clear', this.userData);
   }
 
   /**
