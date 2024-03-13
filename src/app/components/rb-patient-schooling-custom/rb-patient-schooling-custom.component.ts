@@ -89,8 +89,8 @@ export class RbPatientSchoolingCustomComponent implements OnChanges {
 
   @ViewChild('institutionName') institutionName: RbInputCustomComponent | undefined;
   @ViewChild('turn') turn: RbSelectCustomComponent | undefined;
-  @ViewChild('scheduleSince') scheduleSince: RbInputCustomComponent | undefined;
-  @ViewChild('scheduleTo') scheduleTo: RbInputCustomComponent | undefined;
+  @ViewChild('scheduleSince') scheduleSince: RbTimepickerCustomComponent | undefined;
+  @ViewChild('scheduleTo') scheduleTo: RbTimepickerCustomComponent | undefined;
   @ViewChild('address') address: RbPatientAddressCustomComponent | undefined;
   @ViewChild('email') email: RbInputCustomComponent | undefined;
   @ViewChild('mobilePhone') mobilePhone: RbInputCustomComponent | undefined;
