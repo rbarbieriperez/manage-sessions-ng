@@ -41,10 +41,10 @@ export type TSchedule = {
 }
 
 export type TInstitutionContactDetails = {
-  mobilePhoneNumber: '',
-  phoneNumber: '',
-  emailAddress: '',
-  website: ''
+  mobilePhoneNumber: string,
+  phoneNumber: string,
+  emailAddress: string,
+  website: string
 }
 
 export type TOption = {

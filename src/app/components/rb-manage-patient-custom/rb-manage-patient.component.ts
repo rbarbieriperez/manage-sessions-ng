@@ -82,7 +82,7 @@ export class RbManagePatientComponent implements OnChanges {
   @Output() onUpdateBtnClick = new EventEmitter<void>();
   @Output() onDeleteBtnClick = new EventEmitter<void>();
 
-  @ViewChild('clinic') clinic: RbInputCustomComponent | undefined;
+  @ViewChild('clinic') clinic: RbSelectCustomComponent | undefined;
   @ViewChild('names') names: RbInputCustomComponent | undefined;
   @ViewChild('surnames') surnames: RbInputCustomComponent | undefined;
   @ViewChild('bornDate') bornDate: RbDatepickerCustomComponent | undefined;
