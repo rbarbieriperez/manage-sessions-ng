@@ -1,5 +1,4 @@
 import {
-  AfterViewInit, ChangeDetectorRef,
   Component, ElementRef,
   EventEmitter,
   Input,
@@ -45,6 +44,7 @@ export class RbPatientFamilyContactDetailsCustomComponent implements OnChanges {
 
   @ViewChild('indexButtons') indexButtons: ElementRef[] | undefined;
   @ViewChildren(MatExpansionPanel) panels: QueryList<MatExpansionPanel> | undefined;
+  @ViewChildren(RbPatientContactDetailCustomComponent) contactDetailsEls: QueryList<RbPatientContactDetailCustomComponent> | undefined;
   protected _newFamilyContactDetailsData: TFamily[] = [];
   protected _contactDetailSelectedIndex: number = -1;
 

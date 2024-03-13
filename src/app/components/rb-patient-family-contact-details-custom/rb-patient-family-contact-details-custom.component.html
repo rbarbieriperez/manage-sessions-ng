@@ -8,6 +8,7 @@
       </mat-expansion-panel-header>
       <div class="form-container">
         <rb-patient-contact-detail-custom
+          #rbPatientContactDetailCustomComponent
           *ngFor="let family of _newFamilyContactDetailsData; index as i; trackBy: trackFamilyContactDetail"
           [contactDetailData]="family"
           [elementIndex]="i"
@@ -19,11 +20,11 @@
       </div>
 
       <div class="nav-buttons-container">
-        <button #indexButtons (click)="_onContactDetailIndexBtnClick(i)" *ngFor="let family of _newFamilyContactDetailsData; index as i; trackBy: trackButtonListElement" mat-mini-fab [color]="i === _contactDetailSelectedIndex ? 'accent' : 'basic'">
+        <button id="indexButtons" #indexButtons (click)="_onContactDetailIndexBtnClick(i)" *ngFor="let family of _newFamilyContactDetailsData; index as i; trackBy: trackButtonListElement" mat-mini-fab [color]="i === _contactDetailSelectedIndex ? 'accent' : 'basic'">
           <mat-icon>looks_{{['one', 'two', '3'][i]}}</mat-icon>
         </button>
 
-        <button (click)="_addNewFamilyContactDetails()" [disabled]="_newFamilyContactDetailsData.length === 3" mat-mini-fab color="accent">
+        <button id="addNewContactDetailButton" (click)="_addNewFamilyContactDetails()" [disabled]="_newFamilyContactDetailsData.length === 3" mat-mini-fab color="accent">
           <mat-icon>add</mat-icon>
         </button>
       </div>
