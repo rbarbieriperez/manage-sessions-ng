@@ -1,8 +1,5 @@
 import {RbPatientSchoolingCustomComponent} from "./rb-patient-schooling-custom.component";
 import {ComponentFixture, TestBed, waitForAsync} from "@angular/core/testing";
-import {CommunicationService} from "../../services/communication.service";
-import {AppDataService} from "../../services/app-data.service";
-import {ErrorHandlerService} from "../../services/error-handler.service";
 import {TAddress, TPatient, TPatientSchooling, TUserData} from "../../types/types";
 import {provideAnimations} from "@angular/platform-browser/animations";
 import {SimpleChange} from "@angular/core";
@@ -38,27 +35,17 @@ const initialAddressData: TAddress = {
 describe('RbPatientSchoolingCustomComponent', () => {
   let component: RbPatientSchoolingCustomComponent;
   let fixture: ComponentFixture<RbPatientSchoolingCustomComponent>;
-  let communicationService: CommunicationService;
-  let appDataService: AppDataService;
-  let errorHandlerService: ErrorHandlerService;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [RbPatientSchoolingCustomComponent],
       providers: [
-        CommunicationService,
-        AppDataService,
-        ErrorHandlerService,
         provideAnimations()
       ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(RbPatientSchoolingCustomComponent);
     component = fixture.componentInstance;
-
-    communicationService = TestBed.inject(CommunicationService);
-    appDataService = TestBed.inject(AppDataService);
-    errorHandlerService = TestBed.inject(ErrorHandlerService);
   }));
 
   it('Component loads with initial schoolingData', () => {
