@@ -13,6 +13,7 @@ import {RbSelectCustomComponent} from "../../components/rb-select-custom/rb-sele
 import {MatButtonToggle, MatButtonToggleGroup} from "@angular/material/button-toggle";
 import {MatIcon} from "@angular/material/icon";
 import {MatDivider} from "@angular/material/divider";
+import * as _ from 'lodash';
 import {
   RbPatientsClinicListCustomComponent
 } from "../../components/rb-patients-clinic-list-custom/rb-patients-clinic-list-custom.component";
@@ -53,7 +54,7 @@ const initialClinicData: TClinic = {
   selector: 'manage-clinics'
 })
 
-export class ManageClinicsComponent implements OnDestroy, OnInit {
+export class ManageClinicsComponent implements OnDestroy {
 
   /**
    * TOption array with all the registered clinics
@@ -71,7 +72,7 @@ export class ManageClinicsComponent implements OnDestroy, OnInit {
    * New clinic data or update clinic data
    * @protected
    */
-  protected newClinicData: TClinic = initialClinicData;
+  protected newClinicData: TClinic = _.cloneDeep(initialClinicData);
 
   /**
    * Store user data subscription
@@ -131,16 +132,12 @@ export class ManageClinicsComponent implements OnDestroy, OnInit {
       .subscribe((data) => {
         if (data) {
           console.warn('User data has changed at manage-clinics', data);
-          this.newClinicData = initialClinicData;
+          this.newClinicData = _.cloneDeep(initialClinicData);
           this.userData = data;
           this.registeredClinicsOptions = this._computeRegisteredClinicsOptions();
           this._validateSubmitClinicButtonDisabled();
         }
       });
-
-  }
-
-  ngOnInit() {
 
   }
 
@@ -154,11 +151,6 @@ export class ManageClinicsComponent implements OnDestroy, OnInit {
     if (this.newClinicData.clinicName) {
       this._forceAutocompleteValue = this.newClinicData.clinicName;
     }
-
-    /*this._isUpdateDeleteForm = false;
-    this._clinicInputDisabled = false;
-    this.cdRef.detectChanges();
-    this._clearClinicElements();*/
   }
 
   /**
@@ -201,12 +193,12 @@ export class ManageClinicsComponent implements OnDestroy, OnInit {
    * @protected
    */
   protected _onClinicSelected(clinicId: string) {
-    const clinic = this.userData?.clinics.find((clinic: TClinic) => clinic.clinicId === Number(clinicId));
+    const clinic = _.cloneDeep(this.userData?.clinics.find((clinic: TClinic) => clinic.clinicId === Number(clinicId)));
     if (clinic) {
       this._clinicInputDisabled = true;
       this._isUpdateDeleteForm = true;
-      this.newClinicData = clinic;
-      this._lastClinicData = clinic;
+      this.newClinicData = _.cloneDeep(clinic);
+      this._lastClinicData = _.cloneDeep(clinic);
     }
   }
 
@@ -217,22 +209,10 @@ export class ManageClinicsComponent implements OnDestroy, OnInit {
   protected _onInputClearSelection() {
     this._clinicInputDisabled = false;
     this._isUpdateDeleteForm = false;
+    this.newClinicData = _.cloneDeep(initialClinicData);
+    this._lastClinicData = _.cloneDeep(initialClinicData);
     this.addClinicCustomComponent?.clearValues();
   }
-
-  /**
-   * Update clinic name
-   * @param value
-   * @protected
-   */
-  /*protected _onClinicNameChange(value: string) {
-    console.log('entro a _onClinicNameChange', value);
-    this.newClinicData = {
-      ...this.newClinicData,
-      clinicName: value
-    };
-    this._validateSubmitClinicButtonDisabled();
-  }*/
 
   /**
    * --- ADD NEW CLINIC METHODS ----
@@ -248,6 +228,8 @@ export class ManageClinicsComponent implements OnDestroy, OnInit {
       ...this.newClinicData,
       ...clinicData
     };
+    console.log('clinic data has changed', this.newClinicData);
+    console.log('last clinic data tiene', this._lastClinicData);
     this._validateSubmitClinicButtonDisabled();
   }
 
@@ -295,7 +277,7 @@ export class ManageClinicsComponent implements OnDestroy, OnInit {
 
   /**
    * Clear all add clinic elements
-   * @private
+@private
    */
   private _clearClinicElements() {
     this.addClinicCustomComponent?.clearValues();
@@ -371,7 +353,7 @@ export class ManageClinicsComponent implements OnDestroy, OnInit {
    * @private
    */
   private _validateIfDataHasNotChanged() {
-    return JSON.stringify(this._lastClinicData) === JSON.stringify(this.newClinicData);
+    return _.isEqual(this.newClinicData, this._lastClinicData);
   }
 
   /**

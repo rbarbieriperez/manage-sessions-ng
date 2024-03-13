@@ -3,7 +3,7 @@
   <div class="add-clinic-custom-fields-container">
     <rb-input-custom
       label="Nombre*"
-      (onChange)="_onClinicNameChanges($event)"
+      (onChange)="_handleClinicValueChange($event, 'clinicName')"
       [maxLength]="100"
       [initialValue]="_clinicData.clinicName"
       id="clinicName"
@@ -13,7 +13,7 @@
 
     <rb-input-custom
       label="Dirección completa"
-      (onChange)="_onFullAddressChange($event)"
+      (onChange)="_handleClinicValueChange($event, 'address.fullAddress')"
       [maxLength]="100"
       [initialValue]="_clinicData.address.fullAddress"
       #address
@@ -22,7 +22,7 @@
 
     <rb-input-custom
       label="Número de puerta"
-      (onChange)="_onNumberChange($event)"
+      (onChange)="_handleClinicValueChange($event, 'address.number')"
       [maxLength]="4"
       [initialValue]="_clinicData.address.number"
       #number
@@ -31,7 +31,7 @@
 
     <rb-input-custom
       label="Datos adicionales"
-      (onChange)="_onAdditionalDetailsChange($event)"
+      (onChange)="_handleClinicValueChange($event, 'address.additionalInfo')"
       [maxLength]="50"
       [initialValue]="_clinicData.address.additionalInfo"
       #additionalInfo
@@ -40,7 +40,7 @@
 
     <rb-input-custom
       label="Correo electrónico"
-      (onChange)="_onEmailAddressChange($event)"
+      (onChange)="_handleClinicValueChange($event, 'contactDetails.emailAddress')"
       [maxLength]="100"
       [initialValue]="_clinicData.contactDetails.emailAddress"
       #email
@@ -49,7 +49,7 @@
 
     <rb-input-custom
       label="Celular"
-      (onChange)="_onMobilePhoneNumberChange($event)"
+      (onChange)="_handleClinicValueChange($event, 'contactDetails.mobilePhoneNumber')"
       [maxLength]="40"
       [initialValue]="_clinicData.contactDetails.mobilePhoneNumber"
       #mobilePhone
@@ -58,7 +58,7 @@
 
     <rb-input-custom
       label="Teléfono"
-      (onChange)="_onPhoneNumberChange($event)"
+      (onChange)="_handleClinicValueChange($event, 'contactDetails.phoneNumber')"
       [maxLength]="40"
       [initialValue]="_clinicData.contactDetails.phoneNumber"
       #phone
@@ -67,7 +67,7 @@
 
     <rb-input-custom
       label="Sitio web"
-      (onChange)="_onWebSiteChange($event)"
+      (onChange)="_handleClinicValueChange($event, 'contactDetails.website')"
       [maxLength]="100"
       [initialValue]="_clinicData.contactDetails.website"
       #website

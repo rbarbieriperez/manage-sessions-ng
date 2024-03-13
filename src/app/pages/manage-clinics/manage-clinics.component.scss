@@ -1,10 +1,11 @@
 .manage-clinics-main-container {
   width: 100%;
-  height: fit-content;
   display: flex;
   flex-direction: column;
   justify-content: center;
   padding: 0 1rem 0 1rem;
+  overflow-y: scroll;
+  height: 90vh;
 
   & .add-update-delete-container {
     margin-top: 1rem;
@@ -18,7 +19,7 @@
     width: 100%;
     display: flex;
     justify-content: center;
-    margin-top: 1rem;
+    margin-top: 20rem;
   }
 
   & .add-clinic-container {

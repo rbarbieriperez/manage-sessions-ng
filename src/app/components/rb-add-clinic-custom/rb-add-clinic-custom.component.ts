@@ -3,6 +3,7 @@ import {TClinic} from "../../types/types";
 import {RbInputCustomComponent} from "../rb-input-custom/rb-input-custom.component";
 import {MatButton} from "@angular/material/button";
 import {NgIf} from "@angular/common";
+import * as _ from 'lodash';
 
 type TClinicNoId = Omit<TClinic, 'clinicId'>;
 
@@ -44,7 +45,7 @@ export class RbAddClinicCustomComponent implements OnChanges {
 
   @Input() submitButtonDisabled: boolean = false;
   @Input() updateDeleteForm: boolean = false;
-  protected _clinicData: TClinicNoId = initialClinicData;
+  protected _clinicData: TClinicNoId = { ... initialClinicData};
 
   @ViewChild('name') nameInput: RbInputCustomComponent | undefined = undefined;
   @ViewChild('address') addressInput: RbInputCustomComponent | undefined = undefined;
@@ -56,112 +57,24 @@ export class RbAddClinicCustomComponent implements OnChanges {
   @ViewChild('website') websiteInput: RbInputCustomComponent | undefined = undefined;
 
 
-  constructor() {
-  }
-
   ngOnChanges(changes: SimpleChanges) {
     if (changes['clinicData'] && this.clinicData) {
       this._clinicData = this.clinicData;
     }
   }
 
-  protected _onClinicNameChanges(value: string) {
-    this._clinicData = {
-      ...this._clinicData,
-      clinicName: value
-    }
-
-    this.onClinicDataChange.emit(this._clinicData);
-  }
-
-  protected _onFullAddressChange(value: string) {
-    this._clinicData = {
-      ...this._clinicData,
-      address: {
-        ...this._clinicData.address,
-        fullAddress: value
-      }
-    }
-
-    this.onClinicDataChange.emit(this._clinicData);
-  }
-
-  protected _onNumberChange(value: string) {
-    this._clinicData = {
-      ...this._clinicData,
-      address: {
-        ...this._clinicData.address,
-        number: value
-      }
-    }
-
-    this.onClinicDataChange.emit(this._clinicData);
-  }
-
-  protected _onAdditionalDetailsChange(value: string) {
-    this._clinicData = {
-      ...this._clinicData,
-      address: {
-        ...this._clinicData.address,
-        additionalInfo: value
-      }
-    }
-
-    this.onClinicDataChange.emit(this._clinicData);
-  }
-
-  protected _onEmailAddressChange(value: string) {
-    this._clinicData = {
-      ...this._clinicData,
-      contactDetails: {
-        ...this._clinicData.contactDetails,
-        emailAddress: value
-      }
-    }
-
-    this.onClinicDataChange.emit(this._clinicData);
-  }
-
-  protected _onMobilePhoneNumberChange(value: string) {
-    this._clinicData = {
-      ...this._clinicData,
-      contactDetails: {
-        ...this._clinicData.contactDetails,
-        mobilePhoneNumber: value
-      }
-    }
-
-    this.onClinicDataChange.emit(this._clinicData);
-  }
-
-  protected _onPhoneNumberChange(value: string) {
-    this._clinicData = {
-      ...this._clinicData,
-      contactDetails: {
-        ...this._clinicData.contactDetails,
-        phoneNumber: value
-      }
-    }
-
-    this.onClinicDataChange.emit(this._clinicData);
-  }
-
-
-  protected _onWebSiteChange(value: string) {
-    this._clinicData = {
-      ...this._clinicData,
-      contactDetails: {
-        ...this._clinicData.contactDetails,
-        website: value
-      }
-    }
-
+  /**
+   * Handle all values update
+   * @param value
+   * @param propertyPath
+   * @protected
+   */
+  protected _handleClinicValueChange(value: string, propertyPath: string) {
+    _.set(this._clinicData, propertyPath, value);
     this.onClinicDataChange.emit(this._clinicData);
   }
 
   public clearValues() {
-    this._clinicData = initialClinicData;
-
     if (
       this.nameInput &&
       this.addressInput &&

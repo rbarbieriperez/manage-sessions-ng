@@ -93,6 +93,8 @@ describe('RbAddClinicCustomComponent', () => {
     let emitClinicDataSpy: jasmine.Spy;
 
     beforeEach(() => {
+      component.clinicData = initialClinicData;
+      component.ngOnChanges({ clinicData: new SimpleChange(null, initialClinicData, false )});
       emitClinicDataSpy = spyOn(component.onClinicDataChange, 'emit');
       emitClinicDataSpy.calls.reset();
     })
