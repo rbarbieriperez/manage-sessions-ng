@@ -1,0 +1,299 @@
+{
+  "patients": [
+    {
+      "sessionValue": 400,
+      "schooling": {
+        "schedule": {
+          "since": "",
+          "to": ""
+        },
+        "turn": "",
+        "institutionName": "",
+        "institutionContactDetails": {
+          "phoneNumbers": [],
+          "emailAddresses": []
+        }
+      },
+      "bornDate": "2024-3-7",
+      "address": {
+        "number": "4317",
+        "additionalInfo": "Bis Apto 01",
+        "fullAddress": "Nancy"
+      },
+      "sessionTime": 33,
+      "observations": "diana es la mejor paciente.",
+      "clinicId": 6,
+      "patientId": 2,
+      "names": "Diana",
+      "family": [
+        {
+          "relationType": "Madre",
+          "contactDetail": "2344",
+          "surnames": "asdf",
+          "names": "asdf",
+          "contactType": "Celular"
+        },
+        {
+          "relationType": "Padre",
+          "contactDetail": "435245",
+          "contactType": "Teléfono fijo",
+          "surnames": "asdf",
+          "names": "asdf"
+        },
+        {
+          "contactType": "Correo",
+          "names": "asdf",
+          "relationType": "Padre",
+          "surnames": "asdf",
+          "contactDetail": "234234"
+        }
+      ],
+      "surnames": "Bianchi"
+    },
+    {
+      "schooling": {
+        "institutionName": "",
+        "institutionContactDetails": {
+          "emailAddress": "",
+          "website": "",
+          "mobilePhoneNumber": "",
+          "phoneNumber": ""
+        },
+        "schedule": {
+          "to": "",
+          "since": ""
+        },
+        "turn": ""
+      },
+      "family": [
+        {
+          "relationType": "Madre",
+          "contactDetail": "091606497",
+          "contactType": "Celular",
+          "surnames": "Pérez Curbelo",
+          "names": "Sonia Beatriz"
+        },
+        {
+          "contactType": "Celular",
+          "contactDetail": "091456710",
+          "names": "Rodrigo Gonzalo",
+          "surnames": "Barbieri Ávila",
+          "relationType": "Padre"
+        },
+        {
+          "names": "Diana Carolina",
+          "contactType": "Celular",
+          "contactDetail": "098246828",
+          "surnames": "Bianchi Upini",
+          "relationType": "Tutor"
+        }
+      ],
+      "names": "Rodrigo",
+      "bornDate": "2001-12-29",
+      "sessionTime": 50,
+      "patientId": 5,
+      "observations": "El paciente es muy bueno y se porta bien..",
+      "address": {
+        "number": "4316",
+        "additionalInfo": "Bis Apto 01",
+        "fullAddress": "Nancy"
+      },
+      "clinicId": 6,
+      "sessionValue": 500,
+      "surnames": "Barbieri"
+    },
+    {
+      "sessionTime": 32,
+      "observations": "lolo es el mejor paciente.",
+      "schooling": {
+        "institutionName": "",
+        "turn": "",
+        "institutionContactDetails": {
+          "emailAddresses": [],
+          "phoneNumbers": []
+        },
+        "schedule": {
+          "to": "",
+          "since": ""
+        }
+      },
+      "surnames": "Barbieri Perez",
+      "names": "Rodrigo",
+      "clinicId": 6,
+      "patientId": 6,
+      "sessionValue": 350,
+      "address": {
+        "additionalInfo": "Bis Apto 01 entre Carlos Lallemand y Resistencia",
+        "number": "4316",
+        "fullAddress": "Nancy"
+      },
+      "bornDate": "2024-3-7",
+      "family": [
+        {
+          "contactDetail": "091606497",
+          "relationType": "Madre",
+          "surnames": "Pérez Curbelo",
+          "contactType": "Celular",
+          "names": "Sonia Beatriz"
+        },
+        {
+          "surnames": "Barbieri Ávila",
+          "names": "Rodrigo Gonzalo",
+          "contactDetail": "091456710",
+          "contactType": "Celular",
+          "relationType": "Padre"
+        },
+        {
+          "contactDetail": "098246828",
+          "names": "Diana Carolina",
+          "relationType": "Tutor",
+          "contactType": "Celular",
+          "surnames": "Bianchi Upini"
+        }
+      ]
+    },
+    {
+      "family": [
+        {
+          "surnames": "Pérez Curbelo",
+          "relationType": "Madre",
+          "names": "Sonia Beatriz",
+          "contactDetail": "091606497",
+          "contactType": "Celular"
+        },
+        {
+          "contactType": "Celular",
+          "relationType": "Padre",
+          "names": "Rodrigo Gonzalo",
+          "surnames": "Barbieri Ávila",
+          "contactDetail": "091456710"
+        },
+        {
+          "contactDetail": "092780063",
+          "surnames": "Barbieri Pérez",
+          "relationType": "Tutor",
+          "names": "Rodrigo",
+          "contactType": "Celular"
+        }
+      ],
+      "clinicId": 3,
+      "bornDate": "2007-07-18",
+      "names": "Lautaro",
+      "patientId": 7,
+      "surnames": "Barbieri Pérez",
+      "sessionValue": 500,
+      "sessionTime": 60,
+      "address": {
+        "fullAddress": "Montevideo Al Sur",
+        "number": "1235",
+        "additionalInfo": "Golpear las manos"
+      },
+      "observations": "lautaro es un buen paciente",
+      "schooling": {
+        "institutionContactDetails": {
+          "phoneNumber": "46233408",
+          "website": "www.liceo1.com",
+          "emailAddress": "liceo1@gmail.com",
+          "mobilePhoneNumber": "234234234"
+        },
+        "turn": "Matituno",
+        "address": {
+          "additionalInfo": "Esq. Silvan Fernandez",
+          "number": "1212",
+          "fullAddress": "18 de Julio"
+        },
+        "institutionObs": "no hay datos.",
+        "institutionName": "Liceo 1",
+        "schedule": {
+          "to": "13:50",
+          "since": "07:45"
+        }
+      }
+    }
+  ],
+  "surname": "",
+  "sessions": [],
+  "admConfig": {
+    "isActive": true
+  },
+  "name": "Lolo",
+  "clinics": [
+    {
+      "contactDetails": [
+        {
+          "contactDetail": "0999999999",
+          "contactType": "Celular",
+          "contactMethodInfo": "test"
+        },
+        {
+          "contactDetail": "0999999999",
+          "contactMethodInfo": "test",
+          "contactType": "Celular"
+        },
+        {
+          "contactMethodInfo": "test",
+          "contactType": "Celular",
+          "contactDetail": "099999"
+        }
+      ],
+      "address": {
+        "additionalInfo": "test",
+        "fullAddress": "test",
+        "number": "1234"
+      },
+      "clinicId": 3,
+      "clinicName": "test3"
+    },
+    {
+      "contactDetails": [
+        {
+          "contactMethodInfo": "test",
+          "contactType": "Celular",
+          "contactDetail": "0999999999"
+        },
+        {
+          "contactDetail": "0999999999",
+          "contactType": "Celular",
+          "contactMethodInfo": "test"
+        },
+        {
+          "contactType": "Celular",
+          "contactDetail": "",
+          "contactMethodInfo": "test"
+        }
+      ],
+      "clinicName": "test4",
+      "clinicId": 4,
+      "address": {
+        "number": "1234",
+        "fullAddress": "test",
+        "additionalInfo": "test"
+      }
+    },
+    {
+      "clinicName": "asdf",
+      "contactDetails": [],
+      "address": {
+        "number": "1234",
+        "additionalInfo": "",
+        "fullAddress": "asdf"
+      },
+      "clinicId": 5
+    },
+    {
+      "clinicId": 6,
+      "contactDetails": {
+        "website": "www.facebook.com",
+        "phoneNumber": "47233408",
+        "emailAddress": "rbarbieriperez@gmail.com",
+        "mobilePhoneNumber": "092780063"
+      },
+      "clinicName": "TESAI",
+      "address": {
+        "additionalInfo": "Tocar timbre",
+        "number": "1235",
+        "fullAddress": "Montevideo al sur"
+      }
+    }
+  ]
+}
