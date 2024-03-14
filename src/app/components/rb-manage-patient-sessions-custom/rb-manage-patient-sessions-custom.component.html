@@ -1,0 +1,44 @@
+<section class="manage-patient-sessions-main-container">
+
+  <div *ngIf="!patientSessions.length" class="no-sessions-message-container">
+    <p>El paciente seleccionado no tiene sesiones registradas.</p>
+  </div>
+
+  <div *ngIf="patientSessions.length" class="form-container">
+    <rb-select-custom
+      label="Año"
+      [elements]="_yearsOptionArray"
+      [disabled]="!(_yearsOptionArray.length > 0)"
+      (elementSelected)="_onYearChange($event)"
+    >
+    </rb-select-custom>
+
+    <rb-select-custom
+      label="Mes"
+      [elements]="_monthsOptionArray"
+      [disabled]="!(_monthsOptionArray.length > 0) || _monthSelectDisabled"
+      (elementSelected)="_onMonthChange($event)"
+    >
+    </rb-select-custom>
+
+    <div class="total-sessions-toggle-row">
+      <span class="total-sessions-span">Total de sesiones: {{_filteredSessions.length}}</span>
+      <mat-slide-toggle
+        (change)="_expandOrCollapsePanels($event)"
+      >
+        Expandir todos
+      </mat-slide-toggle>
+    </div>
+
+
+    <div class="sessions-container">
+      <rb-patient-session-custom
+        *ngFor="let session of _filteredSessions; trackBy _getSessionTrackBy"
+        [sessionData]="session"
+      >
+      </rb-patient-session-custom>
+    </div>
+  </div>
+
+
+</section>

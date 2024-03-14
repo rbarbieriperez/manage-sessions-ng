@@ -1,14 +1,14 @@
 <main class="manage-patients-main-container">
 
-  <section *ngIf="isManagePatientsFormView" class="manage-patients-form-container">
-    <section class="toggle-buttons-container">
-      <mat-button-toggle-group>
-        <mat-button-toggle id="manage-clinics-btn" (click)="_setIsManagePatientsFormView()"><mat-icon>description</mat-icon></mat-button-toggle>
-        <mat-button-toggle id="patient-list-btn" (click)="_setIsManagePatientsSessionsView()"><mat-icon>face</mat-icon></mat-button-toggle>
-      </mat-button-toggle-group>
-    </section>
+  <section class="toggle-buttons-container">
+    <mat-button-toggle-group>
+      <mat-button-toggle id="manage-clinics-btn" (click)="_setIsManagePatientsFormView()"><mat-icon>description</mat-icon></mat-button-toggle>
+      <mat-button-toggle id="patient-list-btn" (click)="_setIsManagePatientsSessionsView()"><mat-icon>face</mat-icon></mat-button-toggle>
+    </mat-button-toggle-group>
+  </section>
 
-    <section class="search-form-container">
+  <section *ngIf="isManagePatientsFormView" class="manage-patients-form-container">
+    <section  class="search-form-container">
       <rb-autocomplete-custom
         placeholder=""
         label="Seleccciona una clínica"
@@ -54,7 +54,12 @@
   </section>
 
   <section *ngIf="!isManagePatientsFormView" class="manage-patients-sessions-container">
-
+    <rb-manage-patient-sessions-custom
+      [patientClinic]="_selectedPatientClinic"
+      [patientSessions]="_selectedPatientSessions"
+      [patientData]="newPatientData"
+    >
+    </rb-manage-patient-sessions-custom>
   </section>
 
 

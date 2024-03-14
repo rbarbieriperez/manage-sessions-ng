@@ -7,10 +7,10 @@ import {
   OnChanges,
   SimpleChanges,
   ViewChild,
-  ElementRef
+  ElementRef, ViewChildren
 } from "@angular/core";
 import {MatFormFieldModule} from "@angular/material/form-field";
-import {MatSelectChange, MatSelectModule} from "@angular/material/select";
+import {MatSelect, MatSelectChange, MatSelectModule} from "@angular/material/select";
 import {MatInputModule} from "@angular/material/input";
 import {FormsModule} from "@angular/forms";
 import {NgForOf, NgIf} from "@angular/common";
@@ -25,7 +25,7 @@ import {TOption} from "../../types/types";
   imports: [MatFormFieldModule, MatSelectModule, MatInputModule, FormsModule, NgIf, NgForOf]
 })
 
-export class RbSelectCustomComponent implements OnInit, OnChanges {
+export class RbSelectCustomComponent implements OnChanges {
 
   /**
    * Array of elements
@@ -58,24 +58,22 @@ export class RbSelectCustomComponent implements OnInit, OnChanges {
   @Output() elementSelected = new EventEmitter<string>();
 
 
+  @ViewChildren(MatSelect) select: MatSelect | undefined;
 
   protected _selectValue: string = '';
 
-  ngOnInit() {
-
-    if (!this.elements.length) {
-      this.disabled = true;
-    }
-
-  }
 
   ngOnChanges(changes: SimpleChanges) {
-    if(changes['elements']?.currentValue?.length) {
-      this.disabled = false;
+    if(changes['elements'] && this.select) {
+      this.select.disabled = !this.elements.length;
     }
 
     if(changes['defaultValue'] && this.defaultValue) {
       this._selectValue = this.defaultValue;
+    }
+
+    if (changes['disabled'] && this.disabled && this.select) {
+      this.select.disabled = this.disabled;
     }
   }
 
@@ -86,21 +84,12 @@ export class RbSelectCustomComponent implements OnInit, OnChanges {
    */
   protected _onElementSelected(event: MatSelectChange) {
     const { value } = event;
-
-    if (value) {
-      this.elementSelected.emit(value);
-    } else {
-      throw new Error('Selected element value could not be retrieved');
-    }
+    this.elementSelected.emit(value);
   }
 
   protected _onNativeSelectElementSelected(event: Event) {
     const { value } = event.target as HTMLSelectElement;
-    if (value) {
-      this.elementSelected.emit(value);
-    } else {
-      throw new Error('Selected element value could not be retrieved');
-    }
+    this.elementSelected.emit(value);
   }
 
   /**

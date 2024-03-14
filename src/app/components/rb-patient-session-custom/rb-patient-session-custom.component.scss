@@ -1,0 +1,25 @@
+.buttons-container {
+  width: fit-content;
+  display: flex;
+  flex-direction: row;
+  column-gap: .3rem;
+  float: right;
+}
+
+.inline-element {
+  display: flex;
+  flex-direction: row;
+  column-gap: .3rem;
+}
+
+.other-info-container {
+  width: fit-content;
+}
+
+.obs-container {
+  margin-top: 2rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  row-gap: .5rem;
+}

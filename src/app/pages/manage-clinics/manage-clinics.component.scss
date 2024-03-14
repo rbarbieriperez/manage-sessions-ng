@@ -2,7 +2,6 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   padding: 0 1rem 0 1rem;
   overflow-y: scroll;
   height: 90vh;
@@ -19,7 +18,7 @@
     width: 100%;
     display: flex;
     justify-content: center;
-    margin-top: 20rem;
+    margin-top: 3rem;
   }
 
   & .add-clinic-container {

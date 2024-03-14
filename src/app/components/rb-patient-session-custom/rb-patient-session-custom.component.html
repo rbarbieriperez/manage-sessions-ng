@@ -1,0 +1,39 @@
+<div class="patient-session-custom-main-container">
+
+  <div class="session-accordion-container">
+    <mat-accordion>
+      <mat-expansion-panel #panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{_formatDateToNatural(_currentSessionData.sessionDate)}}
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="content-container">
+          <div class="buttons-container">
+            <button mat-icon-button>
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button>
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+
+          <div class="information-container">
+
+            <div class="other-info-container">
+              <span><strong>Fecha:</strong> {{_formatDate(_currentSessionData.sessionDate)}}</span>
+              <span class="inline-element"><strong>Monto:</strong> <rb-toggle-value-custom [value]="_currentSessionData.sessionValue.toString()"></rb-toggle-value-custom></span>
+            </div>
+
+            <div class="obs-container">
+              <span><strong>Observaciones de la sesión:</strong></span>
+              <span *ngIf="_currentSessionData.sessionObs">{{_currentSessionData.sessionObs}}</span>
+              <span *ngIf="!_currentSessionData.sessionObs">Sin información registrada</span>
+            </div>
+          </div>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+
+</div>

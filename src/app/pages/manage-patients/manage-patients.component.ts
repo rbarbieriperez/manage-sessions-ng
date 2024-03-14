@@ -12,45 +12,12 @@ import {RbAutocompleteCustomComponent} from "../../components/rb-autocomplete-cu
 import {RbManagePatientComponent} from "../../components/rb-manage-patient-custom/rb-manage-patient.component";
 import {MatDivider} from "@angular/material/divider";
 import * as _ from 'lodash';
+import {
+  RbManagePatientSessionsCustomComponent
+} from "../../components/rb-manage-patient-sessions-custom/rb-manage-patient-sessions-custom.component";
+import {initialClinicData, initialPatientData} from "../../utils/data";
 
 
-const initialPatientData: TPatient = {
-  patientId: 0,
-  clinicId: 0,
-  names: '',
-  surnames: '',
-  sessionValue: 0,
-  observations: '',
-  bornDate: '',
-  sessionTime: 0,
-  family: [],
-  address: {
-    fullAddress: '',
-    number: '',
-    additionalInfo: ''
-  },
-  schooling: {
-    turn: '',
-    schedule: {
-      since: '',
-      to: ''
-    },
-    institutionObs: '',
-    institutionName: '',
-    institutionContactDetails: {
-      emailAddress: '',
-      website: '',
-      phoneNumber: '',
-      mobilePhoneNumber: ''
-    },
-    address: {
-      fullAddress: '',
-      additionalInfo: '',
-      number: ''
-    }
-  }
-
-}
 
 @Component({
   standalone: true,
@@ -63,7 +30,8 @@ const initialPatientData: TPatient = {
     MatIcon,
     RbAutocompleteCustomComponent,
     RbManagePatientComponent,
-    MatDivider
+    MatDivider,
+    RbManagePatientSessionsCustomComponent
   ],
   styleUrl: './manage-patients.component.scss'
 })
@@ -86,6 +54,9 @@ export class ManagePatientsComponent {
   protected _forcePatientsAutocompleteValue: string = '';
   protected _showClinicsAutocompleteHint: boolean = false;
   protected newPatientData: TPatient = initialPatientData;
+
+  protected _selectedPatientClinic: TClinic = initialClinicData;
+  protected _selectedPatientSessions: TSession[] = [];
 
   @ViewChild('clinicsAutocomplete') clinicsAutocomplete: RbAutocompleteCustomComponent | undefined;
   @ViewChild('patientsAutocomplete') patientsAutocomplete: RbAutocompleteCustomComponent | undefined;
@@ -172,13 +143,12 @@ export class ManagePatientsComponent {
   protected _onSelectedPatientAutocompleteChange(value: string) {
     if (value) {
       const foundPatient = this.userData?.patients.find((patient: TPatient) => patient.patientId === Number(value)) || initialPatientData;
-      console.log('userData', this.userData);
       this.currentPatientData = _.assign(foundPatient);
       this.newPatientData = _.assign(foundPatient);
       this._forcePatientsAutocompleteValue = `${this.currentPatientData.names} ${this.currentPatientData.surnames}`;
       this._patientsAutocompleteDisabled = true;
+      this._setupManagePatientSessionsData();
       this._validateIsUpdateDeleteForm();
-      console.log('user data after selecting a patient', this.userData);
     }
   }
 
@@ -195,6 +165,7 @@ export class ManagePatientsComponent {
     this._clinicsAutocompleteDisabled = false;
     this._patientsAutocompleteDisabled = true;
     this._showClinicsAutocompleteHint = false;
+    this._restoreManagePatientSessionsData();
     this._validateIsUpdateDeleteForm();
   }
 
@@ -203,14 +174,12 @@ export class ManagePatientsComponent {
    * @protected
    */
   protected _onClearSelectedPatientAutocomplete() {
-    console.log('userData before clear', this.userData);
     this.managePatientComponent?.clearFields();
     this.currentPatientData = _.assign(initialPatientData);
     this.newPatientData = _.assign(initialPatientData);
     this._patientsAutocompleteDisabled = false;
-    console.log(this._patientsAutocompleteDisabled);
+    this._restoreManagePatientSessionsData();
     this._validateIsUpdateDeleteForm();
-    console.log('userData after clear', this.userData);
   }
 
   /**
@@ -459,5 +428,29 @@ export class ManagePatientsComponent {
     } else {
       return Math.max(...this.userData.patients.map(o => o.patientId)) + 1;
     }
+  }
+
+  /**
+   * =========================================
+   * ======== MANAGE PATIENT SESSIONS ========
+   * =========================================
+   */
+
+  /**
+   * Method to prepare all the required data for manage patient sessions
+   * @private
+   */
+  private _setupManagePatientSessionsData() {
+    this._selectedPatientClinic = this.userData?.clinics.find((clinic: TClinic) => clinic.clinicId === this.newPatientData.clinicId) || _.cloneDeep(initialClinicData);
+    this._selectedPatientSessions = this.userData?.sessions.filter((session: TSession) => session.patientId === this.newPatientData.patientId) || [];
+  }
+
+  /**
+   * Restore manage patient sessions properties to its default
+   * @private
+   */
+  private _restoreManagePatientSessionsData() {
+    this._selectedPatientSessions = [];
+    this._selectedPatientClinic = _.cloneDeep(initialClinicData);
   }
 }
